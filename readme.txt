@@ -10,7 +10,7 @@ houCe is client oriented web framework designed with conventions that help you g
 * LESS (CCSS implementation coming later)
 
 
-GET STARTED
+--- get started ---
 
 git clone https://jussiry@github.com/jussiry/houCe.git
 cd houCe
@@ -19,5 +19,6 @@ node-dev start.coffee
 Open http://localhost:3001/ on your browser.
 
 
-START PRODUCTION
+--- start production ---
+
 coffee start.coffee production
