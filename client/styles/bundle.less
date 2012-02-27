@@ -1,0 +1,27 @@
+
+
+@import "vars.s";
+
+* html .clearfix{height:1%;}
+*+html .clearfix{display:inline-block;}
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+body {
+  font-family: Tahoma, Geneva, sans-serif;
+  font-size: 16px;
+}
+
+div, span, img, a, h1 {
+  position: relative; // TODO: does this affect rendering speed?;
+}
+
+a { text-decoration: none; }
+
+.absolute { position: absolute; }
+

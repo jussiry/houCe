@@ -1,0 +1,7 @@
+
+.DS_Store
+
+public/stylesheets/*
+
+public/client_app.js
+public/templates.js

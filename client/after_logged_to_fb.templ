@@ -1,0 +1,43 @@
+
+@html = ->
+  p "Now, open your browsers console and type the name of your app: #{yield -> code 'houCe'}
+    (assuming you haven't already renamed the folder where the app resides).
+    Expand the object and this will show you the basic structure of your client:"
+  ul ->
+    li "#{yield -> strong 'Config'}: includes all static settings."
+    li "#{yield -> strong 'Data'}: includes all dynamic data, which will be saved automatically to localStorage when app exits."
+    li "#{yield -> strong 'Models'}: model part of the MVC patter, handles retrieving and manipulation of Data."
+    li "#{yield -> strong 'Pages'}: page controllers (C of MVC), first part of URL hash always matches name of the current page."
+    li "#{yield -> strong 'Templates'}: V of MVC, every .templ and .page file under /client folder has template
+                                        corresponding to the files name in Templates."
+  p "Each module is also a global object, so instead of typing #{yield -> code 'houCe.Data'} you can just type #{yield -> code 'Data'}.
+     Speaking of Data, from #{yield -> code 'Data.people'} you can now find all your friends we just retrieved from Facebook."
+  p "When you build #{yield -> code 'Models.person'} houCe automatically creates corresponding
+     #{yield -> code 'Data.people'} hash with 'id' value inside each person determening the keys in the hash."
+  h2 "Some things to try"
+  h3 'Pages'
+  p "Create copy of main.page and rename it to #{yield -> code 'my_first.page'}. Do some modifications to
+     its @html function and change the hash of your browsers URL to '#{yield -> code '#!/my_first'}'.
+     Notice how some styling don't apply anymore, since #{yield -> code 'main.less'}
+     uses name of the class in #{yield -> code '#page_content'} element to determine where it applies."
+  h3 'Models'
+  p "Create item.coffee under '/client/models' and copy the following content to it:"
+  pre "class Models.item"
+  pre "  C = @"
+  pre "  Utils.model_new_data C"
+  pre "  constructor: (data)-> @.merge data"
+  p "Refresh this page and type #{yield -> code 'Data.state.me.get_likes()'} to your browsers console.
+     In couple seconds you can find everything you've 'liked' in Facebook under #{yield -> code 'Data.state.me.likes'}."
+  p "Notice that the same objects can be found under #{yield -> code 'Data.items'}. Data.items will have link
+     to all items (e.g. all items liked by all users), while single person naturally only has his/her liked items
+     under the person object."
+  h2 "Happy hacking!"
+  p "By the way, try refresing the page and look at your browsers console when the page opens. As you can see,
+     no Ajax requests are made, but still when you type #{yield -> code 'Data.people'} all of your friends
+     still exist there. This is because houCe automatically saves everything under #{yield -> code 'Data'}
+     in localStorage of your browser and then loads them when the app starts the next time."
+  p "Look into #{yield -> a target:'_blank', href:'http://github.com/jussir/houce/', 'documentation'}
+     TODO for more help and if something's awry post an issue into
+     #{yield -> a target:'_blank', href:'http://github.com/jussir/houce/', 'github repo'}."
+
+

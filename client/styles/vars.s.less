@@ -1,0 +1,52 @@
+
+
+// VARIABLES
+
+
+// Colors:
+@font_black: #444;
+@font_gray: #666;
+@light_gray: #aaa;
+
+// FUNCTIONS:
+
+.secondary_font {
+  font-family: Helvetica Neue, Helvetica;
+  font-weight: normal;
+}
+
+
+
+.border-radius(@r) {
+  -moz-border-radius: @r;
+  -webkit-border-radius: @r;
+  border-radius: @r;
+}
+
+.box-shadow(@s) {
+  -moz-box-shadow: @s;
+  -webkit-box-shadow: @s;
+  box-shadow: @s;
+}
+.box-shadow2(@s1, @s2) {
+  -moz-box-shadow: @s1, @s2;
+  -webkit-box-shadow: @s1, @s2;
+  box-shadow: @s1, @s2;
+}
+
+.vgradient(@from, @to) {
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(@from), to(@to));
+  background: -moz-linear-gradient(90deg, @to, @from);
+}
+
+
+// animation funcs:
+.transition(@sec) { // remember to add s, e.g.: .transition(3s)
+  -webkit-transition: all @sec ease-out;
+  -moz-transition: all @sec ease-out;
+  -o-transition: all @sec ease-out;
+  -ms-transition: all @sec ease-out;
+  transition: all @sec ease-out;
+}
+
+

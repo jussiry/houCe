@@ -1,0 +1,94 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title></title>
+  <meta name="description" content="Dealium Mobile Web-app" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <!-- ISO-8859-1 -->
+  
+  <link href="img/l/apple-touch-icon.png" rel="shortcut icon" />
+  <!-- Font -->
+  <link href='https://fonts.googleapis.com/css?family=PT+Sans:700' rel='stylesheet' type='text/css'>
+  <!--link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" /-->
+
+
+  
+
+  <!-- LAST LAYOUT TESTS WERE DONE WITHOUT THESE: -->
+    <!--Mobile viewport optimization http://goo.gl/b9SaQ-->
+  <meta name="HandheldFriendly" content="True" />
+  <!-- Hide url bar for iPhone when opened from homescreen, but no effect? -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <!-- Mobile IE:  (ClearType technology allows us to smooth fonts for easy reading) -->
+  <meta http-equiv="cleartype" content="on" />
+  <meta name="MobileOptimized"  content="640" />
+
+
+
+  <!-- <meta name="viewport" content="target-densitydpi = high-dpi"/> -->
+  <!--meta name="viewport" content="width = 320, target-densitydpi = 100, initial-scale = 0.6"/-->
+  <!--meta name="viewport" content="width = 563, target-densitydpi = 100" /-->
+
+
+  <!--meta name="viewport" content="target-densitydpi = 200" /> <!-- , width=device-width, user-scalable=no -->
+  
+  <link href="stylesheets/stylesheets.css" media="screen" rel="stylesheet" type="text/css" />
+  <script src="lib/modernizr.custom.js" type="text/javascript"></script>
+</head>
+
+<body>
+  <!--div id='header_bar' class='header_124'>
+    <div class='img_layer leather_texture'></div>
+    <img class='img_layer shadow_layer' src='/img/shadow_124px.png' />
+    <div class='string string_top'></div>
+    <div class='string string_bottom'></div>
+    <a id='back_button' class='action' href=''>
+      <img class='left_side' src='/img/back_button_left.png' />
+      <span></span>
+      <img class='right_side' src='/img/back_button_right.png' />
+    </a>
+    <h1 class='swap'></h1>
+  </div-->
+
+  <div id="page_content"></div>
+  
+  <div id="overflows"></div>
+
+  <div id="scripts">
+    <script src="/lib/jsonStringify.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      // TODO: should here be 'if not JSON'? Native JSON might be faster,
+      // but then again more stable to use the same everywhere.
+      window.JSON = {
+        parse:     JSONstring.toObject,
+        stringify: JSONstring.make
+      }
+      ##client_config_from_server##
+
+    </script>
+    <script src="lib/jquery-1.7.1.min.js" type="text/javascript"></script>
+    <script src="lib/jquery.animate-enhanced.min.js" type="text/javascript"></script>
+
+    <!--script src="lib/jq.mobi.min.js" type="text/javascript"></script-->
+    <!--script src="lib/jq.css3animate.js" type="text/javascript"></script-->
+    <!--script src="lib/jq.ui.min.js" type="text/javascript"></script-->
+
+    <!--script src="lib/jquery.transform.js" type="text/javascript"></script-->
+    <!--script src="lib/jquery-css-transform.js" type="text/javascript"></script-->
+    <!--script src="lib/jquery-animate-css-rotate-scale.js" type="text/javascript"></script-->
+
+    <script src="lib/underscore.js" type="text/javascript"></script>
+    <script src="lib/sugar-1.2.1.min.js" type="text/javascript"></script>
+    <!--script src="lib/sugar-1.2.2.min.js" type="text/javascript"></script-->
+    <script src="lib/MBP_helper.js" type="text/javascript"></script>
+    <script src="lib/coffeekup.js" type="text/javascript"></script>
+
+    <script src="templates.js" type="text/javascript"></script>
+    <script src="client_app.js" type="text/javascript"></script>
+  </div>
+</body>
+
+</html>
