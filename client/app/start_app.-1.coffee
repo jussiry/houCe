@@ -16,7 +16,7 @@ Utils.try 'start_app.coffee', =>
       Utils.FB.access_token_received()
     
     # Set app title
-    $('head title').text Config.app_name.capitalize()
+    $('head title').text Config.app_name
 
     # init hash checker
     if Modernizr.hashchange # TODO android 2.1 claims to have but don't work: http://caniuse.com/hashchange ?
