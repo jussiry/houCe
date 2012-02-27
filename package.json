@@ -6,7 +6,7 @@
     "node-dev":   "0.1.9",
     "sugar":      "1.2.2",
     "coffeekup":  "0.3.1",
-    "express":    "2.4.6",
+    "express":    "2.5.8",
     "less":       "1.1.5",
     "restler":    "0.2.1"
   }

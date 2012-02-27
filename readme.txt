@@ -1,27 +1,27 @@
 
+--- houCe ---
 
-## INSTALL
-* nmp install coffee-script -g
-* nmp install node-dev -g
+houCe is client oriented web framework designed with conventions that help you get ready and going in seconds,
+while providing structure that supports complex desktop like applications.
+houCe aspires to use one language for everything you do, and that language is CoffeeScript.
+here's the list of other technologies it uses:
+
+* Node.js
+* Express.js
+* CoffeeKup
+* Sugar.js
+* LESS (CCSS implementation coming later)
 
 
-## START
+GET STARTED
+
+git clone https://jussiry@github.com/jussiry/houCe.git
+cd houCe
+nmp install
 node-dev start.coffee
 
+Open http://localhost:3001/ on your browser.
 
 
-
-## WASTELAND
-
-r log 'cookie: ' + req.cookies['likematch.sid'] + '  sessionID: ' + req.sessionID
-
-
-### OLD start.sh scripts:
-coffee -w -c -o server/javascripts/ server/ | egrep --color "error|$" &
-coffee -w -c *.coffee ./javascripts | egrep --color "error|$" &
-coffee -w -c */*.coffee | egrep --color "error|$" &
-
-
-
-
-
+SART PRODUCTION
+coffee start.coffee production
