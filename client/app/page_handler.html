@@ -1,0 +1,85 @@
+<!DOCTYPE html><html><head><title>page_handler.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../../index.html" class="source"><span class="file_name">README</span></a><a href="../../client/app/page_handler.html" class="source selected"><span class="base_path">client / app / </span><span class="file_name">page_handler.coffee</span></a><a href="../../client/app/setup.1.html" class="source "><span class="base_path">client / app / </span><span class="file_name">setup.1.coffee</span></a><a href="../../client/app/start_app.-1.html" class="source "><span class="base_path">client / app / </span><span class="file_name">start_app.-1.coffee</span></a><a href="../../client/models/person.html" class="source "><span class="base_path">client / models / </span><span class="file_name">person.coffee</span></a><a href="../../client/utils/apis.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">apis.coffee</span></a><a href="../../client/utils/dictionary.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">dictionary.coffee</span></a><a href="../../client/utils/houce.2.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">houce.2.coffee</span></a><a href="../../client/utils/jquery_extensions.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">jquery_extensions.coffee</span></a><a href="../../client/utils/ui.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">ui.coffee</span></a><a href="../../common/common_utils.html" class="source "><span class="base_path">common / </span><span class="file_name">common_utils.coffee</span></a><a href="../../server/config.html" class="source "><span class="base_path">server / </span><span class="file_name">config.coffee</span></a><a href="../../server/server.html" class="source "><span class="base_path">server / </span><span class="file_name">server.coffee</span></a><a href="../.././start.html" class="source "><span class="base_path">. / </span><span class="file_name">start.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>page_handler.coffee</h1><div class="filepath">client/app/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>PageHandler watches browsers URL's hash and changes the page when the hash changes.</p>
+
+<p>When page is changes:</p>
+
+<ul>
+<li>old pages gets <code>close</code> event.</li>
+<li>new page is initialized.</li>
+<li>new page gets <code>open</code> event.</li>
+</ul>
+</td><td class="code"><div class="highlight"><pre><span class="nv">global.PageHandler = </span><span class="nx">do</span> <span class="o">-&gt;</span>
+  
+  <span class="nv">hashbang = </span><span class="s">&#39;#!/&#39;</span>
+  <span class="nv">main_page = </span><span class="s">&#39;main&#39;</span>
+  </pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>The paradigm favourided in houCe for making singleton objects is to execute function (do ->)
+with private variables defined above and public vars defined below by
+returnin a literal object.
+Use 'me' inside public methods to refer to self and try to avoid using 'this' (or @).</p>
+</td><td class="code"><div class="highlight"><pre>  <span class="nv">me =</span>
+  
+  <span class="nv">get_page: </span><span class="o">-&gt;</span> <span class="nx">Data</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">or</span> <span class="nx">main_page</span>
+  
+  <span class="nv">get_param: </span><span class="nf">(num)-&gt;</span>
+    <span class="k">return</span> <span class="nx">alert</span> <span class="s">&quot;Incorrect param index! (1 == first)&quot;</span> <span class="k">if</span> <span class="nx">num</span> <span class="o">&lt;</span> <span class="mi">1</span>
+    <span class="nx">Data</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">path</span><span class="p">[</span><span class="nx">num</span><span class="p">]</span>
+  <span class="nv">get_params: </span><span class="nf">(num)-&gt;</span>
+    <span class="nx">num</span> <span class="o">?=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="nx">log</span> <span class="s">&quot;WARNING: not enough url parameters.&quot;</span> <span class="k">if</span> <span class="nx">Data</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="o">+</span><span class="nx">num</span>
+    <span class="nx">Data</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">path</span><span class="p">[</span><span class="mi">1</span><span class="p">..</span><span class="nx">num</span><span class="p">]</span>
+  </pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>Gets executed evrytime window.locatio.hash changes.
+TODO change to History API</p>
+</td><td class="code"><div class="highlight"><pre>  <span class="nv">check_url_hash: </span><span class="o">-&gt;</span>
+    <span class="nx">Utils</span><span class="p">.</span><span class="k">try</span> <span class="s">&#39;check_url_hash&#39;</span><span class="p">,</span> <span class="o">=&gt;</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>TODO: find out why @ becomes DOMWindow when called from setInterval
+Works with 'new ->', but not with object literal?</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="nv">hash = </span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">hash</span> <span class="c1"># shorthands</span>
+      <span class="nv">s    = </span><span class="nx">Data</span><span class="p">.</span><span class="nx">state</span>
+      <span class="k">if</span> <span class="nx">hash</span><span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="nx">hashbang</span>
+        <span class="nv">new_path = </span><span class="nx">hash</span><span class="p">[</span><span class="mi">3</span><span class="p">..</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><p>Check if hash path has changed</p>
+</td><td class="code"><div class="highlight"><pre>        <span class="nx">unless</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">equal</span> <span class="nx">new_path</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">path</span>
+          <span class="nv">prev_page = </span><span class="k">if</span> <span class="nx">s</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">()</span> <span class="k">then</span> <span class="kc">null</span> <span class="k">else</span> <span class="nx">Pages</span><span class="p">[</span> <span class="nx">me</span><span class="p">.</span><span class="nx">get_page</span><span class="p">()</span> <span class="p">]</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><p>Change state</p>
+</td><td class="code"><div class="highlight"><pre>          <span class="nv">s.path = </span><span class="nx">new_path</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>Close page event or directly open new page:</p>
+</td><td class="code"><div class="highlight"><pre>          <span class="k">if</span> <span class="nx">prev_page</span><span class="o">?</span><span class="p">.</span><span class="nx">close</span><span class="o">?</span>
+            <span class="nv">cb = </span><span class="nx">me</span><span class="p">.</span><span class="nx">open_page</span><span class="p">.</span><span class="nx">bind</span> <span class="nx">me</span>
+            <span class="nx">prev_page</span><span class="p">.</span><span class="nx">close</span> <span class="nx">cb</span>
+          <span class="k">else</span>
+            <span class="nx">me</span><span class="p">.</span><span class="nx">open_page</span><span class="p">()</span>
+      <span class="k">else</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><p>url has no hasbang, set it and direct to main page:</p>
+</td><td class="code"><div class="highlight"><pre>        <span class="nb">window</span><span class="p">.</span><span class="nv">location.hash = </span><span class="nx">hashbang</span> <span class="o">+</span> <span class="nx">main_page</span>
+
+  <span class="nv">open_page: </span><span class="nf">(args)-&gt;</span>
+    <span class="nx">Utils</span><span class="p">.</span><span class="k">try</span> <span class="s">&#39;UH: open_page&#39;</span><span class="p">,</span> <span class="o">=&gt;</span>
+      </pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><p>close old page if event exists:</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="k">if</span> <span class="nx">args</span><span class="o">?</span><span class="p">.</span><span class="nx">new_path</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><p>close event for old page not yet fired; do it here if exists</p>
+</td><td class="code"><div class="highlight"><pre>        <span class="nv">old_page = </span><span class="nx">Pages</span><span class="p">[</span><span class="nx">Data</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">path</span><span class="o">?</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="nv">Data.state.path = </span><span class="nx">args</span><span class="p">.</span><span class="nx">new_path</span>
+        <span class="k">if</span> <span class="nx">old_page</span><span class="o">?</span><span class="p">.</span><span class="nx">close</span><span class="o">?</span> <span class="o">and</span> <span class="o">not</span> <span class="nx">args</span><span class="p">.</span><span class="nx">already_closed</span>
+          <span class="nx">old_page</span><span class="p">.</span><span class="nx">close</span> <span class="nx">me</span><span class="p">.</span><span class="nx">open_page</span><span class="p">.</span><span class="nx">bind</span> <span class="nx">me</span><span class="p">,</span> <span class="nv">new_path: </span><span class="nx">args</span><span class="p">.</span><span class="nx">new_path</span><span class="p">,</span> <span class="nv">already_closed: </span><span class="kc">true</span>
+          <span class="k">return</span></pre></div></td></tr><tr id="section-12"><td class="docs"><div class="pilwrap"><a href="#section-12" class="pilcrow">&#182;</a></div><p>check_url_hash will be fired but won't do anythign since state already mathches hash</p>
+</td><td class="code"><div class="highlight"><pre>        <span class="nb">window</span><span class="p">.</span><span class="nv">location.hash = </span><span class="nx">hashbang</span> <span class="o">+</span> <span class="nx">args</span><span class="p">.</span><span class="nx">new_path</span><span class="p">.</span><span class="nx">join</span> <span class="s">&#39;/&#39;</span>
+    
+      <span class="nx">me</span><span class="p">.</span><span class="nx">init_page</span><span class="p">()</span>
+      
+      <span class="nv">page_name = </span><span class="nx">me</span><span class="p">.</span><span class="nx">get_page</span><span class="p">()</span>
+      
+      <span class="k">if</span> <span class="nx">Pages</span><span class="o">?</span><span class="p">[</span><span class="nx">page_name</span><span class="p">]</span><span class="o">?</span>
+        <span class="nx">Utils</span><span class="p">.</span><span class="k">try</span> <span class="s">&#39;UH: open controller&#39;</span><span class="p">,</span> <span class="o">=&gt;</span>
+          <span class="nx">log</span> <span class="s">&quot;UH: &#39;</span><span class="si">#{</span><span class="nx">page_name</span><span class="si">}</span><span class="s">&#39; controller found&quot;</span>
+          <span class="nx">Pages</span><span class="p">[</span><span class="nx">page_name</span><span class="p">].</span><span class="nx">open</span><span class="p">()</span>
+      <span class="k">else</span>
+        <span class="nx">log</span> <span class="s">&quot;UH: no page found!&quot;</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#page_content&#39;</span><span class="p">).</span><span class="nx">html</span> <span class="s">&quot;Page &lt;strong&gt;</span><span class="si">#{</span><span class="nx">page_name</span><span class="si">}</span><span class="s">&lt;/strong&gt; not found!&quot;</span>
+      </pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><p>Fade in page content after it has been rendered</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="nx">reqAnimFrame</span> <span class="o">-&gt;</span> <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#page_content&#39;</span><span class="p">).</span><span class="nx">animate</span> <span class="nv">opacity: </span><span class="mi">1</span>
+  
+  <span class="nv">init_page: </span><span class="o">-&gt;</span>
+    <span class="nx">Utils</span><span class="p">.</span><span class="k">try</span> <span class="s">&#39;init_page&#39;</span><span class="p">,</span> <span class="o">=&gt;</span>
+      <span class="nv">pc = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;#page_content&#39;</span><span class="p">)</span>
+      <span class="nx">pc</span><span class="p">.</span><span class="nx">css</span>
+        <span class="nv">opacity: </span><span class="mi">0</span>
+        <span class="nv">left: </span><span class="mi">0</span>
+      <span class="nx">pc</span><span class="p">.</span><span class="nx">attr</span> <span class="k">class</span><span class="o">:</span> <span class="nx">@get_page</span><span class="p">()</span>
+      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;body&#39;</span><span class="p">).</span><span class="nx">scrollTop</span> <span class="mi">0</span>
+      
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Wed Feb 29 2012 17:15:51 GMT+0200 (EET)  </div></div></body></html>
