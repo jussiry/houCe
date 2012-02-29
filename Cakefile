@@ -171,23 +171,23 @@ task 'docs_to_github', ->
     return log err if err
     exec "git merge master", (err, stdout, stderr)->
       return log err if err
-      log "master branch merged"
+      console.log "master branch merged"
       exec "cake 'build_docs'", (err, stdout, stderr)->
         return log err if err
-        log "docs built"
+        console.log "docs built"
         exec "rm -R client common node_modules public server", (err, stdout, stderr)->
           return log err if err
-          log "code removed"
+          console.log "code removed"
           exec "mv ./docs/** .", (err, stdout, stderr)->
             return log err if err
-            log "docs moved/linked"
+            console.log "docs moved/linked"
             exec "git add -A", (err, stdout, stderr)->
               return log err if err
-              log "git add done"
+              console.log "git add done"
               exec "git commit -a -m 'Docs updated'", (err, stdout, stderr)->
                 return log err if err
-                log "git commit done"
+                console.log "git commit done"
                 exec "git push -f origin gh-pages", (err, stdout, stderr)->
                   return log err if err
-                  log "git push done"
-                  log "Now go to: http://jussiry.github.com/houCe/"
+                  console.log "git push done"
+                  console.log "Now go to: http://jussiry.github.com/houCe/"
