@@ -1,4 +1,10 @@
 
+# Page handler watche browsers URL hash and changes page when the UTR changes.
+# When page is changes:
+# * old pages gets `close` event.
+# * new page is initialized.
+# * new page gets `open` event.
+
 global.PageHandler = do ->
   
   hashbang = '#!/'
