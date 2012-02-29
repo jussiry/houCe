@@ -1,5 +1,6 @@
 
 # Utils for handling houce conventions:
+#
 # * Data initialization and caching
 # * Model helpers
 # * Template rendering
@@ -202,8 +203,8 @@ Utils.fail = (str, err)->
 
 
 
-# Render function for templates. Use $('selector').render
-# (alse .render_bottom and .render_top), except for partials, for which you need to use Utils.render.
+# Render function for templates. Use $(el).render(..), except for partials,
+# for which you'll need to use `$(el).html( Utils.render(template\_name) )`.
 
 Utils.render = (template_name, data_obj={}, extra_data)->
   
