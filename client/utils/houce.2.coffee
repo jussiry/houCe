@@ -1,8 +1,8 @@
 
 # Utils for handling houce conventions:
-#   * Data initialization and caching
-#   * Model helpers
-#   * Template rendering
+# * Data initialization and caching
+# * Model helpers
+# * Template rendering
 
 # 2 in houce.2.coffee means that this will be the second file exeuted in client_app.js
 
