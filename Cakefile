@@ -1,7 +1,7 @@
 
 task_name = process.argv[2]
 
-unless ['build_docs', 'docs_to_github'].has task_name
+unless task_name in ['build_docs', 'docs_to_github']
   require 'sugar'
   Object.extend()
   require './common/common_utils' # not so sure if it's such a good idea to load these in the first place. only used for log-shorthand
