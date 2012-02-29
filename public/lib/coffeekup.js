@@ -330,8 +330,6 @@
       tag_functions += "" + t + " = function(){return __ck.tag('" + t + "', arguments);};";
     }
     code = tag_functions + hardcoded_locals + skeleton;
-    window.a = coffeekup.doctypes;
-    console.log(coffeekup.doctypes)
     code += "__ck.doctypes = " + (JSON.stringify(coffeekup.doctypes)) + ";"; // changed
     code += "__ck.coffeescript_helpers = " + (JSON.stringify(coffeescript_helpers)) + ";"; // changed
     code += "__ck.self_closing = " + (JSON.stringify(coffeekup.self_closing)) + ";"; // changed

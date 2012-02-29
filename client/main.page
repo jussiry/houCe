@@ -1,5 +1,6 @@
 
-# @html defines the CoffeeKup function for parsing the HTML of the template.
+### @html defines the CoffeeKup function for parsing the HTML of the template. ###
+
 @html = ->
   h1 "Welcome to houCe!"
   api_access = Data.apis.fb_access_token
@@ -22,7 +23,7 @@
     text Utils.render 'after_logged_to_fb'
 
 
-# @init function can be use to bind events to template after it has been rendered.
+### @init function can be use to bind events to template after it has been rendered. ###
 # $el parameter is the jQuery object of the parsed template, so bind everything into it.
 @init = ($el)->
   $el.find('#connect_to_fb').click ->
@@ -30,11 +31,12 @@
     return false
 
 
-# @page is the Page controller.
+### @page is the Page controller. ###
 @page =
   # Each page has open event, that is executed when first part of the URL hash
   # (.../#!/page_name/...) equals to the name of the page.
   open: ->
+    $('#page_content').html "<div style='margin: 3em 2em;'>Loading...</div>"
     if Data.apis.fb_access_token?
       Models.person.get 'me', (me)->
         me.get_friends ->
