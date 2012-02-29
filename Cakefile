@@ -151,3 +151,12 @@ task 'build_client', ->
   fs.writeFileSync __dirname+'/public/templates.js', full_templ_str, 'utf8', (err)-> if err then throw err
   
   console.info "Client files built!"
+
+
+
+task 'build_docs', ->
+  exec "./node_modules/.bin/docco-husky start.coffee client", (err, stdout, stderr)->
+    if err then log err    \
+           else log stdout
+
+
