@@ -1,6 +1,8 @@
 
-# Page handler watche browsers URL hash and changes page when the UTR changes.
+# Page handler watche browsers URL hash and changes the page when the URL changes.
+#
 # When page is changes:
+#
 # * old pages gets `close` event.
 # * new page is initialized.
 # * new page gets `open` event.
@@ -39,12 +41,12 @@ global.PageHandler = do ->
       s    = Data.state
       if hash[0..2] == hashbang
         new_path = hash[3..-1].split('/')
+        # Check if hash path has changed
         unless Object.equal new_path, s.path
-          # _hash path has changed_
           prev_page = if s.path.isEmpty() then null else Pages[ me.get_page() ]
-          # change state:
+          # Change state
           s.path = new_path
-          # close page event or directly open new page:
+          # Close page event or directly open new page:
           if prev_page?.close?
             cb = me.open_page.bind me
             prev_page.close cb
@@ -66,7 +68,7 @@ global.PageHandler = do ->
           old_page.close me.open_page.bind me, new_path: args.new_path, already_closed: true
           return
 
-        # check_url_hash will be fired but won't do anythign since state already mathches hash
+        # check\_url\_hash will be fired but won't do anythign since state already mathches hash
         window.location.hash = hashbang + args.new_path.join '/'
     
       me.init_page()
