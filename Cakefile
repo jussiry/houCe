@@ -164,7 +164,7 @@ task 'build_docs', ->
 task 'docs_to_github', ->           
   # Make sure we are in the right branch
   exec "git branch", (err, stdout, stderr)->
-    unless stdout.match /^\* gh-pages/
+    unless stdout.match /\* gh-pages/
       log 'Shwitch to gh-pages branch and try again.'
       return
     return
