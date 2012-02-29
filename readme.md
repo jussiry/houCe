@@ -32,6 +32,6 @@ houCe is client oriented web framework designed with conventions that help you g
 
 ## commands
 
-* `coffee start.coffee production` - Start server in production
+* `coffee start.coffee production` - Start server in production mode
 * `cake build_docs` - Build documentation
 * `cake build_docs` - Compile client files to public folder (CS and LESS to JS and CSS). Normally done automatically.
