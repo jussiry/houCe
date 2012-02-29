@@ -170,25 +170,27 @@ task 'docs_to_github', ->
   # Make sure we are in the right branch
   exec "git checkout gh-pages", (err, stdout, stderr)->
     return log err if err
-    exec "git merge master", (err, stdout, stderr)->
+    exec "git clean -fdx", (err, stdout, stderr)->
       return log err if err
-      log "master branch merged"
-      exec "cake 'build_docs'", (err, stdout, stderr)->
+      exec "git merge master", (err, stdout, stderr)->
         return log err if err
-        log "docs built"
-        exec "rm -R client common node_modules public server", (err, stdout, stderr)->
+        log "master branch merged"
+        exec "cake 'build_docs'", (err, stdout, stderr)->
           return log err if err
-          log "code removed"
-          exec "mv ./docs/** .", (err, stdout, stderr)->
+          log "docs built"
+          exec "rm -R client common node_modules public server", (err, stdout, stderr)->
             return log err if err
-            log "docs moved/linked"
-            exec "git add -A", (err, stdout, stderr)->
+            log "code removed"
+            exec "mv ./docs/** .", (err, stdout, stderr)->
               return log err if err
-              log "git add done"
-              exec "git commit -a -m 'Docs updated'", (err, stdout, stderr)->
+              log "docs moved/linked"
+              exec "git add -A", (err, stdout, stderr)->
                 return log err if err
-                log "git commit done"
-                exec "git push -f origin gh-pages", (err, stdout, stderr)->
+                log "git add done"
+                exec "git commit -a -m 'Docs updated'", (err, stdout, stderr)->
                   return log err if err
-                  log "git push done"
-                  log "Now go to: http://jussiry.github.com/houCe/"
+                  log "git commit done"
+                  exec "git push -f origin gh-pages", (err, stdout, stderr)->
+                    return log err if err
+                    log "git push done"
+                    log "Now go to: http://jussiry.github.com/houCe/"
