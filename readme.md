@@ -1,5 +1,5 @@
 
-## houCe
+# houCe
 
 houCe is client oriented web framework designed with conventions that help you get ready and going in seconds, while providing structure that supports complex desktop like applications. houCe aspires to use one language for everything it does, and that language is CoffeeScript. Here's the list of other technologies:
 
@@ -35,3 +35,10 @@ houCe is client oriented web framework designed with conventions that help you g
 * `coffee start.coffee production` - Start server in production mode
 * `cake build_docs` - Build documentation
 * `cake build_client` - Compile client files to public folder (CS and LESS to JS and CSS). Normally done automatically.
+
+
+## documentation
+
+File by file documentation can be found here: [jussiry.github.com/houCe](http://jussiry.github.com/houCe/index.html)
+
+

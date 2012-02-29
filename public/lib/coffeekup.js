@@ -311,7 +311,7 @@
         if (typeof v === 'function') {
           hardcoded_locals += "var " + k + " = function(){return (" + v + ").apply(data, arguments);};";
         } else {
-          hardcoded_locals += "var " + k + " = " + (JSON.parse(v)) + ";"; // changed
+          hardcoded_locals += "var " + k + " = " + (JSON.stringify(v)) + ";"; // changed
         }
       }
     }
@@ -330,9 +330,11 @@
       tag_functions += "" + t + " = function(){return __ck.tag('" + t + "', arguments);};";
     }
     code = tag_functions + hardcoded_locals + skeleton;
-    code += "__ck.doctypes = " + (JSON.parse(coffeekup.doctypes)) + ";"; // changed
-    code += "__ck.coffeescript_helpers = " + (JSON.parse(coffeescript_helpers)) + ";"; // changed
-    code += "__ck.self_closing = " + (JSON.parse(coffeekup.self_closing)) + ";"; // changed
+    window.a = coffeekup.doctypes;
+    console.log(coffeekup.doctypes)
+    code += "__ck.doctypes = " + (JSON.stringify(coffeekup.doctypes)) + ";"; // changed
+    code += "__ck.coffeescript_helpers = " + (JSON.stringify(coffeescript_helpers)) + ";"; // changed
+    code += "__ck.self_closing = " + (JSON.stringify(coffeekup.self_closing)) + ";"; // changed
     if (options.locals) {
       code += 'with(data.locals){';
     }
