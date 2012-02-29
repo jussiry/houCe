@@ -21,11 +21,13 @@ houCe is client oriented web framework designed with conventions that help you g
 
 --- get started ---
 
-git clone https://jussiry@github.com/jussiry/houCe.git
-cd houCe
-nmp install
-node-dev start.coffee
-Open http://localhost:3001/ on your browser.
+    git clone https://jussiry@github.com/jussiry/houCe.git
+    npm install -g coffee-script
+    npm install -g node-dev
+    cd houCe
+    nmp install
+    node-dev start.coffee
+    Open http://localhost:3001/ on your browser.
 
 
 --- start production ---
