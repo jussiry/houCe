@@ -160,29 +160,32 @@ task 'build_docs', ->
            else log stdout
 
 
+
 # Create docs to gh-branch and push to Github pages
 task 'docs_to_github', ->           
   # Make sure we are in the right branch
-  exec "git branch", (err, stdout, stderr)->
-    unless stdout.match /\* gh-pages/
-      log 'Shwitch to gh-pages branch and try again.'
-      return
+  exec "git checkout gh-pages", (err, stdout, stderr)->
+    return log err if err
     return
-    # copy content from master branch
     exec "git merge master", (err, stdout, stderr)->
       return log err if err
-      # build docs
-      invoke 'build_docs', ->
-        # remove everything but code
+      log "master branch merged"
+      exec "cake 'build_docs'", (err, stdout, stderr)->
+        return log err if err
+        log "docs built"
         exec "rm -R client common node_modules public server", (err, stdout, stderr)->
           return log err if err
-          # copy docs to root
+          log "code removed"
           exec "mv ./docs/** .", (err, stdout, stderr)->
             return log err if err
-            # create commit
-            exec "git commit -a -m 'Docs updated'", (err, stdout, stderr)->
+            log "docs moved/linked"
+            exec "git add -A", (err, stdout, stderr)->
               return log err if err
-              # push to github
-              exec "git push origin gh-pages", (err, stdout, stderr)->
+              log "git add done"
+              exec "git commit -a -m 'Docs updated'", (err, stdout, stderr)->
                 return log err if err
-                log "Now go to: http://jussiry.github.com/houCe/"
+                log "git commit done"
+                exec "git push origin gh-pages", (err, stdout, stderr)->
+                  return log err if err
+                  log "git push done"
+                  log "Now go to: http://jussiry.github.com/houCe/"
