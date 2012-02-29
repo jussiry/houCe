@@ -167,7 +167,7 @@ task 'build_docs', ->
 task 'docs_to_github', ->  
   log = (m)-> console.log m         
   # Make sure we are in the right branch
-  exec "git -D gh-pages", (err, stdout, stderr)->
+  exec "git branch -D gh-pages", (err, stdout, stderr)->
     return log err if err
     exec "git symbolic-ref HEAD refs/heads/gh-pages", (err, stdout, stderr)->
       return log err if err
