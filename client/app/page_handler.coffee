@@ -1,5 +1,5 @@
 
-# Page handler watche browsers URL hash and changes the page when the URL changes.
+# PageHandler watches browsers URL's hash and changes the page when the hash changes.
 #
 # When page is changes:
 #

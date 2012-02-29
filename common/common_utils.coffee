@@ -1,18 +1,9 @@
 
 try
 
-  # console.log  Number.prototype.abs
-  # console.log  Number.prototype.seconds
-
-  # alert? Number.prototype.abs
-  # alert? Number.prototype.seconds
-  # SETTINGS:
-  if JSONstring?
-    JSONstring.includeFunctions = true
 
   # Sugar.js extensions:
   #Array::equals = (another_arr)-> Object.equals this, another_arr
-
   #Object.defineProperties Object.prototype, a: value: 3 #, b: 4
 
   Array.prototype.get_num = -> for el in @
