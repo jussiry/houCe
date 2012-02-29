@@ -13,7 +13,7 @@ houCe is client oriented web framework designed with conventions that help you g
 ## features
 
 * Start coding your app instantly, no configuration required.
-* Clean distinction to *client*, *server* and *common* folders. Common code gets executed both on client and on the server. 
+* Clean distinction to **client**, **server** and **common** folders. Common code gets executed both on client and on the server. 
 * Automatic localStorage caching of the application state and data.
 * Clean Ajax deferring for retrieving data from external API's and storing that data locally.
 * Connect to Facebook (TODO: also Twitter) instantly.
@@ -30,6 +30,8 @@ houCe is client oriented web framework designed with conventions that help you g
     Open http://localhost:3001/ on your browser.
 
 
-## start production
+## commands
 
-coffee start.coffee production
+* start production: `coffee start.coffee production`
+* build documentation: `cake build_docs`
+* compile client files to **public** folder: `cake build_docs` (normally done automatically)
