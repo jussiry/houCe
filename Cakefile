@@ -1,15 +1,18 @@
 
-require 'sugar'
-Object.extend()
-require './common/common_utils' # not so sure if it's such a good idea to load these in the first place. only used for log-shorthand
-{JSONstring} = require('./public/lib/jsonStringify') #so that common_utils won't crash
-JSONstring.includeFunctions = true
+task_name = process.argv[2]
 
-LESS   = require 'less'
-less_options = paths: ['./client', './client/styles']
+unless ['build_docs', 'docs_to_github'].has task_name
+  require 'sugar'
+  Object.extend()
+  require './common/common_utils' # not so sure if it's such a good idea to load these in the first place. only used for log-shorthand
+  {JSONstring} = require('./public/lib/jsonStringify') #so that common_utils won't crash
+  JSONstring.includeFunctions = true
+  LESS   = require 'less'
+  less_options = paths: ['./client', './client/styles']
+  CoffeeScript = require 'coffee-script'
+
 fs     = require 'fs'
 {exec} = require 'child_process'
-CoffeeScript = require 'coffee-script'
 
 standard_exec_func = (err, stdout, stderr)->
   throw err if err
