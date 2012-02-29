@@ -159,35 +159,36 @@ task 'build_client', ->
 
 task 'build_docs', ->
   exec "./node_modules/.bin/docco-husky start.coffee client common server", (err, stdout, stderr)->
-    if err then log err    \
-           else log stdout
+    if err then console.log err    \
+           else console.log stdout
 
 
 
 # Create docs to gh-branch and push to Github pages
-task 'docs_to_github', ->           
+task 'docs_to_github', ->  
+  log = (m)-> console.log m         
   # Make sure we are in the right branch
   exec "git checkout gh-pages", (err, stdout, stderr)->
     return log err if err
     exec "git merge master", (err, stdout, stderr)->
       return log err if err
-      console.log "master branch merged"
+      log "master branch merged"
       exec "cake 'build_docs'", (err, stdout, stderr)->
         return log err if err
-        console.log "docs built"
+        log "docs built"
         exec "rm -R client common node_modules public server", (err, stdout, stderr)->
           return log err if err
-          console.log "code removed"
+          log "code removed"
           exec "mv ./docs/** .", (err, stdout, stderr)->
             return log err if err
-            console.log "docs moved/linked"
+            log "docs moved/linked"
             exec "git add -A", (err, stdout, stderr)->
               return log err if err
-              console.log "git add done"
+              log "git add done"
               exec "git commit -a -m 'Docs updated'", (err, stdout, stderr)->
                 return log err if err
-                console.log "git commit done"
+                log "git commit done"
                 exec "git push -f origin gh-pages", (err, stdout, stderr)->
                   return log err if err
-                  console.log "git push done"
-                  console.log "Now go to: http://jussiry.github.com/houCe/"
+                  log "git push done"
+                  log "Now go to: http://jussiry.github.com/houCe/"
