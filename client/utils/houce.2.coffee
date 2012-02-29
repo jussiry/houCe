@@ -7,7 +7,8 @@
 
 # 2 in houce.2.coffee means that this will be the second file exeuted in client_app.js
 
-## Data initialization
+# ### Data initialization
+
 Utils.init_data = (remove_cache)->
 
   # Namespace for all retrieved data
@@ -37,7 +38,7 @@ Utils.init_data = (remove_cache)->
 
 
 
-## Data caching
+# ## Data caching
 
 Utils.stringify = (main_obj)->
 
@@ -149,7 +150,7 @@ Utils.cache_valid = (type)->
   updated.isAfter time_str
 
 
-## Model helpers
+# ## Model helpers
 
 Utils.model_new_data = (class_var)-> # , fetch_str
   #do ->
@@ -185,7 +186,7 @@ Utils.pluralize = (word)->
 
 
 
-## Helpers for debugging both on desktop and mobile environments
+# ### Helpers for debugging both on desktop and mobile environments
 Utils.try = (str, cb)->
   try cb()
   catch err then Utils.fail str, err
@@ -213,7 +214,7 @@ Utils.speed_test = (args...)->
 
 
 
-## Render function for templates.
+# ### Render function for templates.
 
 # Use $(el).render(..), except for partials,
 # for which you'll need to use `$(el).html( Utils.render(template\_name) )`.
