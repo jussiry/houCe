@@ -166,7 +166,6 @@ task 'docs_to_github', ->
   # Make sure we are in the right branch
   exec "git checkout gh-pages", (err, stdout, stderr)->
     return log err if err
-    return
     exec "git merge master", (err, stdout, stderr)->
       return log err if err
       log "master branch merged"

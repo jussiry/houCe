@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "dependencies": {
     "coffee-script": "1.2.0",
-    "node-dev":    "0.1.9",
     "sugar":       "1.2.2",
     "coffeekup":   "0.3.1",
     "express":     "2.5.8",
