@@ -162,7 +162,6 @@ task 'build_docs', ->
     if err then console.log err    \
            else console.log stdout
 
-
 # Create docs to gh-branch and push to Github pages
 task 'docs_to_github', ->  
   log = (m)-> console.log m         
@@ -171,26 +170,28 @@ task 'docs_to_github', ->
     return log err if err
     exec "git symbolic-ref HEAD refs/heads/gh-pages", (err, stdout, stderr)->
       return log err if err
-      return
-      exec "git merge master", (err, stdout, stderr)->
+      # return
+      # exec "git merge master", (err, stdout, stderr)->
+      #   return log err if err
+      #   log "master branch merged"
+      exec "cake 'build_docs'", (err, stdout, stderr)->
         return log err if err
-        log "master branch merged"
-        exec "cake 'build_docs'", (err, stdout, stderr)->
+        log "docs built"
+        exec "rm -R client common public server", (err, stdout, stderr)->
           return log err if err
-          log "docs built"
-          exec "rm -R client common public server", (err, stdout, stderr)->
+          log "code removed"
+          exec "mv ./docs/** .", (err, stdout, stderr)->
             return log err if err
-            log "code removed"
-            exec "mv ./docs/** .", (err, stdout, stderr)->
+            log "docs moved/linked"
+            exec "git add .", (err, stdout, stderr)->
               return log err if err
-              log "docs moved/linked"
-              exec "git add -A", (err, stdout, stderr)->
+              log "git add done"
+              exec "git commit -a -m 'Docs updated'", (err, stdout, stderr)->
                 return log err if err
-                log "git add done"
-                exec "git commit -a -m 'Docs updated'", (err, stdout, stderr)->
+                log "git commit done"
+                exec "git push -f origin gh-pages", (err, stdout, stderr)->
                   return log err if err
-                  log "git commit done"
-                  exec "git push -f origin gh-pages", (err, stdout, stderr)->
+                  log "git push done"
+                  exec "git checkout master", (err, stdout, stderr)->
                     return log err if err
-                    log "git push done"
                     log "Now go to: http://jussiry.github.com/houCe/"
