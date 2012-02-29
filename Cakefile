@@ -184,7 +184,7 @@ task 'docs_to_github', ->
               exec "git commit -a -m 'Docs updated'", (err, stdout, stderr)->
                 return log err if err
                 log "git commit done"
-                exec "git push origin gh-pages", (err, stdout, stderr)->
+                exec "git push -f origin gh-pages", (err, stdout, stderr)->
                   return log err if err
                   log "git push done"
                   log "Now go to: http://jussiry.github.com/houCe/"
