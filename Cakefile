@@ -155,8 +155,34 @@ task 'build_client', ->
 
 
 task 'build_docs', ->
-  exec "./node_modules/.bin/docco-husky start.coffee client", (err, stdout, stderr)->
+  exec "./node_modules/.bin/docco-husky start.coffee client common server", (err, stdout, stderr)->
     if err then log err    \
            else log stdout
 
 
+# Create docs to gh-branch and push to Github pages
+task 'docs_to_github', ->           
+  # Make sure we are in the right branch
+  exec "git branch", (err, stdout, stderr)->
+    unless stdout.match /^\* gh-pages/
+      log 'Shwitch to gh-pages branch and try again.'
+      return
+    return
+    # copy content from master branch
+    exec "git merge master", (err, stdout, stderr)->
+      return log err if err
+      # build docs
+      invoke 'build_docs', ->
+        # remove everything but code
+        exec "rm -R client common node_modules public server", (err, stdout, stderr)->
+          return log err if err
+          # copy docs to root
+          exec "mv ./docs/** .", (err, stdout, stderr)->
+            return log err if err
+            # create commit
+            exec "git commit -a -m 'Docs updated'", (err, stdout, stderr)->
+              return log err if err
+              # push to github
+              exec "git push origin gh-pages", (err, stdout, stderr)->
+                return log err if err
+                log "Now go to: http://jussiry.github.com/houCe/"
