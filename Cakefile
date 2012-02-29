@@ -178,7 +178,7 @@ task 'docs_to_github', ->
         exec "cake 'build_docs'", (err, stdout, stderr)->
           return log err if err
           log "docs built"
-          exec "rm -R client common node_modules public server", (err, stdout, stderr)->
+          exec "rm -R client common public server", (err, stdout, stderr)->
             return log err if err
             log "code removed"
             exec "mv ./docs/** .", (err, stdout, stderr)->
