@@ -7,7 +7,7 @@
 
 # 2 in houce.2.coffee means that this will be the second file exeuted in client_app.js
 
-# Data initialization
+## Data initialization
 Utils.init_data = (remove_cache)->
 
   # Namespace for all retrieved data
@@ -37,7 +37,7 @@ Utils.init_data = (remove_cache)->
 
 
 
-# Data caching
+## Data caching
 
 Utils.stringify = (main_obj)->
 
@@ -149,7 +149,7 @@ Utils.cache_valid = (type)->
   updated.isAfter time_str
 
 
-# Model helpers
+## Model helpers
 
 Utils.model_new_data = (class_var)-> # , fetch_str
   #do ->
@@ -185,7 +185,7 @@ Utils.pluralize = (word)->
 
 
 
-# Helper for debugging both desktop and mobile environments
+## Helpers for debugging both on desktop and mobile environments
 Utils.try = (str, cb)->
   try cb()
   catch err then Utils.fail str, err
@@ -202,8 +202,20 @@ Utils.fail = (str, err)->
     log err.stack if err.stack
 
 
+# Test performance of different functions.
+Utils.speed_test = (args...)->
+  start = Date.now()
+  (args.get_num() or 1000).times args.get_func()
+  msg = (args.get_str() or 'Speed test took') + " #{Date.now() - start} ms"
+  if Config.is_mobile then alert       msg \
+                      else console.log msg
+  return
 
-# Render function for templates. Use $(el).render(..), except for partials,
+
+
+## Render function for templates.
+
+# Use $(el).render(..), except for partials,
 # for which you'll need to use `$(el).html( Utils.render(template\_name) )`.
 
 Utils.render = (template_name, data_obj={}, extra_data)->
@@ -230,12 +242,3 @@ Utils.render = (template_name, data_obj={}, extra_data)->
     $el
 
 
-
-# Test performance of different functions. TODO: Not really related to houce, where should this be put?
-Utils.speed_test = (args...)->
-  start = Date.now()
-  (args.get_num() or 1000).times args.get_func()
-  msg = (args.get_str() or 'Speed test took') + " #{Date.now() - start} ms"
-  if Config.is_mobile then alert       msg \
-                      else console.log msg
-  return
