@@ -163,15 +163,15 @@ task 'build_docs', ->
            else console.log stdout
 
 
-
 # Create docs to gh-branch and push to Github pages
 task 'docs_to_github', ->  
   log = (m)-> console.log m         
   # Make sure we are in the right branch
-  exec "git checkout gh-pages", (err, stdout, stderr)->
+  exec "git -D gh-pages", (err, stdout, stderr)->
     return log err if err
-    exec "git clean -fdx", (err, stdout, stderr)->
+    exec "git symbolic-ref HEAD refs/heads/gh-pages", (err, stdout, stderr)->
       return log err if err
+      return
       exec "git merge master", (err, stdout, stderr)->
         return log err if err
         log "master branch merged"
