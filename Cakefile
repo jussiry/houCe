@@ -1,4 +1,6 @@
 
+## Require libs
+
 task_name = process.argv[2]
 
 unless task_name in ['build_docs', 'docs_to_github']
@@ -8,6 +10,7 @@ unless task_name in ['build_docs', 'docs_to_github']
   LESS   = require 'less'
   less_options = paths: ['./client', './client/styles']
   CoffeeScript = require 'coffee-script'
+  CoffeeKup    = require 'coffeekup'
 
 fs     = require 'fs'
 {exec} = require 'child_process'
@@ -16,6 +19,9 @@ standard_exec_func = (err, stdout, stderr)->
   throw err if err
   console.log stdout + stderr
 
+
+
+## Build client
 
 task 'build_client', ->
   log "Starting to build client files..."
@@ -123,15 +129,13 @@ task 'build_client', ->
       else
         log "No action for #{app_file_path}"
 
-  # .coffee files:
+  
+  ### Save coffee files client.js ###
+
   fs.writeFileSync __dirname+'/public/client_app.js', JS, 'utf8', (err)-> if err then throw err
   
 
-  # Dunno why this don't work..:
-  # save_css = _.after scss_files, ->
-  #   fs.writeFileSync __dirname+'/public/stylesheets.css', CSS, 'utf8', (err)-> if err then throw err
-
-  # Save templates to templates.js
+  ### Save templates to templates.js ###
   
   stringify = (main_obj)->
     switch typeof main_obj
@@ -151,16 +155,32 @@ task 'build_client', ->
   full_templ_str = "window.Templates = \n#{stringify templates};"
   fs.writeFileSync __dirname+'/public/templates.js', full_templ_str, 'utf8', (err)-> if err then throw err
   
+
+  ### /client/index.ck -> /public/index.html ###
+  
+  index_ck   = fs.readFileSync( __dirname+"/client/index.ck" ).toString()
+  log 'index_ck', index_ck
+  try index_html = CoffeeKup.render index_ck
+  catch err then throw "Error in compiling index.ck: #{err.message}"
+  log 'index_ht', index_html
+  fs.writeFileSync __dirname+'/public/index.html', index_html, 'utf8', (err)-> if err then throw err
+
+
   console.info "Client files built!"
 
 
+
+## Build documentation under /docs
 
 task 'build_docs', ->
   exec "./node_modules/.bin/docco-husky start.coffee client common server", (err, stdout, stderr)->
     if err then console.log err    \
            else console.log stdout
 
-# Create docs to gh-branch and push them to Github pages
+
+
+## Create docs to gh-branch and push them to Github pages
+
 task 'docs_to_github', ->  
   log = (m)-> console.log m         
   exec "git branch -D gh-pages", (err, stdout, stderr)->
