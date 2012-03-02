@@ -45,13 +45,6 @@ restler      = require 'restler'
 index_str = null
 
 build_client = (callback)->
-  index_file = fs.readFileSync config.app_dir+"/public/index.html"
-  index_str = index_file.toString().replace '##client_config_from_server##', "
-    window.client_config_from_server = {
-      app_name: '#{config.app_name}',
-      env: '#{config.env}'
-    };
-  "
   exec "cd #{config.app_dir} && cake 'build_client'", (err, stdout, stderr)->
     log stdout
     if err
@@ -64,7 +57,15 @@ build_client = (callback)->
         color: #333;
       }</style>"
       callback? style+err_msg
-    else callback?()
+    else
+      index_file = fs.readFileSync config.app_dir+"/public/index.html"
+      index_str = index_file.toString().replace '##client_config_from_server##', "
+        window.client_config_from_server = {
+          app_name: '#{config.app_name}',
+          env: '#{config.env}'
+        };
+      "
+      callback?()
 
 
 

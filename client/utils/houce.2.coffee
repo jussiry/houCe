@@ -9,7 +9,7 @@
 
 # ### Data initialization
 
-Utils.init_data = (remove_cache)->
+Utils.init_data = (remove_cache=true)->
 
   # Namespace for all retrieved data
   global.Data   = {}
@@ -187,7 +187,7 @@ Utils.deferred_get = (parent, child_name, fetch_str, callback)->
 # If you have model names with irregular pluralization, add the correct pluralization here
 Utils.pluralize = (word)->
   switch word
-    when 'person' then 'people'
+    when /person/i then 'people'
     else "#{word}s"
 
 

@@ -37,8 +37,9 @@ Utils.try 'start_app.coffee', =>
 
   
   data_setup = ->
-    Utils.init_data()
+    Utils.init_data false
     return unless Config.cache_data
+    
     # Dismiss cache if Data structure changed since last cache
     if Data.version is 'no_cache' or Data.version > localStorage.getItem 'DataVersion'
       Utils.init_data true
