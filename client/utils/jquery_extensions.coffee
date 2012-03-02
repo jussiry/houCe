@@ -12,7 +12,9 @@ jQuery.fn.render_top = (args...)->
 
 $.ajaxSetup
   async: true
+  crossDomain: true
   dataType: 'json'
+  #dataType: 'jsonp'
   contentType: "application/x-www-form-urlencoded; charset=utf-8"
   beforeSend: null #($jqxhr, params)-> $.ajaxStack.push $jqxhr
   error: (request, statustext, errormsg)->

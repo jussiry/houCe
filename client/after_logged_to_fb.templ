@@ -26,8 +26,8 @@
   pre "  C = @"
   pre "  Utils.model_new_data C"
   pre "  constructor: (data)-> @.merge data"
-  p "Refresh this page and type #{yield -> code 'Data.state.me.get_likes()'} to your browsers console.
-     In couple seconds you can find everything you've 'liked' in Facebook under #{yield -> code 'Data.state.me.likes'}."
+  p "Refresh this page and type #{yield -> code 'Data.misc.me.get_likes()'} to your browsers console.
+     In couple seconds you can find everything you've 'liked' in Facebook under #{yield -> code 'Data.misc.me.likes'}."
   p "Notice that the same objects can be found under #{yield -> code 'Data.items'}. Data.items will have link
      to all items (e.g. all items liked by all users), while single person naturally only has his/her liked items
      under the person object."

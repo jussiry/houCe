@@ -87,7 +87,7 @@ if config.env is 'production'
 
 # MAIN PAGE / APPLICATION LOAD:
 
-app.get '/', (req,res)->  # middleware_test,
+send_index = (res)->
   if config.env is 'development'
     # in development mode, always rebuild client on load:
     log "app get",index_str
@@ -95,6 +95,17 @@ app.get '/', (req,res)->  # middleware_test,
       res.send if err then err else index_str
   else
     res.send index_str
+
+
+app.get '/', (req,res)->
+  send_index res
+
+#### Not used currently
+# Backup for storing auth app (fb or google) in the url if browser don't support localStorage
+app.get '/auth/*', (req,res)->
+  send_index res
+
+
 
 
 # # TEMPLATE FOR API PROXY
@@ -123,4 +134,5 @@ app.get '/', (req,res)->  # middleware_test,
 #     .on 'error', (err)->
 #       log "-----ERROR-----"
 #       log err
+
 

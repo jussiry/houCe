@@ -3,7 +3,7 @@
 
 @html = ->
   h1 "Welcome to houCe!"
-  api_access = Data.apis.fb_access_token
+  api_access = Data.apis.fb.access_token or Data.apis.google.access_token
   p class: "#{ifs api_access, 'old'}", "In houCe you can smell Coffee brewing everywhere.
     #{yield -> a target:'_blank', href:'http://nodejs.org/', 'Node.js'} + 
     #{yield -> a target:'_blank', href:'http://jashkenas.github.com/coffee-script/', 'CoffeeScript'} +
@@ -37,7 +37,7 @@
   # (.../#!/page_name/...) equals to the name of the page.
   open: ->
     $('#page_content').html "<div style='margin: 3em 2em;'>Loading...</div>"
-    if Data.apis.fb_access_token?
+    if Data.apis.fb.access_token?
       Models.person.get 'me', (me)->
         me.get_friends ->
           $('#page_content').render 'main'

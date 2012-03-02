@@ -13,7 +13,7 @@ class Models.person
     if @friends?
       callback @friends
     else # TODO: deferring
-      Utils.FB.get "#{@id}/friends", (res)=>
+      Utils.apis.fb_get "#{@id}/friends", (res)=>
         @friends = []
         for person_data in res.data
           @friends.push C.new_data person_data
@@ -23,7 +23,7 @@ class Models.person
     if @likes?
       callback @likes
     else
-      Utils.FB.get "#{@id}/likes", (res)=>
+      Utils.apis.fb_get "#{@id}/likes", (res)=>
         @likes = []
         for item_data in res.data
           # create item:
@@ -39,13 +39,13 @@ class Models.person
   
   C.get = (fb_id='me', callback=(->))->
     # 'me' is a special value in Facebook Open Graph,
-    # store it normally to Data.people[id], but also link Data.state.me to that object.
-    person = if fb_id is 'me' then Data.state.me else Data.people[whose]
+    # store it normally to Data.people[id], but also link Data.misc.me to that object.
+    person = if fb_id is 'me' then Data.misc.me else Data.people[whose]
     if person?
       callback person
     else
-      Utils.FB.get fb_id, (data)->
+      Utils.apis.fb_get fb_id, (data)->
         person = C.new_data data
-        Data.state.me = person if fb_id is 'me'
+        Data.misc.me = person if fb_id is 'me'
         callback person
     return

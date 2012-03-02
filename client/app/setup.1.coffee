@@ -12,13 +12,25 @@ try
   # Client config
   #
   global.Config =
+    apis:
+      fb:
+        app_id: 278442548891895
+        permissions: 'offline_access,user_likes'
+        auth_url: 'https://www.facebook.com/dialog/oauth'
+        get_url: 'https://graph.facebook.com'
+      google:
+        app_id: '679211380191.apps.googleusercontent.com'
+        permissions: encodeURIComponent 'https://www.googleapis.com/auth/plus.me'
+        auth_url: "https://accounts.google.com/o/oauth2/auth"
+        get_url: 'https://www.googleapis.com/plus/v1'
+    api_url: '/api' #if widget? then 'https://dealium-staging.heroku.com/api' else '/api'
+    is_mobile: navigator.userAgent.has /iPhone|Android|Nokia/
+  
     # Define api_url to use Utils.api_get function
     api_url: null
     api_def_params: {}
     cache_data: localStorage?
     # If you use Facebook API, change this to your fb_app_id; otherwise you can remove it.
-    fb_app_id: 278442548891895
-    fb_permissions: 'offline_access,user_likes' # seperate with ,
     is_mobile: navigator.userAgent.has /iPhone|Android|Nokia/
     # cache_update_after:
     #   coordinates: '10 minutes ago'

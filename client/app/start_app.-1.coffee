@@ -10,10 +10,20 @@ Utils.try 'start_app.coffee', =>
     
     data_setup()
     
+    #return if location.hash.length
+
     # check if is facebook redirect:
-    if location.hash[0...14] == '#access_token='
-      console.info 'access token found'
-      Utils.FB.access_token_received()
+    if sessionStorage.auth_redirect #if location.hash[0...14] == '#access_token='
+      Utils.oauth2.access_token_received()
+      # TODO: make better distinction between google and fb
+      # if location.search.match('path')
+      #   # FB
+      #   console.info 'FB access token found'
+      #   Utils.FB.access_token_received()
+      # else
+      #   # Google
+      #   console.info 'Google access token found'
+      #   Utils.google.access_token_received()
     
     # Set app title
     $('head title').text Config.app_name
@@ -36,8 +46,6 @@ Utils.try 'start_app.coffee', =>
       # Load from cache:
       data_str = localStorage.getItem 'Data'
       merge Data, Utils.objectify data_str if data_str?
-      # Dismiss the state from cache:
-      Data.state.path = []
     
     # Bind caching operations to store 
     $(window).bind 'unload', Utils.cache_data

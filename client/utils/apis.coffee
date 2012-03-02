@@ -1,30 +1,53 @@
 
-# Utils related to API's of other services
 
-Utils.FB =
-  connect: ->
+Utils.set_up_new_api = (args)->
+  # TODO:
+  # instead of adding stuff to Config, Data and api utils
+  # use this function to populate API data (FB, google, etc.)
+  # args: name, id, permissions, auth_url, get_url
+
+
+Utils.oauth2 =
+  connect: (app)->
+    Utils.try 'sessionStorage for authentication', ->
+      s = sessionStorage
+      s.auth_redirect = true
+      s.auth_path = location.hash.from 3
+      s.auth_app  = app
     l = window.location
     redirect_uri = "#{l.protocol}//#{l.host}/" # "#localocalhost:3003/#!/fb_login"
-    redirect_uri += "?path=#{l.hash[3..-1]}" if l.hash.lenght > 3
-    console.info 'FB redirect_uri', redirect_uri
-    auth_url = "https://www.facebook.com/dialog/oauth?client_id=#{Config.fb_app_id}&redirect_uri=#{redirect_uri}&response_type=token"
-    auth_url += "&scope=#{Config.fb_permissions}" if Config.fb_permissions
-    location.href = auth_url
-  access_token_received: ->
-    # hash params (access_token end expires_in):
-    fb_params = location.hash[1..-1].split '&'
-    expires_in_sec = fb_params[1].split('=')[1].toNumber()
-    Data.apis.merge
-      fb_access_token: fb_params[0].split('=')[1]
-      fb_expires: if expires_in_sec == 0 then 'never' else Date.create().addSeconds(expires_in_sec)
-    # path param:
-    path = decodeURIComponent( location.search.split('path=')[1] ? '' )
-    location.hash = "#!/#{path}"
-  get: (what, callback) =>
-    Utils.FB.connect() unless Data.apis.fb_access_token?
-    url = "https://graph.facebook.com/#{what}?access_token=#{Data.apis.fb_access_token}"
-    $.get url, callback
+    location.href = "#{Config.apis[app].auth_url}?response_type=token&client_id=#{Config.apis[app].app_id}&scope=#{Config.apis[app].permissions}&redirect_uri=#{redirect_uri}"
 
+  access_token_received: ->
+    s = sessionStorage
+    app = s.auth_app
+    Data.apis[app].access_token = location.hash[1..-1].split('&')[0].split('=')[1] 
+    location.hash = "#!/#{s.auth_path}"
+    # init redirect from session:
+    s.removeItem 'auth_redirect'
+    s.removeItem 'auth_path'
+    s.removeItem 'auth_app'
+
+
+Utils.apis =
+  get: (app, what, callback, jsonp)->
+    Utils.oauth2.connect app unless Data.apis[app].access_token?
+    console.info "apis GET started"
+    url = "#{Config.apis[app].get_url}/#{what}?access_token=#{Data.apis[app].access_token}"
+    if jsonp then $.ajax url, dataType: 'jsonp', success: callback \
+             else $.get url, callback  
+  fb_get:     (what, callback)-> Utils.apis.get 'fb',     what, callback
+  google_get: (what, callback)-> Utils.apis.get 'google', what, callback, true
+    
+
+
+
+#### Twitter does not support OAuth 2 (client side authorization)
+# Utils.TW =
+#   get: (what, callback)->
+#     return alert 'twitter access toke required' unless Data.apis.tw_access_token?
+#     url = "https://graph.facebook.com/#{what}?access_token=#{Data.apis.fb_access_token}"
+#     $.get url, callback
 
 
 Utils.get_geolocation = (recalculate=false, cb)->
@@ -32,7 +55,7 @@ Utils.get_geolocation = (recalculate=false, cb)->
 
     cb = recalculate if recalculate.constructor is Function
 
-    coord = Data.state.coord
+    coord = Data.misc.coord
     if Utils.cache_valid 'coordinates' # coord.updated? and Date.now() - coord.updated < 20.minutes() and not recalculate
       cb coord
     else
@@ -76,12 +99,12 @@ Utils.api_post = (path, params={}, cb)->
 
 Utils.def_ajax_params = ->
   params = merge {}, Config.api_def_params
-  s = Data.state
-  if s.coord.latitude then merge params,
-    latitude:  s.coord.latitude
-    longitude: s.coord.longitude
-  if s.connection.connected_to_api then merge params,
+  m = Data.misc
+  if m.coord.latitude then merge params,
+    latitude:  m.coord.latitude
+    longitude: m.coord.longitude
+  if m.connection.connected_to_api then merge params,
     fb_user_id:    Data.user.fb.id
-    fb_auth_token: s.connection.fb_access_token
+    fb_auth_token: m.connection.fb_access_token
   params
 

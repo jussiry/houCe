@@ -18,6 +18,8 @@ Utils.init_data = (remove_cache)->
   if localStorage? and remove_cache
     localStorage.removeItem 'Data'
     localStorage.setItem 'DataVersion', Data.version
+    # Session storage:
+    sessionStorage.each (key)-> sessionStorage.removeItem key
 
   for name, model of Models
     Data[Utils.pluralize(name).toLowerCase()] = {}
@@ -25,14 +27,17 @@ Utils.init_data = (remove_cache)->
   Data.cache_updated =
     coordinates: null
     last_stored: null
-  Data.state =
-    path: [] # [page, param1, params2,...]
+  Data.misc =
     coord:
       latitude:  null
       longitude: null
+    me: null
   Data.apis =
-    fb_access_token: null
-    fb_expires: null
+    fb:
+      access_token: null
+      #expires: null
+    google:
+      access_token: null
     
   global[Config.app_name].Data = Data
 
@@ -166,6 +171,7 @@ Utils.model_new_data = (class_var)-> # , fetch_str
       Data[c_name_plural][data.id].merge data
     else Data[c_name_plural][data.id] = new class_var data
 
+
 # WARNING: this is not ready  
 Utils.deferred_get = (parent, child_name, fetch_str, callback)->
   # This needs some thinking still..
@@ -173,7 +179,7 @@ Utils.deferred_get = (parent, child_name, fetch_str, callback)->
   if parent[child_name]?
     callback parent[child_name]
   else
-    Utils.FB.get fetch_str, (res)->
+    Utils.apis.fb_get fetch_str, (res)->
       res = res.data if res.data?
       Object.each res, (el, key)->
 
