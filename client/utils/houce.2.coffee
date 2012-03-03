@@ -197,16 +197,14 @@ Utils.try = (str, cb)->
   try cb()
   catch err then Utils.fail str, err
 
-# In mobile errors are alted. In future, when in production mode skip alerts
+# In mobile errors are alerted. In future, when in production mode skip alerts
 # and send errors to server for logging.
 Utils.fail = (str, err)->
-  err_msg = "Error in #{str}: #{err.message or err} " #  - #{err.stack}
   if Config.is_mobile
-    alert err_msg + err.stack
+    alert "Error in #{str}: #{err.message or err} #{err.stack}"
   else
-    console.error "------ERROR------"
-    log err_msg
-    log err.stack if err.stack
+    console.info "----- Error in #{str.toUpperCase()} -----"
+    console.error err.message
 
 
 # Test performance of different functions.

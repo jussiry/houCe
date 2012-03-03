@@ -15,9 +15,10 @@ Utils.time_left = (end_time)->
 
 
 
-Utils.page_title = (path)->
-  if path.constructor == String then page_str = path
-  else page_str = path[0] + ifs ( path[1]? and not path[1].parsesToNumber() ), '__' + path[1] # Object.isNaN path[1].toNumber()
-  Config.page_titles[page_str]
-
+Utils.page_title = (path = PageHandler.path)->
+  if typeof path is 'string'
+    page_str = path
+  else
+    page_str = path[0] + ifs ( path[1]? and not path[1].parsesToNumber() ), '__' + path[1]
+  dict Config.page_titles[page_str]
 

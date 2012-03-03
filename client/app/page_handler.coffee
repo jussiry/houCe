@@ -11,7 +11,6 @@ global.PageHandler = do ->
   
   hashbang = '#!/'
   main_page = 'main'
-  path = [] # current path
   
 
   # The paradigm favourided in houCe for making singleton objects is to execute function (do ->)
@@ -21,15 +20,18 @@ global.PageHandler = do ->
 
   me =
   
-  get_page: -> path[0] or main_page
+  path:       [] # current path
+  path_stack: []
+
+  get_page: -> me.path[0] or main_page
   
   get_param: (num)->
     return alert "Incorrect param index! (1 == first)" if num < 1
-    path[num]
+    me.path[num]
   get_params: (num)->
     num ?= -1
-    log "WARNING: not enough url parameters." if path.length < 1+num
-    path[1..num]
+    log "WARNING: not enough url parameters." if me.path.length < 1+num
+    me.path[1..num]
   
 
   # Gets executed evrytime window.locatio.hash changes.
@@ -42,10 +44,11 @@ global.PageHandler = do ->
       if hash[0..2] == hashbang
         new_path = hash[3..-1].split('/')
         # Check if hash path has changed
-        unless Object.equal new_path, path
-          prev_page = if path.isEmpty() then null else Pages[ me.get_page() ]
+        unless Object.equal new_path, me.path
+          prev_page = if me.path.isEmpty() then null else Pages[ me.get_page() ]
           # Change state
-          path = new_path
+          me.path_stack.push me.path if me.path.first()?
+          me.path = new_path
           # Close page event or directly open new page:
           if prev_page?.close?
             cb = me.open_page.bind me
@@ -63,7 +66,7 @@ global.PageHandler = do ->
       if args?.new_path
         # close event for old page not yet fired; do it here if exists
         old_page = Pages[path[0]]
-        path = args.new_path
+        me.path = args.new_path
         if old_page?.close? and not args.already_closed
           old_page.close me.open_page.bind me, new_path: args.new_path, already_closed: true
           return
