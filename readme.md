@@ -18,6 +18,9 @@ houCe is client oriented web framework designed with conventions that help you g
 * Connect to Facebook (TODO: also Twitter) instantly.
 * Clean distinction to **client**, **server** and **common** folders.
 
+# plaa
+
+
     ---**client** - Client side code, templates and stylesheets.
      |-**common** - Common code that get executed both on client and server.
      |-**server** - Server code and configuration files.
@@ -48,7 +51,7 @@ If you don't have Node.js installed, [get it here](http://nodejs.org/#download).
 
 ## documentation
 
-File by file documentation can be found here: [jussiry.github.com/houCe](http://jussiry.github.com/houCe/index.html)
+File by file documentation can be [found here](http://jussiry.github.com/houCe/index.html).
 
 
 ## update to new version of houCe
@@ -57,4 +60,4 @@ Simply make the git pull request again in your project folder:
 
     git pull git://github.com/jussiry/houCe.git
 
-Be **warned**: you'll need to merge all the changes you've done to the original houCe files, which might not be pretty. In the future versions I'll try to make houCe more like a librare that's completeley separated from the project code.
+Be **warned**: you'll need to merge all the changes you've done to the original houCe files, which might not be pretty. In the future versions I'll try to make houCe more like a library that's completeley separated from the project code.
