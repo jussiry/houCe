@@ -1,7 +1,8 @@
 
+
 @html = ->
-  p "Now, open your browsers console and type the name of your app: #{yield -> code 'houCe'}
-    (assuming you haven't already renamed the folder where the app resides).
+  p "Now, open your browsers console and type the #{yield -> code 'name_of_your_project'}
+    (this is the name of the folder where your project resides in).
     Expand the object and this will show you the basic structure of your client:"
   ul ->
     li "#{yield -> strong 'Config'}: includes all static settings."

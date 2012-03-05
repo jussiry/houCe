@@ -10,20 +10,8 @@ Utils.try 'start_app.coffee', =>
     
     data_setup()
     
-    #return if location.hash.length
-
     # check if is facebook redirect:
-    if sessionStorage.auth_redirect #if location.hash[0...14] == '#access_token='
-      Utils.oauth2.access_token_received()
-      # TODO: make better distinction between google and fb
-      # if location.search.match('path')
-      #   # FB
-      #   console.info 'FB access token found'
-      #   Utils.FB.access_token_received()
-      # else
-      #   # Google
-      #   console.info 'Google access token found'
-      #   Utils.google.access_token_received()
+    Utils.oauth2.access_token_received() if sessionStorage.auth_redirect      
     
     # Set app title
     $('head title').text Config.app_name

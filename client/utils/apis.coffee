@@ -16,17 +16,26 @@ Utils.oauth2 =
       s.auth_app  = app
     l = window.location
     redirect_uri = "#{l.protocol}//#{l.host}/" # "#localocalhost:3003/#!/fb_login"
+    log "oauth2 connect url: "+"#{Config.apis[app].auth_url}?response_type=token&client_id=#{Config.apis[app].app_id}&scope=#{Config.apis[app].permissions}&redirect_uri=#{redirect_uri}"
     location.href = "#{Config.apis[app].auth_url}?response_type=token&client_id=#{Config.apis[app].app_id}&scope=#{Config.apis[app].permissions}&redirect_uri=#{redirect_uri}"
 
   access_token_received: ->
     s = sessionStorage
-    app = s.auth_app
-    Data.apis[app].access_token = location.hash[1..-1].split('&')[0].split('=')[1] 
+    api_data = Data.apis[s.auth_app]
+    # Set access_token and expires in params received in the URL:
+    res_params = location.hash[1..-1].split('&')
+    for param_and_val in res_params
+      [param, val] = param_and_val.split '='
+      api_data[param] = val
+    if api_data.expires_in?
+      api_data.expires_in = Date.now() + api_data.expires_in.toNumber().seconds()
+    
     location.hash = "#!/#{s.auth_path}"
     # init redirect from session:
-    s.removeItem 'auth_redirect'
-    s.removeItem 'auth_path'
-    s.removeItem 'auth_app'
+    s.removeItem.bind(s).repeat \
+      'auth_redirect',
+      'auth_path',
+      'auth_app'
 
 
 Utils.apis =

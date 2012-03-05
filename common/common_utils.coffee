@@ -58,6 +58,13 @@ try
     new_obj
 
 
+#### Call same function many times with different params
+  Function.prototype.repeat = (args...)->
+    # TODO: add possibility for many params (given as array)
+    # hmm, no so useful since can't retain functions 'this'..?
+    @ param for param in args
+    
+
   # Define .forEach also for objects; equal to .each,
   # except has same order of parameter as in Arrays: (value,key)
   # Object.forEach:

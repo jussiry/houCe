@@ -16,15 +16,11 @@ houCe is client oriented web framework designed with conventions that help you g
 * Automatic localStorage caching of the application state and data.
 * Clean Ajax deferring for retrieving data from external API's and storing that data locally.
 * Connect to Facebook (TODO: also Twitter) instantly.
-* Clean distinction to **client**, **server** and **common** folders.
-
-# plaa
-
-
-    ---**client** - Client side code, templates and stylesheets.
-     |-**common** - Common code that get executed both on client and server.
-     |-**server** - Server code and configuration files.
-     |-**public** - Compiled client code, JS libraries and images
+* Clean and flexible folder structure:
+ * **client**: Client side code, templates and stylesheets.
+ * **common**: Common code that get executed both on client and server.
+ * **server**: Server code and configuration files.
+ * **public**: Compiled client code, JS libraries and images
 
 
 ## get started

@@ -27,7 +27,7 @@
 # $el parameter is the jQuery object of the parsed template, so bind everything into it.
 @init = ($el)->
   $el.find('#connect_to_fb').click ->
-    Utils.FB.connect()
+    Utils.oauth2.connect 'fb'
     return false
 
 
