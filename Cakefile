@@ -159,10 +159,8 @@ task 'build_client', ->
   ### /client/index.ck -> /public/index.html ###
   
   index_ck   = fs.readFileSync( __dirname+"/client/index.ck" ).toString()
-  log 'index_ck', index_ck
   try index_html = CoffeeKup.render index_ck
   catch err then throw "Error in compiling index.ck: #{err.message}"
-  log 'index_ht', index_html
   fs.writeFileSync __dirname+'/public/index.html', index_html, 'utf8', (err)-> if err then throw err
 
 

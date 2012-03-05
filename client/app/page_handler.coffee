@@ -65,7 +65,7 @@ global.PageHandler = do ->
       # close old page if event exists:
       if args?.new_path
         # close event for old page not yet fired; do it here if exists
-        old_page = Pages[path[0]]
+        old_page = Pages[me.path[0]]
         me.path = args.new_path
         if old_page?.close? and not args.already_closed
           old_page.close me.open_page.bind me, new_path: args.new_path, already_closed: true

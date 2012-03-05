@@ -3,7 +3,11 @@
 
 node_modules/*
 
-public/stylesheets/*.css
+public/stylesheets/*
 
+public/index.html
 public/client_app.js
 public/templates.js
+
+*.tmproj
+*.gz

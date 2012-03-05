@@ -14,6 +14,8 @@ try
     return el if el.constructor == Array
   Array.prototype.get_func = -> for el in @
     return el if el.constructor == Function
+  Array.prototype.get_bool = -> for el in @
+    return el if el.constructor == Boolean
   
   # object.each to work as (val,key) params? Or just use Object.each for also arrays when same order needed.
     #console.log  Object.each
@@ -25,8 +27,8 @@ try
   # GLOBALS:
   global ?= window
 
-  #global.log = global.l = (msg) -> console.log(msg)
-  global.log = global.l = console.log.bind console
+  global.log = global.l = (args...) -> console.log.apply console, args
+  #global.log = global.l = console.log.bind console # bind messes up with remote console (which overwrites console.log)
 
   global.ins = (o) ->
     str = "#{o.constructor.name} (#{typeof o}):\n"
@@ -58,7 +60,7 @@ try
     new_obj
 
 
-#### Call same function many times with different params
+  #### Call same function many times with different params
   Function.prototype.repeat = (args...)->
     # TODO: add possibility for many params (given as array)
     # hmm, no so useful since can't retain functions 'this'..?
