@@ -15,7 +15,7 @@ try
     apis:
       fb:
         app_id: 278442548891895
-        permissions: 'offline_access,user_likes'
+        permissions: 'user_likes'
         auth_url: 'https://www.facebook.com/dialog/oauth'
         get_url: 'https://graph.facebook.com' # TODO: change get_url to url (same as Kovalo config)
       google:

@@ -156,6 +156,11 @@ task 'build_client', ->
   fs.writeFileSync __dirname+'/public/templates.js', full_templ_str, 'utf8', (err)-> if err then throw err
   
 
+  ### compile preload.s.coffee  ###
+  preload_js = CoffeeScript.compile fs.readFileSync(__dirname+"/client/app/preload.s.coffee").toString()
+  fs.writeFileSync __dirname+'/public/preload.js', preload_js, 'utf8', (err)-> if err then throw err
+
+
   ### /client/index.ck -> /public/index.html ###
   
   index_ck   = fs.readFileSync( __dirname+"/client/index.ck" ).toString()

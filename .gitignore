@@ -8,6 +8,7 @@ public/stylesheets/*
 public/index.html
 public/client_app.js
 public/templates.js
+public/preload.js
 
 *.tmproj
 *.gz

@@ -22,6 +22,7 @@ html ->
       script ->
         '##client_config_from_server##'
       srcs = [
+        '/preload.js'
         '/lib/modernizr.custom.js'
         '/lib/jquery-1.7.1.min.js'
         '/lib/jquery.animate-enhanced.min.js'

@@ -12,14 +12,14 @@
 Utils.init_data = (remove_cache=true)->
 
   # Namespace for all retrieved data
-  global.Data   = {}
-  Data.version  = 3 # increment this version each time Data structure changes; causes the cache to be flushed
+  global.Data  = {}
+  Data.version = 4 # increment this version each time Data structure changes; causes the cache to be flushed
   
   if localStorage? and remove_cache
     localStorage.removeItem 'Data'
     localStorage.setItem 'DataVersion', Data.version
     # Session storage:
-    sessionStorage.each (key)-> sessionStorage.removeItem key
+    sessionStorage.removeItem key for key of sessionStorage
 
   for name, model of Models
     Data[Utils.pluralize(name).toLowerCase()] = {}
@@ -228,7 +228,7 @@ Utils.render = (template_name, data_obj={}, extra_data)->
   Utils.try "Utils.render #{template_name}", =>
   
     try            ck_func = Templates[template_name].html
-    catch err then throw "Template '"+template_name+"' not found." unless Templates[template_name]?
+    catch err then throw Error("Template '"+template_name+"' not found.") unless Templates[template_name]?
   
     # Extra data is bound to rendered object without modifying the original object
     if extra_data

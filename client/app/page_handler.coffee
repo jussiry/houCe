@@ -26,14 +26,18 @@ global.PageHandler = do ->
   get_page: -> me.path[0] or main_page
   
   get_param: (num)->
-    return alert "Incorrect param index! (1 == first)" if num < 1
+    return alert "Incorrect param index! (1 is first)" if num < 1
     me.path[num]
   get_params: (num)->
     num ?= -1
     log "WARNING: not enough url parameters." if me.path.length < 1+num
     me.path[1..num]
   
-
+  go_back: ->  
+    me.open_page
+      new_path: (me.path_stack.pop() or [main_page])
+    return false
+  
   # Gets executed evrytime window.locatio.hash changes.
   # TODO change to History API
   check_url_hash: ->

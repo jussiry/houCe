@@ -7,10 +7,18 @@ Utils.set_up_new_api = (args)->
   # args: name, id, permissions, auth_url, get_url
 
 
-Utils.oauth2 =
+Utils.oauth2 = ->
+  s  = sessionStorage
+  me =
+  clean_ss: ->
+    s.removeItem.bind(s).repeat \
+      'auth_redirect',
+      'auth_path',
+      'auth_app'
+  
   connect: (app)->
+    me.clean_ss() # remove bofore setting: iPhone / iPad bug
     Utils.try 'sessionStorage for authentication', ->
-      s = sessionStorage
       s.auth_redirect = true
       s.auth_path = location.hash.from 3
       s.auth_app  = app
@@ -18,30 +26,29 @@ Utils.oauth2 =
     redirect_uri = "#{l.protocol}//#{l.host}/" # "#localocalhost:3003/#!/fb_login"
     log "oauth2 connect url: "+"#{Config.apis[app].auth_url}?response_type=token&client_id=#{Config.apis[app].app_id}&scope=#{Config.apis[app].permissions}&redirect_uri=#{redirect_uri}"
     location.href = "#{Config.apis[app].auth_url}?response_type=token&client_id=#{Config.apis[app].app_id}&scope=#{Config.apis[app].permissions}&redirect_uri=#{redirect_uri}"
-
+  
   access_token_received: ->
-    s = sessionStorage
     api_data = Data.apis[s.auth_app]
     # Set access_token and expires in params received in the URL:
     res_params = location.hash[1..-1].split('&')
     for param_and_val in res_params
       [param, val] = param_and_val.split '='
       api_data[param] = val
-    if api_data.expires_in?
+    if api_data.expires_in? and api_data.expires_in isnt '0' # 0 is offline_access
       api_data.expires_in = Date.now() + api_data.expires_in.toNumber().seconds()
     
     location.hash = "#!/#{s.auth_path}"
     # init redirect from session:
-    s.removeItem.bind(s).repeat \
-      'auth_redirect',
-      'auth_path',
-      'auth_app'
+    me.clean_ss()
 
 
 Utils.apis =
   get: (app, what, callback, jsonp)->
-    Utils.oauth2.connect app unless Data.apis[app].access_token?
-    console.info "apis GET started"
+    ei = Data.apis[app].expires_in or null
+    if not Data.apis[app].access_token? or (ei < Date.now() and ei isnt '0') # '0' is offline_access
+      Utils.oauth2.connect app
+      return 
+    console.info "apis GET started", app, what
     url = "#{Config.apis[app].get_url}/#{what}?access_token=#{Data.apis[app].access_token}"
     if jsonp then $.ajax url, dataType: 'jsonp', success: callback \
              else $.get url, callback  
