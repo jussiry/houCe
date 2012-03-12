@@ -3,14 +3,17 @@
 
 task_name = process.argv[2]
 
+# In docs_to_github we need to delete all code from gh-pages branch, so we must
+# skip requiring most libraries when making docs.
 unless task_name in ['build_docs', 'docs_to_github']
   require 'sugar'
   Object.extend()
   require './common/common_utils' # not so sure if it's such a good idea to load these in the first place. only used for log-shorthand
-  LESS   = require 'less'
+  LESS         = require 'less'
   less_options = paths: ['./client', './client/styles']
   CoffeeScript = require 'coffee-script'
   CoffeeKup    = require 'coffeekup'
+  houce        = require "./server/houce.coffee"
 
 fs     = require 'fs'
 {exec} = require 'child_process'
@@ -162,12 +165,10 @@ task 'build_client', ->
 
 
   ### /client/index.ck -> /public/index.html ###
+  houce.compile_index()
   
-  index_ck   = fs.readFileSync( __dirname+"/client/index.ck" ).toString()
-  try index_html = CoffeeKup.render index_ck
-  catch err then throw "Error in compiling index.ck: #{err.message}"
-  fs.writeFileSync __dirname+'/public/index.html', index_html, 'utf8', (err)-> if err then throw err
-
+  ### Manifest file ###
+  houce.create_manifest()
 
   console.info "Client files built!"
 

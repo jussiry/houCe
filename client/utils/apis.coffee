@@ -7,7 +7,7 @@ Utils.set_up_new_api = (args)->
   # args: name, id, permissions, auth_url, get_url
 
 
-Utils.oauth2 = ->
+Utils.oauth2 = do ->
   s  = sessionStorage
   me =
   clean_ss: ->

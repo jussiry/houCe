@@ -1,7 +1,10 @@
 
 doctype 5
 
-html ->
+html_attrs = if @env is 'production' then manifest:'appcache.mf' else {}
+#html_attrs = if true then manifest:'appcache.mf' else {}
+html html_attrs, ->
+#html ->
 
   head ->
     meta charset: 'utf-8'
@@ -20,7 +23,8 @@ html ->
     
     div '#scripts', ->
       script ->
-        '##client_config_from_server##'
+        #window.client_config_from_server = JSON.stringify @config
+        "window.client_config_from_server = #{JSON.stringify @config};"
       srcs = [
         '/preload.js'
         '/lib/modernizr.custom.js'

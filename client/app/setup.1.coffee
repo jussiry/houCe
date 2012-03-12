@@ -12,23 +12,9 @@ try
   # Client config
   #
   global.Config =
-    apis:
-      fb:
-        app_id: 278442548891895
-        permissions: 'user_likes'
-        auth_url: 'https://www.facebook.com/dialog/oauth'
-        get_url: 'https://graph.facebook.com' # TODO: change get_url to url (same as Kovalo config)
-      google:
-        app_id: '679211380191.apps.googleusercontent.com'
-        permissions: encodeURIComponent 'https://www.googleapis.com/auth/plus.me'
-        auth_url: "https://accounts.google.com/o/oauth2/auth"
-        get_url: 'https://www.googleapis.com/plus/v1' # TODO: change get_url to url (same as Kovalo config)
-    api_url: '/api' #if widget? then 'https://dealium-staging.heroku.com/api' else '/api'
+    apis: null # Created in /server/config.coffee
     is_mobile: navigator.userAgent.has /iPhone|Android|Nokia/
   
-    # Define api_url to use Utils.api_get function
-    api_url: null
-    api_def_params: {}
     cache_data: localStorage?
     # If you use Facebook API, change this to your fb_app_id; otherwise you can remove it.
     is_mobile: navigator.userAgent.has /iPhone|Android|Nokia/

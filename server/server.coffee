@@ -58,13 +58,7 @@ build_client = (callback)->
       }</style>"
       callback? style+err_msg
     else
-      index_file = fs.readFileSync config.app_dir+"/public/index.html"
-      index_str = index_file.toString().replace '##client_config_from_server##', "
-        window.client_config_from_server = {
-          app_name: '#{config.app_name}',
-          env: '#{config.env}'
-        };
-      "
+      index_str = (fs.readFileSync config.app_dir+"/public/index.html").toString()
       callback?()
 
 
@@ -84,6 +78,11 @@ if config.env is 'production'
     # else
     #   next() # Continue to other routes if we're not redirecting
 
+# if config.env is 'development'
+#   # Skip caching in development mode
+#   # (othervise client would never get rebuilt, since no request would come through)
+#   app.get '/appcache.mf', (req,res)->
+#     res.send "CACHE MANIFEST\n##{new Date()}" + Date.now()
   
 
 # MAIN PAGE / APPLICATION LOAD:
@@ -91,7 +90,6 @@ if config.env is 'production'
 send_index = (res)->
   if config.env is 'development'
     # in development mode, always rebuild client on load:
-    log "app get",index_str
     build_client (err)->
       res.send if err then err else index_str
   else
