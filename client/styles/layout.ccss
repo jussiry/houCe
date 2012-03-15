@@ -1,0 +1,33 @@
+
+body:
+  fontSize:   '16px'
+  lineHeight: '21px'
+
+i_header:
+  padding: '0 21.5% 0 20%'
+  position: 'relative'
+  zIndex: 1
+  c_connect_status:
+    float:  'right'
+    margin: '0 4px'
+  i_docs_link:
+    float:  'right'
+    marginRight: '20px'
+    color: 'blue'
+
+c_offline: color: 'red'
+c_online:  color: 'green'
+
+i_page_content:
+  padding: '0 20% 20px' # move to layout.ccss
+  color:   font_gray
+  h1:
+    color: font_gray
+    padding: '30px 0 15px'
+  h2:
+    fontSize:     '18px'
+    marginBottom: '0px'
+  h3:
+    fontSize:     '14px'
+    marginBottom: '-14px'
+

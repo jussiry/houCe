@@ -27,7 +27,14 @@ standard_exec_func = (err, stdout, stderr)->
   throw err if err
   console.log stdout + stderr
 
-
+ccss_shortcuts = (obj)->
+  for key, val of obj
+    ccss_shortcuts val if typeof val is 'object'
+    del_old =  if      key[0..1] is 'i_' then obj['#'+key[2..-1]] = val \
+               else if key[0..1] is 'c_' then obj['.'+key[2..-1]] = val \
+               else false
+    delete obj[key] if del_old
+  obj
 
 ## Build client
 
@@ -79,7 +86,7 @@ task 'build_client', ->
   templates = {}
   JS        = ""
   CSS       = ""
-  templ_css = ""
+  ccss_css = ""
   
   # compile common_utils.coffee to JS:
   JS += "\n\n\n/* --- COMMON_UTILS.COFFEE --- */\n\n"
@@ -118,6 +125,17 @@ task 'build_client', ->
             log "              #{fname}.less length: #{CSS.length}"
             fs.writeFileSync __dirname+'/public/stylesheets/stylesheets.css', CSS, 'utf8', (err)-> if err then throw err
 
+      when 'ccss'
+        try
+          file_js = CoffeeScript.compile file_str, bare:true
+          `with( templ_helpers ){
+            var ccss_obj = eval(file_js);
+          }`
+          ccss_obj = ccss_shortcuts ccss_obj
+          ccss_css += ccss.compile ccss_obj
+        catch err
+          log "\nERROR in compiling CCSS file: #{file_name}.#{file_extension}"
+          throw err
       when 'templ', 'page'
         # _page properties: templ, style, page, init_
         # Call template file with empty object and bind all functions to that:
@@ -147,16 +165,8 @@ task 'build_client', ->
         # Compile style
         if templates[file_name].style?
           # change i_plaa to '#plaa' and c_plaa to '.plaa'
-          iterate = (obj)->
-            for key, val of obj
-              iterate val if typeof val is 'object'
-              del_old = true
-              if      key[0..1] is 'i_' then obj['#'+key[2..-1]] = val
-              else if key[0..1] is 'c_' then obj['.'+key[2..-1]] = val
-              else del_old = false
-              delete obj[key] if del_old
-          iterate templates[file_name].style
-          try templ_css += ccss.compile templates[file_name].style
+          ccss_shortcuts templates[file_name].style
+          try ccss_css += ccss.compile templates[file_name].style
           catch err
             log "\nERROR in compiling @style in template: #{file_name}.#{file_extension}"
             throw err
@@ -169,7 +179,7 @@ task 'build_client', ->
   fs.writeFileSync __dirname+'/public/client_app.js', JS, 'utf8', (err)-> if err then throw err
 
   ### Save ccss/css from templates ###
-  fs.writeFileSync __dirname+'/public/stylesheets/templ_styles.css', templ_css, 'utf8'
+  fs.writeFileSync __dirname+'/public/stylesheets/templ_styles.css', ccss_css, 'utf8'
 
 
   ### compile preload.s.coffee  ###
