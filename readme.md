@@ -1,11 +1,11 @@
 
 # houCe - the 100% CoffeeScript web framework
 
-houCe is client oriented web framework designed with conventions that help you get ready and going in seconds, while providing structure that supports complex desktop like applications. houCe uses one language for everything it does, and that language is [CoffeeScript](http://coffeescript.org/). Here's the list of other technologies that make it possible:
+houCe is client oriented web framework designed with conventions that help you get ready and going in seconds, while providing structure that supports complex desktop like applications. houCe uses one language for everything it does, and that language is [CoffeeScript](http://coffeescript.org/). Here's the list of technologies that make it possible:
 
-* Server: [Node.js](http://nodejs.org/) (with [Express.js](http://expressjs.com/))
+* Server: [Node.js](http://nodejs.org/), with [Express.js](http://expressjs.com/)
 * Templates: [CoffeeKup](http://coffeekup.org/)
-* Stylesheets: [CCSS](https://github.com/aeosynth/ccss) ([LESS](http://lesscss.org/) as backup for unenchanted)
+* Stylesheets: [CCSS](https://github.com/aeosynth/ccss), for unenchanted [LESS](http://lesscss.org/) as backup
 
 
 ## features
