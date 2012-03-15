@@ -1,6 +1,5 @@
 
 @style =
-  # main.page
   '#page_content.intro':
     c_old:   color:    light_gray
     c_small: fontSize: '0.8em'

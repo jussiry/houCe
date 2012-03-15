@@ -35,7 +35,6 @@ Utils.oauth2 = do ->
   check_for_access_token: ->
     params = {}
     for pa in (location.hash[1..-1].split('&').map (p)-> p.split '=')
-      log 'pa ', pa
       params[pa[0]] = pa[1]
     if Config.storage_on
       return unless ss.auth_redirect
@@ -49,12 +48,9 @@ Utils.oauth2 = do ->
       delete params.app
     
     console.info 'access_token_received'
-    log location.href
-
+    
     api_data = Data.apis[app]
     merge api_data, params
-    #api_data.expires_in   = expires_in
-    #api_data.access_token = access_token
     
     if api_data.expires_in? and api_data.expires_in isnt '0' # 0 is offline_access
       api_data.expires_in = Date.now() + api_data.expires_in.toNumber().seconds()
@@ -86,15 +82,6 @@ Utils.apis = do ->
     return state.access_token? and state.expires_in? and
            (state.expires_in > Date.now() or state.expires_in is '0')
 
-
-
-
-#### Twitter does not support OAuth 2 (client side authorization)
-# Utils.TW =
-#   get: (what, callback)->
-#     return alert 'twitter access toke required' unless Data.apis.tw_access_token?
-#     url = "https://graph.facebook.com/#{what}?access_token=#{Data.apis.fb_access_token}"
-#     $.get url, callback
 
 
 Utils.get_geolocation = (recalculate=false, cb)->
