@@ -186,8 +186,8 @@ Utils.deferred_get = (parent, child_name, fetch_str, callback)->
 
 # If you have model names with irregular pluralization, add the correct pluralization here
 Utils.pluralize = (word)->
-  switch word
-    when /person/i then 'people'
+  switch word.toLowerCase()
+    when 'person' then 'people'
     else "#{word}s"
 
 

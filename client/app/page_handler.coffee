@@ -10,7 +10,7 @@
 global.PageHandler = do ->
   
   hashbang = '#!/'
-  main_page = 'main'
+  main_page = 'intro'
   
 
   # The paradigm favourided in houCe for making singleton objects is to execute function (do ->)

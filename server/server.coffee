@@ -77,12 +77,6 @@ if config.env is 'production'
     #   res.redirect "https://#{req.headers['host']}#{req.url}" # TODO: change or better check when in m.getkapsa.com
     # else
     #   next() # Continue to other routes if we're not redirecting
-
-# if config.env is 'development'
-#   # Skip caching in development mode
-#   # (othervise client would never get rebuilt, since no request would come through)
-#   app.get '/appcache.mf', (req,res)->
-#     res.send "CACHE MANIFEST\n##{new Date()}" + Date.now()
   
 
 # MAIN PAGE / APPLICATION LOAD:

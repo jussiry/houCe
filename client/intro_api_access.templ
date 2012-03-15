@@ -8,7 +8,8 @@
     li "#{yield -> strong 'Config'}: includes all static settings."
     li "#{yield -> strong 'Data'}: includes all dynamic data, which will be saved automatically to localStorage when app exits."
     li "#{yield -> strong 'Models'}: model part of the MVC patter, handles retrieving and manipulation of Data."
-    li "#{yield -> strong 'Pages'}: page controllers (C of MVC), first part of URL hash always matches name of the current page."
+    li "#{yield -> strong 'Pages'}: page controllers (C of MVC), first part of URL hash always matches name of the current page,
+        which also matches the name of the page file (e.g. #{yield -> code 'intro.page'})."
     li "#{yield -> strong 'Templates'}: V of MVC, every .templ and .page file under /client folder has template
                                         corresponding to the files name in Templates."
   p "Each module is also a global object, so instead of typing #{yield -> code 'houCe.Data'} you can just type #{yield -> code 'Data'}.
@@ -17,10 +18,8 @@
      #{yield -> code 'Data.people'} to inhabit all the objects created by the model."
   h2 "Some things to try"
   h3 'Pages'
-  p "Create copy of main.page and rename it to #{yield -> code 'my_first.page'}. Do some modifications to
-     its @html function and change the hash of your browsers URL to '#{yield -> code '#!/my_first'}'.
-     Notice how some styling don't apply anymore, since #{yield -> code 'main.less'}
-     uses name of the class in #{yield -> code '#page_content'} element to determine where it applies."
+  p "Create copy of intro.page and rename it to #{yield -> code 'my_first.page'}. Do some modifications to
+     its @html function and change the hash of your browsers URL to '#{yield -> code '#!/my_first'}'."
   h3 'Models'
   p "Create item.coffee under '/client/models' and copy the following content to it:"
   pre "class Models.item"

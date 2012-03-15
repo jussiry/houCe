@@ -1,0 +1,63 @@
+<!DOCTYPE html><html><head><title>houce.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../client/app/page_handler.html" class="source "><span class="base_path">client / app / </span><span class="file_name">page_handler.coffee</span></a><a href="../client/app/setup.1.html" class="source "><span class="base_path">client / app / </span><span class="file_name">setup.1.coffee</span></a><a href="../client/app/start_app.-1.html" class="source "><span class="base_path">client / app / </span><span class="file_name">start_app.-1.coffee</span></a><a href="../client/models/person.html" class="source "><span class="base_path">client / models / </span><span class="file_name">person.coffee</span></a><a href="../client/styles/templ_helpers.s.html" class="source "><span class="base_path">client / styles / </span><span class="file_name">templ_helpers.s.coffee</span></a><a href="../client/utils/apis.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">apis.coffee</span></a><a href="../client/utils/dictionary.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">dictionary.coffee</span></a><a href="../client/utils/houce.2.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">houce.2.coffee</span></a><a href="../client/utils/jquery_extensions.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">jquery_extensions.coffee</span></a><a href="../client/utils/ui.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">ui.coffee</span></a><a href="../common/common_utils.html" class="source "><span class="base_path">common / </span><span class="file_name">common_utils.coffee</span></a><a href="../server/config.html" class="source "><span class="base_path">server / </span><span class="file_name">config.coffee</span></a><a href="../server/houce.html" class="source selected"><span class="base_path">server / </span><span class="file_name">houce.coffee</span></a><a href="../server/server.html" class="source "><span class="base_path">server / </span><span class="file_name">server.coffee</span></a><a href=".././start.html" class="source "><span class="base_path">. / </span><span class="file_name">start.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>houce.coffee</h1><div class="filepath">server/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+</td><td class="code"><div class="highlight"><pre><span class="nx">require</span> <span class="s">&quot;./config.coffee&quot;</span>
+
+<span class="nv">fs        = </span><span class="nx">require</span> <span class="s">&#39;fs&#39;</span>
+<span class="nv">CoffeeKup = </span><span class="nx">require</span> <span class="s">&#39;coffeekup&#39;</span>
+
+<span class="nv">exports.compile_index = </span><span class="o">-&gt;</span>
+  <span class="nx">log</span> <span class="s">&#39;houce: compiling index&#39;</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>create client_config from server config
+(delete vars you don't want visible in client)</p>
+</td><td class="code"><div class="highlight"><pre>  <span class="nv">client_config = </span><span class="nx">config</span><span class="p">.</span><span class="nx">clone</span><span class="p">()</span>
+  <span class="k">delete</span> <span class="nx">client_config</span><span class="p">.</span><span class="nx">port</span>
+  <span class="k">delete</span> <span class="nx">client_config</span><span class="p">.</span><span class="nx">app_dir</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>compile index.ck</p>
+</td><td class="code"><div class="highlight"><pre>  <span class="nv">index_ck = </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span> <span class="nx">config</span><span class="p">.</span><span class="nx">app_dir</span><span class="o">+</span><span class="s">&quot;/client/index.ck&quot;</span> <span class="p">).</span><span class="nx">toString</span><span class="p">()</span>
+  <span class="k">try</span>
+    <span class="nv">index_html = </span><span class="nx">CoffeeKup</span><span class="p">.</span><span class="nx">render</span> <span class="nx">index_ck</span><span class="p">,</span>
+      <span class="nv">env: </span>   <span class="nx">config</span><span class="p">.</span><span class="nx">env</span>
+      <span class="nv">config: </span><span class="nx">client_config</span>
+  <span class="k">catch</span> <span class="nx">err</span>
+    <span class="k">throw</span> <span class="s">&quot;Error in compiling index.ck: </span><span class="si">#{</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="si">}</span><span class="s">&quot;</span>
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span> <span class="nx">config</span><span class="p">.</span><span class="nx">app_dir</span><span class="o">+</span><span class="s">&#39;/public/index.html&#39;</span><span class="p">,</span> <span class="nx">index_html</span><span class="p">,</span> <span class="s">&#39;utf8&#39;</span><span class="p">,</span> <span class="nf">(err)-&gt;</span> <span class="k">if</span> <span class="nx">err</span> <span class="k">then</span> <span class="k">throw</span> <span class="nx">err</span>
+
+
+<span class="nv">exports.create_manifest = </span><span class="o">-&gt;</span>
+  <span class="nv">manifest_path = </span><span class="nx">config</span><span class="p">.</span><span class="nx">app_dir</span><span class="o">+</span><span class="s">&#39;public/appcache.mf&#39;</span>
+  <span class="k">if</span> <span class="nx">config</span><span class="p">.</span><span class="nx">env</span> <span class="o">is</span> <span class="s">&#39;development&#39;</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>make sure there is no manifest file to load:</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="k">try</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">unlinkSync</span> <span class="nx">manifest_path</span>
+    <span class="k">catch</span> <span class="nx">err</span> <span class="k">then</span> <span class="kc">null</span>
+    <span class="k">return</span>
+  <span class="nx">log</span> <span class="s">&#39;houce: creating manifest&#39;</span>
+  
+  <span class="nv">manifest_str = </span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    CACHE MANIFEST</span>
+
+<span class="err">#</span><span class="s">DIVIDER</span>
+
+<span class="s">    CACHE:</span>
+<span class="s">    index.html</span>
+<span class="s">    client_app.js</span>
+<span class="s">    templates.js</span>
+<span class="s">    stylesheets/stylesheets.css</span>
+<span class="s">    https://fonts.googleapis.com/css?family=PT+Sans:700</span>
+<span class="s">    https://themes.googleusercontent.com/static/fonts/ptsans/v3/0XxGQsSc1g4rdRdjJKZrNL3hpw3pgy2gAi-Ip7WPMi0.woff</span>
+<span class="s">  &quot;&quot;&quot;</span>
+  <span class="nv">read_folder = </span><span class="nf">(path)-&gt;</span>
+    <span class="nv">folder_contents = </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readdirSync</span> <span class="nx">path</span>
+    <span class="k">for</span> <span class="nx">file_or_folder</span> <span class="k">in</span> <span class="nx">folder_contents</span>
+      <span class="nv">fof_path = </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">path</span><span class="si">}</span><span class="s">/</span><span class="si">#{</span><span class="nx">file_or_folder</span><span class="si">}</span><span class="s">&quot;</span>
+      <span class="nv">fof_stat = </span><span class="nx">fs</span><span class="p">.</span><span class="nx">statSync</span> <span class="nx">fof_path</span>
+      <span class="k">if</span> <span class="nx">fof_stat</span><span class="p">.</span><span class="nx">isDirectory</span><span class="p">()</span>
+        <span class="nx">read_folder</span> <span class="nx">fof_path</span>
+      <span class="k">else</span>
+        <span class="nv">fof_path = </span><span class="nx">fof_path</span><span class="p">.</span><span class="nx">remove</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">config</span><span class="p">.</span><span class="nx">app_dir</span><span class="si">}</span><span class="s">public/&quot;</span>
+        <span class="k">if</span> <span class="p">[</span><span class="s">&#39;jpg&#39;</span><span class="p">,</span> <span class="s">&#39;png&#39;</span><span class="p">,</span> <span class="s">&#39;gif&#39;</span><span class="p">,</span> <span class="s">&#39;js&#39;</span><span class="p">].</span><span class="nx">has</span> <span class="nx">fof_path</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">).</span><span class="nx">last</span><span class="p">()</span>
+          <span class="nx">manifest_str</span> <span class="o">+=</span> <span class="s">&quot;\n</span><span class="si">#{</span><span class="nx">fof_path</span><span class="si">}</span><span class="s">&quot;</span>
+  <span class="nx">read_folder</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">config</span><span class="p">.</span><span class="nx">app_dir</span><span class="si">}</span><span class="s">public/img&quot;</span>
+  <span class="nx">read_folder</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">config</span><span class="p">.</span><span class="nx">app_dir</span><span class="si">}</span><span class="s">public/lib&quot;</span>
+  <span class="nx">manifest_str</span> <span class="o">+=</span> <span class="s">&quot;\n\nNETWORK:\n*&quot;</span>
+    
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span> <span class="nx">manifest_path</span><span class="p">,</span> <span class="nx">manifest_str</span><span class="p">,</span> <span class="s">&#39;utf8&#39;</span><span class="p">,</span> <span class="nf">(err)-&gt;</span> <span class="k">if</span> <span class="nx">err</span> <span class="k">then</span> <span class="k">throw</span> <span class="nx">err</span>
+  
+
+</pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><h1>{Date.now()}</h1>
+</td><td class="code"><div class="highlight"><pre>undefined</pre></div></td></tr></tbody></table><div id="generated">generated Thu Mar 15 2012 12:57:25 GMT+0200 (EET)  </div></div></body></html>

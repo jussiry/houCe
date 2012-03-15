@@ -8,44 +8,70 @@ Utils.set_up_new_api = (args)->
 
 
 Utils.oauth2 = do ->
-  s  = sessionStorage
+  ss = sessionStorage
   me =
   clean_ss: ->
-    s.removeItem.bind(s).repeat \
+    return unless Config.storage_on
+    ss.removeItem.bind(ss).repeat \
       'auth_redirect',
       'auth_path',
       'auth_app'
   
   connect: (app)->
-    me.clean_ss() # remove bofore setting: iPhone / iPad bug
-    Utils.try 'sessionStorage for authentication', ->
-      s.auth_redirect = true
-      s.auth_path = location.hash.from 3
-      s.auth_app  = app
-    l = window.location
-    redirect_uri = "#{l.protocol}//#{l.host}/" # "#localocalhost:3003/#!/fb_login"
-    log "oauth2 connect url: "+"#{Config.apis[app].auth_url}?response_type=token&client_id=#{Config.apis[app].app_id}&scope=#{Config.apis[app].permissions}&redirect_uri=#{redirect_uri}"
-    location.href = "#{Config.apis[app].auth_url}?response_type=token&client_id=#{Config.apis[app].app_id}&scope=#{Config.apis[app].permissions}&redirect_uri=#{redirect_uri}"
+    l    = window.location
+    path = location.hash.from 3
+    if Config.storage_on
+      me.clean_ss() # remove bofore setting: iPhone / iPad bug?
+      Utils.try 'sessionStorage for authentication', ->
+        ss.auth_redirect = true
+        ss.auth_path = path
+        ss.auth_app  = app
+      redirect_uri = "#{l.protocol}//#{l.host}/" # "#localocalhost:3003/#!/fb_login"
+    else
+      # store path and app in redirect url
+      redirect_uri = "#{l.protocol}//#{l.host}/#app=#{app}&path=#{path}"
+    location.href = "#{Config.apis[app].auth_url}?response_type=token&client_id=#{Config.apis[app].app_id}&scope=#{Config.apis[app].permissions}&redirect_uri=#{encodeURIComponent redirect_uri}"
   
-  access_token_received: ->
-    api_data = Data.apis[s.auth_app]
-    # Set access_token and expires in params received in the URL:
-    res_params = location.hash[1..-1].split('&')
-    for param_and_val in res_params
-      [param, val] = param_and_val.split '='
-      api_data[param] = val
+  check_for_access_token: ->
+    params = {}
+    for pa in (location.hash[1..-1].split('&').map (p)-> p.split '=')
+      log 'pa ', pa
+      params[pa[0]] = pa[1]
+    if Config.storage_on
+      return unless ss.auth_redirect
+      path = ss.auth_path
+      app  = ss.auth_app
+    else # auth params strored in URL
+      return unless location.hash[0...5] is '#app='
+      path = params.path
+      app  = params.app
+      delete params.path
+      delete params.app
+    
+    console.info 'access_token_received'
+    log location.href
+
+    api_data = Data.apis[app]
+    merge api_data, params
+    #api_data.expires_in   = expires_in
+    #api_data.access_token = access_token
+    
     if api_data.expires_in? and api_data.expires_in isnt '0' # 0 is offline_access
       api_data.expires_in = Date.now() + api_data.expires_in.toNumber().seconds()
     
-    location.hash = "#!/#{s.auth_path}"
+    location.hash = "#!/#{path}"
     # init redirect from session:
     me.clean_ss()
 
+  disconnect: (app)->
+    delete Data.apis[app].access_token
+    delete Data.apis[app].expires_in
+    
 
-Utils.apis =
+Utils.apis = do ->
+  me =
   get: (app, what, callback, jsonp)->
-    ei = Data.apis[app].expires_in or null
-    if not Data.apis[app].access_token? or (ei < Date.now() and ei isnt '0') # '0' is offline_access
+    unless me.is_connected app
       Utils.oauth2.connect app
       return 
     console.info "apis GET started", app, what
@@ -54,7 +80,12 @@ Utils.apis =
              else $.get url, callback  
   fb_get:     (what, callback)-> Utils.apis.get 'fb',     what, callback
   google_get: (what, callback)-> Utils.apis.get 'google', what, callback, true
-    
+  is_connected: (app)->
+    state = Data.apis[app]
+    return true if state.connected
+    return state.access_token? and state.expires_in? and
+           (state.expires_in > Date.now() or state.expires_in is '0')
+
 
 
 
@@ -91,6 +122,7 @@ Utils.get_geolocation = (recalculate=false, cb)->
 
 
 
+### TODO: remove function below; update Kapsa api calls ###
 
 # Define Config.api_url to use api_get and api_post functions
 

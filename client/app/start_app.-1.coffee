@@ -10,8 +10,8 @@ Utils.try 'start_app.coffee', =>
     
     data_setup()
     
-    # check if is facebook redirect:
-    Utils.oauth2.access_token_received() if sessionStorage.auth_redirect      
+    # check if is auth redirect:
+    Utils.oauth2.check_for_access_token()
     
     # Set app title
     $('head title').text Config.app_name
@@ -22,11 +22,10 @@ Utils.try 'start_app.coffee', =>
       PageHandler.check_url_hash()
     else setInterval PageHandler.check_url_hash, 100
 
-
   
   data_setup = ->
     Utils.init_data false
-    return unless Config.cache_data
+    return unless Config.storage_on
     
     # Dismiss cache if Data structure changed since last cache
     if Data.version is 'no_cache' or Data.version > localStorage.getItem 'DataVersion'
@@ -39,5 +38,5 @@ Utils.try 'start_app.coffee', =>
     # Bind caching operations to store 
     $(window).bind 'unload', Utils.cache_data
     # as backup for dirty closing, store cache in intervals:
-    setInterval Utils.cache_data, (5).minutes()
+    setInterval Utils.cache_data, 5.minutes()
     

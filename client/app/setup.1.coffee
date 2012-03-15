@@ -14,29 +14,20 @@ try
   global.Config =
     apis: null # Created in /server/config.coffee
     is_mobile: navigator.userAgent.has /iPhone|Android|Nokia/
-  
-    cache_data: localStorage?
-    # If you use Facebook API, change this to your fb_app_id; otherwise you can remove it.
-    is_mobile: navigator.userAgent.has /iPhone|Android|Nokia/
-    # cache_update_after:
-    #   coordinates: '10 minutes ago'
-    #   deals_near:  '10 minutes ago'
-    #   coupons:     '40 minutes ago'
-    #page_titles:
-    #  plaa: 'daa'
+    storage_on: true
+
+  # Test local storage:
+  try
+    # In iphone/ipad private mode this will fail
+    localStorage  .storage_test = 'works'
+    sessionStorage.storage_test = 'works'
+  catch err
+    Config.storage_on = false
 
   # Config from server:
   merge Config, client_config_from_server
 
-  # Test local storage:
-  if Config.cache_data
-    try
-      # In iPhone S4 using localStorage fails when trying to store any data
-      localStorage.setItem 'storage_test', 'works'
-    catch err
-      Config.cache_data = false
-
-
+  
   #
   # Main modules:
   #

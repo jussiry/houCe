@@ -1,0 +1,67 @@
+<!DOCTYPE html><html><head><title>README</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="./docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="./index.html" class="source"><span class="file_name">README</span></a><a href="./client/app/page_handler.html" class="source "><span class="base_path">client / app / </span><span class="file_name">page_handler.coffee</span></a><a href="./client/app/setup.1.html" class="source "><span class="base_path">client / app / </span><span class="file_name">setup.1.coffee</span></a><a href="./client/app/start_app.-1.html" class="source "><span class="base_path">client / app / </span><span class="file_name">start_app.-1.coffee</span></a><a href="./client/models/person.html" class="source "><span class="base_path">client / models / </span><span class="file_name">person.coffee</span></a><a href="./client/styles/templ_helpers.s.html" class="source "><span class="base_path">client / styles / </span><span class="file_name">templ_helpers.s.coffee</span></a><a href="./client/utils/apis.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">apis.coffee</span></a><a href="./client/utils/dictionary.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">dictionary.coffee</span></a><a href="./client/utils/houce.2.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">houce.2.coffee</span></a><a href="./client/utils/jquery_extensions.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">jquery_extensions.coffee</span></a><a href="./client/utils/ui.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">ui.coffee</span></a><a href="./common/common_utils.html" class="source "><span class="base_path">common / </span><span class="file_name">common_utils.coffee</span></a><a href="./server/config.html" class="source "><span class="base_path">server / </span><span class="file_name">config.coffee</span></a><a href="./server/houce.html" class="source "><span class="base_path">server / </span><span class="file_name">houce.coffee</span></a><a href="./server/server.html" class="source "><span class="base_path">server / </span><span class="file_name">server.coffee</span></a><a href="././start.html" class="source "><span class="base_path">. / </span><span class="file_name">start.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"></th><th class="code"></th></tr></thead><tbody><tr id="section"><td class="docs"><h1>houce
+</h1><h3>Version</h3><p>0.0.2</p><h3>Dependencies </h3><ul><li><b>coffee-script </b><span>1.2.0</span></li><li><b>coffeekup </b><span>0.3.1</span></li><li><b>ccss </b><span>0.1.2-1</span></li><li><b>less </b><span>1.1.5</span></li><li><b>express </b><span>2.5.8</span></li><li><b>sugar </b><span>1.2.2</span></li><li><b>restler </b><span>0.2.1</span></li><li><b>docco-husky </b><span>0.3.1</span></li></ul><p><h3>Stats</h3><pre class="code_stats">
+http://cloc.sourceforge.net v 1.55  T=1.0 s (15.0 files/s, 1206.0 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+CoffeeScript                    15            271            222            713
+-------------------------------------------------------------------------------
+SUM:                            15            271            222            713
+-------------------------------------------------------------------------------
+</pre></p></td><td id="content" class="code"><h1>houCe - the 100% CoffeeScript web framework</h1>
+
+<p>houCe is client oriented web framework designed with conventions that help you get ready and going in seconds, while providing structure that supports complex desktop like applications. houCe uses one language for everything it does, and that language is <a href="http://coffeescript.org/">CoffeeScript</a>. Here's the list of other technologies that make it possible:</p>
+
+<ul>
+<li>Server: <a href="http://nodejs.org/">Node.js</a> (with <a href="http://expressjs.com/">Express.js</a>)</li>
+<li>Templates: <a href="http://coffeekup.org/">CoffeeKup</a></li>
+<li>Stylesheets: <a href="https://github.com/aeosynth/ccss">CCSS</a> (<a href="http://lesscss.org/">LESS</a> as backup for unenchanted)</li>
+</ul>
+
+<h2>features</h2>
+
+<ul>
+<li>Start coding your app instantly, no configuration required.</li>
+<li>Automatic localStorage caching of the application state and data.</li>
+<li>Clean Ajax deferring for retrieving data from external API's and storing that data locally.</li>
+<li>Connect to Facebook (TODO: also Twitter) instantly.</li>
+<li>Clean, but flexible folder structure:
+<ul><li><strong>client</strong>: Client side code, templates and stylesheets.</li>
+<li><strong>common</strong>: Common code that get executed both on client and server.</li>
+<li><strong>server</strong>: Server code and configuration files.</li>
+<li><strong>public</strong>: Compiled client code, JS libraries and images.</li></ul></li>
+</ul>
+
+<h2>get started</h2>
+
+<p>If you don't have Node.js installed, <a href="http://nodejs.org/#download">get it here</a>. You'll also need <a href="http://git-scm.com/">git</a>.</p>
+
+<pre><code>mkdir name_of_your_project
+cd name_of_your_project
+git init
+git pull git://github.com/jussiry/houCe.git
+npm install -g coffee-script
+npm install -g node-dev
+nmp install
+node-dev start.coffee
+Open [http://localhost:3001/](http://localhost:3001/) in your browser.
+</code></pre>
+
+<h2>commands</h2>
+
+<ul>
+<li><code>coffee start.coffee production</code> - Start server in production mode</li>
+<li><code>cake build_docs</code> - Build documentation</li>
+<li><code>cake build_client</code> - Compile client files to public folder (CS and LESS to JS and CSS). Normally done automatically.</li>
+</ul>
+
+<h2>documentation</h2>
+
+<p>File by file documentation can be <a href="http://jussiry.github.com/houCe/index.html">found here</a>.</p>
+
+<h2>update to new version of houCe</h2>
+
+<pre><code>cake update_houce
+</code></pre>
+
+<p>Be <strong>warned</strong>: you'll need to merge all the changes you've done to the original houCe files, which might not be pretty. In the future versions I'll try to make houCe more like a library that's completeley separated from the project code.</p>  </td></tr></tbody></table><div id="generated">generated Thu Mar 15 2012 12:57:23 GMT+0200 (EET)  </div></div></body></html>

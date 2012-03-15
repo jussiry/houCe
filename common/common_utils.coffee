@@ -83,7 +83,7 @@ try
     # Does not work on nokia, USE ONLY FOR DEBUGGING
     Object.defineProperty Object.prototype, 'first',  value: -> Object.values(@)[0]
     Object.defineProperty Object.prototype, 'remove_els', value: (test_func)-> Object.remove_els(@, test_func)
-    Object.defineProperty Object.prototype, 'length', value: -> @.keys().length
+    Object.defineProperty Object.prototype, 'length', value: -> Object.keys(@).length
 
     # NOTE: using Object.prototype.remove would fuck things up properly; no idea why
   

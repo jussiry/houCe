@@ -2,22 +2,23 @@
 doctype 5
 
 html_attrs = if @env is 'production' then manifest:'appcache.mf' else {}
-#html_attrs = if true then manifest:'appcache.mf' else {}
+
 html html_attrs, ->
-#html ->
 
   head ->
     meta charset: 'utf-8'
     title ''
-    meta name:'HandheldFriendly', content:'True'
-    meta name:'apple-mobile-web-app-capable', content:'yes'
-    meta name:'HandheldFriendly', content:'True'
-    meta name:'HandheldFriendly', content:'True'
-    link href:"/stylesheets/stylesheets.css", media:"screen", rel:"stylesheet", type:"text/css"
+    link href:"/stylesheets/stylesheets.css",  media:"screen", rel:"stylesheet", type:"text/css"
+    link href:"/stylesheets/templ_styles.css", media:"screen", rel:"stylesheet", type:"text/css"
 
   body ->
     
-    div '#header', ''
+    div '#header', ->
+      # Insert content you want to show up on every page here
+      a '.connect_status .fb     .offline', href:'#', 'Facebook'
+      a '.connect_status .google .offline', href:'#', 'Google'
+      span '.connect_status', "API's"
+      a '#docs_link', href:'/docs', 'Documentation'
     div '#page_content', ''
     div '#overflows', ''
     

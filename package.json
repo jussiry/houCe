@@ -1,13 +1,17 @@
 {
   "name": "houce",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "coffee-script": "1.2.0",
-    "sugar":       "1.2.2",
     "coffeekup":   "0.3.1",
-    "express":     "2.5.8",
+    "ccss":        "0.1.2-1",
     "less":        "1.1.5",
+    "express":     "2.5.8",
+    "sugar":       "1.2.2",
     "restler":     "0.2.1",
     "docco-husky": "0.3.1"
+  },
+  "docco_husky": {
+    "output_dir": "public/docs"
   }
 }

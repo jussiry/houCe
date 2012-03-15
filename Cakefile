@@ -9,11 +9,16 @@ unless task_name in ['build_docs', 'docs_to_github']
   require 'sugar'
   Object.extend()
   require './common/common_utils' # not so sure if it's such a good idea to load these in the first place. only used for log-shorthand
-  LESS         = require 'less'
-  less_options = paths: ['./client', './client/styles']
-  CoffeeScript = require 'coffee-script'
-  CoffeeKup    = require 'coffeekup'
-  houce        = require "./server/houce.coffee"
+  
+  less_options  = paths: ['./client', './client/styles']
+  
+  LESS          = require 'less'
+  CoffeeScript  = require 'coffee-script'
+  CoffeeKup     = require 'coffeekup'
+  ccss          = require 'ccss'
+  #ccss_vars    = require './client/styles/ccss_vars.s.coffee'
+  templ_helpers = require './client/styles/templ_helpers.s.coffee'
+  houce         = require "./server/houce.coffee"
 
 fs     = require 'fs'
 {exec} = require 'child_process'
@@ -74,13 +79,12 @@ task 'build_client', ->
   templates = {}
   JS        = ""
   CSS       = ""
+  templ_css = ""
   
   # compile common_utils.coffee to JS:
   JS += "\n\n\n/* --- COMMON_UTILS.COFFEE --- */\n\n"
   cu_str = fs.readFileSync(__dirname+"/common/common_utils.coffee").toString()
   JS += CoffeeScript.compile cu_str, {}
-    
-  scss_files = 0 # counter to detect when all scss callbacks have been called
 
   # Go through collected files, and parse them based on file type:
   for file_path in files
@@ -117,29 +121,68 @@ task 'build_client', ->
       when 'templ', 'page'
         # _page properties: templ, style, page, init_
         # Call template file with empty object and bind all functions to that:
-        templ_str = (CoffeeScript.compile file_str, {}).replace /\}\).call\(this\);\n$/,
+        try
+          templ_str = (CoffeeScript.compile file_str, {}).replace /\}\).call\(this\);\n$/,
                                                                 "return this;}).call({});"  # 
-        templates[file_name] = eval templ_str
+          `with( templ_helpers ){
+            templates[file_name] = eval(templ_str);
+          }`
+        catch err
+          log "\nError in processing template: #{file_name.toUpperCase()}.#{file_extension.toUpperCase()}"
+          log "#{err.stack}"
+          throw ''
+          #throw err
+        # check @html exists
         unless templates[file_name].html?
           err = "#{file_name}.#{file_extension} is missing @html variable!\n"
           throw err
+        # check .page's have @page
         if file_extension == 'page' and not templates[file_name].page?
           err = "#{file_name}.page does not have @page variable! Use .templ extension if it's not a page.\n"
           throw err
+        # check .templ's don't have @page
         else if file_extension == 'templ' and templates[file_name].page?
           err = "#{file_name}.templ has @page variable! You need to change it to .page -extension to keep things clear.\n"
-          throw err 
+          throw err
+        # Compile style
+        if templates[file_name].style?
+          # change i_plaa to '#plaa' and c_plaa to '.plaa'
+          iterate = (obj)->
+            for key, val of obj
+              iterate val if typeof val is 'object'
+              del_old = true
+              if      key[0..1] is 'i_' then obj['#'+key[2..-1]] = val
+              else if key[0..1] is 'c_' then obj['.'+key[2..-1]] = val
+              else del_old = false
+              delete obj[key] if del_old
+          iterate templates[file_name].style
+          try templ_css += ccss.compile templates[file_name].style
+          catch err
+            log "\nERROR in compiling @style in template: #{file_name}.#{file_extension}"
+            throw err
+          delete templates[file_name].style # no need to send style obj to client
       else
         log "No action for #{app_file_path}"
 
   
   ### Save coffee files client.js ###
-
   fs.writeFileSync __dirname+'/public/client_app.js', JS, 'utf8', (err)-> if err then throw err
+
+  ### Save ccss/css from templates ###
+  fs.writeFileSync __dirname+'/public/stylesheets/templ_styles.css', templ_css, 'utf8'
+
+
+  ### compile preload.s.coffee  ###
+  # preload_js = CoffeeScript.compile fs.readFileSync(__dirname+"/client/app/preload.s.coffee").toString()
+  # fs.writeFileSync __dirname+'/public/preload.js', preload_js, 'utf8', (err)-> if err then throw err
+
+  ### /client/index.ck -> /public/index.html ###
+  houce.compile_index()
   
+  ### Manifest file ###
+  houce.create_manifest()
 
   ### Save templates to templates.js ###
-  
   stringify = (main_obj)->
     switch typeof main_obj
       when 'object'
@@ -159,19 +202,15 @@ task 'build_client', ->
   fs.writeFileSync __dirname+'/public/templates.js', full_templ_str, 'utf8', (err)-> if err then throw err
   
 
-  ### compile preload.s.coffee  ###
-  preload_js = CoffeeScript.compile fs.readFileSync(__dirname+"/client/app/preload.s.coffee").toString()
-  fs.writeFileSync __dirname+'/public/preload.js', preload_js, 'utf8', (err)-> if err then throw err
-
-
-  ### /client/index.ck -> /public/index.html ###
-  houce.compile_index()
-  
-  ### Manifest file ###
-  houce.create_manifest()
-
   console.info "Client files built!"
 
+
+### Pull new version of houCe from github ###
+
+task 'update_houce', ->
+  exec "git pull git://github.com/jussiry/houCe.git", (err, stdout, stderr)->
+    if err then console.log err    \
+           else console.log stdout
 
 
 ## Build documentation under /docs
@@ -197,7 +236,7 @@ task 'docs_to_github', ->
         exec "rm -R client common public server", (err, stdout, stderr)->
           return log err if err
           log "code removed"
-          exec "mv ./docs/** .", (err, stdout, stderr)->
+          exec "mv ./public/docs/** .", (err, stdout, stderr)->
             return log err if err
             log "docs moved/linked"
             exec "git add .", (err, stdout, stderr)->

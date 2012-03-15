@@ -5,6 +5,7 @@ node_modules/*
 
 public/stylesheets/*
 
+public/appcache.mf
 public/index.html
 public/client_app.js
 public/templates.js
