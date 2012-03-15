@@ -3,17 +3,17 @@
 
 houCe is client oriented web framework designed with conventions that help you get ready and going in seconds, while providing structure that supports complex desktop like applications. houCe uses one language for everything it does, and that language is [CoffeeScript](http://coffeescript.org/). Here's the list of technologies that make it possible:
 
-* Server: [Node.js](http://nodejs.org/), with [Express.js](http://expressjs.com/)
-* Templates: [CoffeeKup](http://coffeekup.org/)
-* Stylesheets: [CCSS](https://github.com/aeosynth/ccss), for unenchanted [LESS](http://lesscss.org/) as backup
+* Server: [Node.js](http://nodejs.org/), with [Express.js](http://expressjs.com/).
+* Templates: [CoffeeKup](http://coffeekup.org/).
+* Stylesheets: [CCSS](https://github.com/aeosynth/ccss), for unenchanted [LESS](http://lesscss.org/) as backup.
 
 
 ## features
 
-* Start coding your app instantly, no configuration required.
+* Start coding your app right away, no configuration required.
 * Automatic localStorage caching of the application state and data.
 * Clean Ajax deferring for retrieving data from external API's and storing that data locally.
-* Connect to Facebook (TODO: also Twitter) instantly.
+* Connect to OAtuh2 enabled API's (Facebook, Google, etc.) instantly.
 * Clean, but flexible folder structure:
  * **client**: Client side code, templates and stylesheets.
  * **common**: Common code that get executed both on client and server.
@@ -29,8 +29,7 @@ If you don't have Node.js installed, [get it here](http://nodejs.org/#download).
     cd name_of_your_project
     git init
     git pull git://github.com/jussiry/houCe.git
-    npm install -g coffee-script
-    npm install -g node-dev
+    npm install -g coffee-script node-dev
     nmp install
     node-dev start.coffee
     Open [http://localhost:3001/](http://localhost:3001/) in your browser.
