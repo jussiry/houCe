@@ -8,8 +8,8 @@ html html_attrs, ->
   head ->
     meta charset: 'utf-8'
     title ''
-    link href:"/stylesheets/stylesheets.css",  media:"screen", rel:"stylesheet", type:"text/css"
-    link href:"/stylesheets/templ_styles.css", media:"screen", rel:"stylesheet", type:"text/css"
+    link href:"/stylesheets/less_styles.css", media:"screen", rel:"stylesheet", type:"text/css"
+    link href:"/stylesheets/ccss_styles.css", media:"screen", rel:"stylesheet", type:"text/css"
 
   body ->
     

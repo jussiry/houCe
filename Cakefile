@@ -16,8 +16,7 @@ unless task_name in ['build_docs', 'docs_to_github']
   CoffeeScript  = require 'coffee-script'
   CoffeeKup     = require 'coffeekup'
   ccss          = require 'ccss'
-  #ccss_vars    = require './client/styles/ccss_vars.s.coffee'
-  templ_helpers = require './client/styles/templ_helpers.s.coffee'
+  ccss_helpers  = require './client/styles/ccss_helpers.s.coffee'
   houce         = require "./server/houce.coffee"
 
 fs     = require 'fs'
@@ -28,6 +27,7 @@ standard_exec_func = (err, stdout, stderr)->
   console.log stdout + stderr
 
 ccss_shortcuts = (obj)->
+  # change i_plaa to '#plaa' and c_plaa to '.plaa'
   for key, val of obj
     ccss_shortcuts val if typeof val is 'object'
     del_old =  if      key[0..1] is 'i_' then obj['#'+key[2..-1]] = val \
@@ -85,7 +85,7 @@ task 'build_client', ->
 
   templates = {}
   JS        = ""
-  CSS       = ""
+  less_css  = ""
   ccss_css = ""
   
   # compile common_utils.coffee to JS:
@@ -120,15 +120,15 @@ task 'build_client', ->
               ERROR: #{fname}.less: #{e.message}: #{e.extract.join('')}
               ------------------------------------------------------------ """
               throw "Less parsing failed"
-            CSS += "\n\n/* --- #{fname.toUpperCase()}: --- */\n\n"
-            CSS += css
-            log "              #{fname}.less length: #{CSS.length}"
-            fs.writeFileSync __dirname+'/public/stylesheets/stylesheets.css', CSS, 'utf8', (err)-> if err then throw err
+            less_css += "\n\n/* --- #{fname.toUpperCase()}: --- */\n\n"
+            less_css += css
+            log "              #{fname}.less length: #{less_css.length}"
+            fs.writeFileSync __dirname+'/public/stylesheets/less_styles.css', less_css, 'utf8', (err)-> if err then throw err
 
       when 'ccss'
         try
           file_js = CoffeeScript.compile file_str, bare:true
-          `with( templ_helpers ){
+          `with( ccss_helpers ){
             var ccss_obj = eval(file_js);
           }`
           ccss_obj = ccss_shortcuts ccss_obj
@@ -142,7 +142,7 @@ task 'build_client', ->
         try
           templ_str = (CoffeeScript.compile file_str, {}).replace /\}\).call\(this\);\n$/,
                                                                 "return this;}).call({});"  # 
-          `with( templ_helpers ){
+          `with( ccss_helpers ){
             templates[file_name] = eval(templ_str);
           }`
         catch err
@@ -164,7 +164,6 @@ task 'build_client', ->
           throw err
         # Compile style
         if templates[file_name].style?
-          # change i_plaa to '#plaa' and c_plaa to '.plaa'
           ccss_shortcuts templates[file_name].style
           try ccss_css += ccss.compile templates[file_name].style
           catch err
@@ -179,7 +178,7 @@ task 'build_client', ->
   fs.writeFileSync __dirname+'/public/client_app.js', JS, 'utf8', (err)-> if err then throw err
 
   ### Save ccss/css from templates ###
-  fs.writeFileSync __dirname+'/public/stylesheets/templ_styles.css', ccss_css, 'utf8'
+  fs.writeFileSync __dirname+'/public/stylesheets/ccss_styles.css', ccss_css, 'utf8'
 
 
   ### compile preload.s.coffee  ###

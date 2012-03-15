@@ -1,8 +1,8 @@
 
 
 @html = ->
-  p "Now, open your browsers console and type the #{yield -> code 'name_of_your_project'}
-    (this is the name of the folder where your project resides in).
+  p "Now, open your browsers console and type: #{yield -> code 'name_of_your_project'}
+    (this is the name of the folder where your project resides in) and hit enter.
     Expand the object and this will show you the basic structure of your client:"
   ul ->
     li "#{yield -> strong 'Config'}: includes all static settings."
