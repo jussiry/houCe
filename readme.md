@@ -10,7 +10,6 @@ houCe is client oriented web framework designed with conventions that help you g
 
 ## features
 
-* Start coding your app right away, no configuration required.
 * Automatic localStorage caching of the application state and data.
 * Clean Ajax deferring for retrieving data from external API's and storing that data locally.
 * Connect to OAuth2 enabled API's (Facebook, Google, etc.) instantly.
