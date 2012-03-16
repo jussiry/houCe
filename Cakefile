@@ -27,20 +27,25 @@ standard_exec_func = (err, stdout, stderr)->
   console.log stdout + stderr
 
 ccss_shortcuts = (obj)->
-  for key, val of obj
+  for orig_key, val of obj
     ccss_shortcuts val if typeof val is 'object'
     # split multi definitions:
-    keys = key.split(/,|_and_/).map('trim')
+    keys = orig_key.split(/,|_and_/).map('trim')
     keys.each (k)->
       # change i_plaa to '#plaa' and c_plaa to '.plaa'
-      new_key =  if      k[0..1] is 'i_' then '#'+k[2..-1] \
-                 else if k[0..1] is 'c_' then '.'+k[2..-1] \
-                 else if keys.length > 1 then k
-                 else false
-      if new_key
-        obj[new_key] ?= {}
-        obj[new_key].merge val
-        delete obj[key]
+      if      k[0..1] is 'i_' then k = '#'+k[2..-1]
+      else if k[0..1] is 'c_' then k = '.'+k[2..-1]
+      # font_size to font-size
+      if typeof val isnt 'object'
+        k = k.replace(/_/g,'-')
+      # set new key and delete old:
+      if k isnt orig_key
+        if typeof val is 'object'
+          obj[k] ?= {}
+          obj[k].merge val
+        else
+          obj[k] = val
+        delete obj[orig_key]
   obj
 
 ## Build client
