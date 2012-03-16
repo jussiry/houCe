@@ -1,14 +1,12 @@
 
 @style =
   '#page_content.intro':
-    c_old:   color:    light_gray
-    c_small: fontSize: '0.8em'
-    strong:  fontSize: '0.9em'
+    c_old:
+      color: light_gray
     code:
       fontSize: '1.2em'
       color:    'black'
     '> pre': margin: 0
-    
 
 ### @html defines the CoffeeKup function for parsing the HTML of the template. ###
 
