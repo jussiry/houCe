@@ -13,7 +13,7 @@
 
 @html = ->
   h1 "Welcome to houCe!"
-  api_access = (Utils.apis.is_connected 'fb') or (Utils.apis.is_connected 'google')
+  api_access = (Houce.apis.is_connected 'fb') or (Houce.apis.is_connected 'google')
   p class: "#{ifs api_access, 'old'}", """
       In houCe you can smell Coffee brewing everywhere, with
       #{yield -> a target:'_blank', href:'http://nodejs.org/', 'Node.js'} + 
@@ -37,17 +37,17 @@
       a '.connect_status.offline.google', href:'#', 'Google'
       text " we could populate some test data to dig in deeper."
   else
-    text Utils.render 'intro_api_access'
+    text Houce.render 'intro_api_access'
 
 
 ### @init function can be use to bind events to template after it has been rendered. ###
 # $el parameter is the jQuery object of the parsed template, so bind everything into it.
 @init = ($el)->
   # $el.find('#connect_to_fb').click ->
-  #   Utils.oauth2.connect 'fb'
+  #   Houce.oauth2.connect 'fb'
   #   return false
   # $el.find('#connect_to_google').click ->
-  #   Utils.oauth2.connect 'google'
+  #   Houce.oauth2.connect 'google'
   #   return false
 
   $el.find('.connect_status') # connect_status links in this template
@@ -55,9 +55,9 @@
      .click ->
         app = if $(@).hasClass 'fb' then 'fb' else 'google'
         if $(@).hasClass 'offline'
-          Utils.oauth2.connect app
+          Houce.oauth2.connect app
         else
-          Utils.oauth2.disconnect app
+          Houce.oauth2.disconnect app
           location.reload()
         return false
 
@@ -68,7 +68,7 @@
   # (.../#!/page_name/...) equals to the name of the page.
   me =
   open: ->
-    if Utils.apis.is_connected 'fb' #.access_token?
+    if Houce.apis.is_connected 'fb' #.access_token?
       $('#page_content').html "<div style='margin: 3em 2em;'>Loading...</div>"
       Models.person.get 'me', (me)->
         me.get_friends ->
@@ -87,7 +87,7 @@
     $('#header .online') .removeClass 'online'
     $('#header .offline').removeClass 'offline'
     for app in ['fb', 'google']
-      status = if Utils.apis.is_connected app then 'online' else 'offline'
+      status = if Houce.apis.is_connected app then 'online' else 'offline'
       log 'status', status
       $('#header .'+app).addClass status
 

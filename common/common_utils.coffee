@@ -30,6 +30,13 @@ try
   global.log = global.l = (args...) -> console.log.apply console, args
   #global.log = global.l = console.log.bind console # bind messes up with remote console (which overwrites console.log)
 
+  # alias for JQuery
+  global.q = $ if $?
+  
+  # shorhand for query selector  
+  global.get_el  = document?.querySelector.bind document
+  global.get_els = document?.querySelector.bind document
+
   global.ins = (o) ->
     str = "#{o.constructor.name} (#{typeof o}):\n"
     str += "#{key}: #{val},\n" for own key,val of o

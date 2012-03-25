@@ -12,20 +12,13 @@ html html_attrs, ->
     link href:"/stylesheets/ccss_styles.css", media:"screen", rel:"stylesheet", type:"text/css"
 
   body ->
-    
-    div '#header', ->
-      # Insert content you want to show up on every page here
-      a '.connect_status .fb     .offline', href:'#', 'Facebook'
-      a '.connect_status .google .offline', href:'#', 'Google'
-      span '.connect_status', "API's"
-      a '#docs_link', href:'/docs', 'Documentation'
+
+    # here comes header
     div '#page_content', ''
     div '#overflows', ''
     
     div '#scripts', ->
-      script ->
-        #window.client_config_from_server = JSON.stringify @config
-        "window.client_config_from_server = #{JSON.stringify @config};"
+      script "window.client_config_from_server = #{JSON.stringify @config};"
       srcs = [
         '/preload.js'
         '/lib/modernizr.custom.js'

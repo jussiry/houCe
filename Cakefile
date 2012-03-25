@@ -30,7 +30,7 @@ ccss_shortcuts = (obj)->
   for orig_key, val of obj
     ccss_shortcuts val if typeof val is 'object'
     # split multi definitions:
-    keys = orig_key.split(/,|_and_/).map('trim')
+    keys = orig_key.split(/,|__/).map('trim')
     keys.each (k)->
       # change i_plaa to '#plaa' and c_plaa to '.plaa'
       if      k[0..1] is 'i_' then k = '#'+k[2..-1]
@@ -162,18 +162,19 @@ task 'build_client', ->
           log "#{err.stack}"
           throw ''
           #throw err
-        # check @html exists
-        unless templates[file_name].html?
-          err = "#{file_name}.#{file_extension} is missing @html variable!\n"
-          throw err
         # check .page's have @page
-        if file_extension == 'page' and not templates[file_name].page?
+        if file_extension is 'page' and not templates[file_name].page?
           err = "#{file_name}.page does not have @page variable! Use .templ extension if it's not a page.\n"
           throw err
-        # check .templ's don't have @page
-        else if file_extension == 'templ' and templates[file_name].page?
-          err = "#{file_name}.templ has @page variable! You need to change it to .page -extension to keep things clear.\n"
-          throw err
+        if file_extension is 'templ'
+          # check @html exists in .templ
+          unless templates[file_name].html?
+            err = "#{file_name}.#{file_extension} is missing @html variable!\n"
+            throw err
+          # check .templ's don't have @page
+          if templates[file_name].page?
+            err = "#{file_name}.templ has @page variable! You need to change it to .page -extension to keep things clear.\n"
+            throw err
         # Compile style
         if templates[file_name].style?
           ccss_shortcuts templates[file_name].style
@@ -197,7 +198,7 @@ task 'build_client', ->
   # preload_js = CoffeeScript.compile fs.readFileSync(__dirname+"/client/app/preload.s.coffee").toString()
   # fs.writeFileSync __dirname+'/public/preload.js', preload_js, 'utf8', (err)-> if err then throw err
 
-  ### /client/index.ck -> /public/index.html ###
+  ### /client/app/index.ck -> /public/index.html ###
   houce.compile_index()
   
   ### Manifest file ###

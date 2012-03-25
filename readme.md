@@ -34,20 +34,20 @@ If you don't have Node.js installed, [get it here](http://nodejs.org/#download).
     Open [http://localhost:3001/](http://localhost:3001/) in your browser.
 
 
+## future plans
+
+* Models in /common instead of /client and similar data stroage to server with [Redis](http://redis.io/) instead of localCahce?
+* Integration with [Backbone.js](http://documentcloud.github.com/backbone/)
+
+
 ## commands
 
-* `coffee start.coffee production` - Start server in production mode
-* `cake build_docs` - Build documentation
-* `cake build_client` - Compile client files to public folder (CS and LESS to JS and CSS). Normally done automatically.
+* `coffee start.coffee production` - Start in production mode.
+* `cake update_houce` - Update to new version of houCe. *Warning*: you'll need to merge all the changes you've done to the original houCe files.
+* `cake build_client` - Compile client files to public folder; normally done automatically.
+* `cake build_docs` - Build documentation to /public/docs
 
 
 ## documentation
 
 File by file documentation can be [found here](http://jussiry.github.com/houCe/index.html).
-
-
-## update to new version of houCe
-
-    cake update_houce
-
-Be **warned**: you'll need to merge all the changes you've done to the original houCe files, which might not be pretty. In the future versions I'll try to make houCe more like a library that's completeley separated from the project code.

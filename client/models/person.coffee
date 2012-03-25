@@ -1,7 +1,7 @@
 
 class Models.person
   C = @
-  Utils.model_new_data C
+  Houce.model_new_data C
   
   constructor: (data)->
     merge @, data
@@ -13,7 +13,7 @@ class Models.person
     if @friends?
       callback @friends
     else # TODO: deferring
-      Utils.apis.fb_get "#{@id}/friends", (res)=>
+      Houce.apis.fb_get "#{@id}/friends", (res)=>
         @friends = []
         for person_data in res.data
           @friends.push C.new_data person_data
@@ -23,7 +23,7 @@ class Models.person
     if @likes?
       callback @likes
     else
-      Utils.apis.fb_get "#{@id}/likes", (res)=>
+      Houce.apis.fb_get "#{@id}/likes", (res)=>
         @likes = []
         for item_data in res.data
           # create item:
@@ -44,7 +44,7 @@ class Models.person
     if person?
       callback person
     else
-      Utils.apis.fb_get fb_id, (data)->
+      Houce.apis.fb_get fb_id, (data)->
         person = C.new_data data
         Data.misc.me = person if fb_id is 'me'
         callback person

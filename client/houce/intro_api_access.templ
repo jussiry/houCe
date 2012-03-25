@@ -29,7 +29,7 @@
   p "Create item.coffee under '/client/models' and copy the following content to it:"
   pre "class Models.item"
   pre "  C = @"
-  pre "  Utils.model_new_data C"
+  pre "  Houce.model_new_data C"
   pre "  constructor: (data)-> @.merge data"
   p "Refresh this page and type #{yield -> code 'Data.misc.me.get_likes()'} to your browsers console.
      In couple seconds you can find everything you've 'liked' in Facebook under #{yield -> code 'Data.misc.me.likes'}."

@@ -1,0 +1,33 @@
+<!DOCTYPE html><html><head><title>ccss_helpers.s.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../../index.html" class="source"><span class="file_name">README</span></a><a href="../../client/app/setup.-1.html" class="source "><span class="base_path">client / app / </span><span class="file_name">setup.-1.coffee</span></a><a href="../../client/houce/apis.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">apis.coffee</span></a><a href="../../client/houce/data_and_models.2.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">data_and_models.2.coffee</span></a><a href="../../client/houce/init_houce.1.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">init_houce.1.coffee</span></a><a href="../../client/houce/page_handler.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">page_handler.coffee</span></a><a href="../../client/houce/templates.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">templates.coffee</span></a><a href="../../client/models/person.html" class="source "><span class="base_path">client / models / </span><span class="file_name">person.coffee</span></a><a href="../../client/styles/ccss_helpers.s.html" class="source selected"><span class="base_path">client / styles / </span><span class="file_name">ccss_helpers.s.coffee</span></a><a href="../../client/utils/dictionary.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">dictionary.coffee</span></a><a href="../../client/utils/utils.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">utils.coffee</span></a><a href="../../common/common_utils.html" class="source "><span class="base_path">common / </span><span class="file_name">common_utils.coffee</span></a><a href="../../server/config.html" class="source "><span class="base_path">server / </span><span class="file_name">config.coffee</span></a><a href="../../server/houce.html" class="source "><span class="base_path">server / </span><span class="file_name">houce.coffee</span></a><a href="../../server/server.html" class="source "><span class="base_path">server / </span><span class="file_name">server.coffee</span></a><a href="../.././start.html" class="source "><span class="base_path">. / </span><span class="file_name">start.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>ccss_helpers.s.coffee</h1><div class="filepath">client/styles/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>These helper functions and variables are available to objects
+defined in templates (mainly for @style).
+TODO: store them also in Tempalates.helpers ?
+TODO: make these availabe for @html and @init? Would it slow down rendering?</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>COLORS</p>
+</td><td class="code"><div class="highlight"><pre><span class="vi">@font_black = </span><span class="s">&#39;#333&#39;</span>
+<span class="vi">@font_gray  = </span><span class="s">&#39;#555&#39;</span>
+<span class="vi">@light_gray = </span><span class="s">&#39;#aaa&#39;</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>EXTRA CLASSES</p>
+</td><td class="code"><div class="highlight"><pre><span class="vi">@secondary_font =</span>
+  <span class="nv">fontFamily: </span><span class="s">&#39;Helvetica Neue, Helvetica&#39;</span>
+  <span class="nv">fontWeight: </span><span class="s">&#39;normal&#39;</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>FUNCTIONS</p>
+</td><td class="code"><div class="highlight"><pre><span class="vi">@borderRadius = </span><span class="nf">(str)-&gt;</span>
+  <span class="nv">MozBorderRadius: </span>   <span class="nx">str</span>
+  <span class="nv">WebkitBorderRadius: </span><span class="nx">str</span>
+  <span class="nv">borderRadius: </span>      <span class="nx">str</span>
+
+<span class="vi">@boxShadow = </span><span class="nf">(str, str2)-&gt;</span>
+  <span class="nv">str = </span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">str</span><span class="si">}</span><span class="s">, </span><span class="si">#{</span><span class="nx">str2</span><span class="si">}</span><span class="s">&quot;</span> <span class="k">if</span> <span class="nx">str2</span><span class="o">?</span>
+  <span class="nv">MozBoxShadow: </span>   <span class="nx">str</span>
+  <span class="nv">WebkitBoxShadow: </span><span class="nx">str</span>
+  <span class="nv">boxShadow: </span>      <span class="nx">str</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><p>@vgradient (from, to)->
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(@from), to(@to));
+  background: -moz-linear-gradient(90deg, @to, @from);</p>
+</td><td class="code"><div class="highlight"><pre><span class="vi">@transition = </span><span class="nf">(str)-&gt;</span>
+  <span class="nv">str = </span><span class="s">&quot;all </span><span class="si">#{</span><span class="nx">str</span><span class="si">}</span><span class="s"> ease-out&quot;</span>
+  <span class="nv">WebkitTransition: </span><span class="nx">str</span>
+  <span class="nv">MozTransition: </span>   <span class="nx">str</span>
+  <span class="nv">OTransition: </span>     <span class="nx">str</span>
+  <span class="nv">MSTransition: </span>    <span class="nx">str</span>
+  <span class="nv">transition: </span>      <span class="nx">str</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Sun Mar 25 2012 11:24:06 GMT+0300 (EEST)  </div></div></body></html>

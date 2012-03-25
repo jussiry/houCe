@@ -13,7 +13,7 @@ exports.compile_index = ->
   delete client_config.port
   delete client_config.app_dir
   # compile index.ck
-  index_ck = fs.readFileSync( config.app_dir+"/client/index.ck" ).toString()
+  index_ck = fs.readFileSync( config.app_dir+"/client/app/index.ck" ).toString()
   try
     index_html = CoffeeKup.render index_ck,
       env:    config.env
@@ -40,7 +40,8 @@ exports.create_manifest = ->
     index.html
     client_app.js
     templates.js
-    stylesheets/stylesheets.css
+    stylesheets/ccss_styles.css
+    stylesheets/less_styles.css
     https://fonts.googleapis.com/css?family=PT+Sans:700
     https://themes.googleusercontent.com/static/fonts/ptsans/v3/0XxGQsSc1g4rdRdjJKZrNL3hpw3pgy2gAi-Ip7WPMi0.woff
   """
