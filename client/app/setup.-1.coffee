@@ -3,6 +3,7 @@
 # the last one executed in client_app.js
 
 Houce.init_houce
+
   # Define client specific configs here. 'global.Config' is merged
   # from this and configs from '/server/config.coffee'.
   config: {}
@@ -21,8 +22,10 @@ Houce.init_houce
   # data from all clients. You can also type Houce.init_data() in console of
   # a specific browser to empty its data and cache.
   data_version: 4
+
   # Name of the main page template; redirects from '/' to this page.
   main_page: 'intro'
+
   # 'before_open_page' functions is executed for all pages after 'close' event
   # of previous page and before 'open' event of new page.
   before_open_page: ->

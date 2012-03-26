@@ -1,4 +1,8 @@
 
+
+# index.ck will become the index.html file of your app, and it is not included
+# in window.Templates, like normal templates and pages.
+
 doctype 5
 
 html_attrs = if @env is 'production' then manifest:'appcache.mf' else {}
