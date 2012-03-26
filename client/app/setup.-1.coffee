@@ -30,7 +30,7 @@ Houce.init_houce
     pc = $('#page_content')
     pc.css
       opacity: 0
-    pc.attr class: PageHandler.get_page()
+    pc.attr class: PageHandler.get_page().name
     $('body').scrollTop 0
     # Set app title
     $('head title').text "#{Houce.page_title()} - #{Config.app_name}"

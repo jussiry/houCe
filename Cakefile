@@ -146,7 +146,7 @@ task 'build_client', ->
           ccss_obj = ccss_shortcuts ccss_obj
           ccss_css += ccss.compile ccss_obj
         catch err
-          log "\nERROR in compiling CCSS file: #{file_name}.#{file_extension}"
+          log "\nERROR in compiling CCSS file: #{file_name}.#{file_extension}: #{err}"
           throw err
       when 'templ', 'page'
         # _page properties: templ, style, page, init_
@@ -180,7 +180,7 @@ task 'build_client', ->
           ccss_shortcuts templates[file_name].style
           try ccss_css += ccss.compile templates[file_name].style
           catch err
-            log "\nERROR in compiling @style in template: #{file_name}.#{file_extension}"
+            log "\nERROR in compiling @style in template: #{file_name}.#{file_extension}: #{err}"
             throw err
           delete templates[file_name].style # no need to send style obj to client
       else

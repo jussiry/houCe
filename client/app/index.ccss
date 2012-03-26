@@ -1,0 +1,32 @@
+
+body:
+  fontSize:   '16px'
+  lineHeight: '21px'
+
+
+html:
+  height: '100%'
+
+body:
+  height: '100%'
+  margin: 0
+  color: font_black
+
+i_page_content:
+  padding: '0 20% 20px'
+  color:   font_gray
+  h1:
+    color: font_gray
+    padding: '30px 0 15px'
+  h2:
+    fontSize:     '18px'
+    marginBottom: '0px'
+  h3:
+    fontSize:     '14px'
+    marginBottom: '-14px'
+
+i_overflows:
+  position: 'absolute'
+  width: '100%'
+  top: 0
+  left: 0

@@ -8,11 +8,13 @@ Houce.init_pages = ->
       switch typeof obj.page
         when 'object'   then Pages[name] = obj.page 
         when 'function' then Pages[name] = obj.page()
-      Pages[name]._name = name
+      Pages[name].name = name
+      delete Templates[name].page # no need to keep this anymore in templates
 
 
 # Retuns title of the current, or given page
 Houce.page_title = (page)->
+  page = Pages[page] if typeof page is 'string'
   page ?= PageHandler.get_page()
   title = page.title or ''
   if typeof title is 'function' then title() \
@@ -23,7 +25,7 @@ Houce.page_title = (page)->
 # Use $(el).render(..), except for partials,
 # for which you'll need to use `$(el).html( Houce.render(template\_name) )`.
 Houce.render = (template_name, data_obj={}, extra_data)->
-  template_name = template_name._name if typeof template_name is 'object'
+  template_name = template_name.name if typeof template_name is 'object'
   templ = Templates[template_name]
   throw Error("Template '"+template_name+"' not found.") unless templ?
   

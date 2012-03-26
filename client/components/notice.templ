@@ -1,2 +1,35 @@
 
+# Use 'components' folder for templates that can be used in many pages.
+
+
+# Usage: Houce.render 'notice', msg: 'Notice message', error: true
+# No need to define location, automatically rendered in #overflows.
+# With error:true, background will be red, otherwise yellow.
+
 @html = ->
+  div '#flash_notice', class:(ifs @error, 'error'), @msg
+
+@init = ($el)->
+  $el.css 'opacity', 0
+  $('#overflows').prepend $el
+  $el.animate opacity:1
+  delay 6000, ->
+    $el.animate opacity:0, 1000, ->
+      $el.remove()
+
+@style =
+  i_flash_notice:
+    position: 'fixed'
+    width: '78%'
+    margin: '220px 8% 0'
+    padding: '2%'
+    font_size: '30px'
+    color: '#222'
+    background: '#E0CF5C'
+    border: '1px solid #333'
+    mixin: [
+      border_radius '15px'
+      box_shadow '2px 2px 10px #000000', '0px 0px 15px #000000'
+    ]
+  '#flash_notice.error':
+    background: 'rgb(200, 50, 50)'

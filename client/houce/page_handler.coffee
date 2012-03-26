@@ -28,7 +28,7 @@ global.PageHandler = do ->
       PageHandler.check_url_hash()
     else setInterval PageHandler.check_url_hash, 100
 
-  get_page: -> me.path[0] or me.main_page
+  get_page: -> Pages[me.path[0] or me.main_page]
   
   get_param: (num)->
     return alert "Incorrect param index! (1 is first)" if num < 1
@@ -53,7 +53,7 @@ global.PageHandler = do ->
       new_path = hash[3..-1].split('/')
       # Check if hash path has changed
       unless Object.equal new_path, me.path
-        prev_page = if me.path.isEmpty() then null else Pages[ me.get_page() ]
+        prev_page = if me.path.isEmpty() then null else Pages[ me.path[0] ]
         # Change state
         me.path_stack.push me.path if me.path.first()?
         me.path = new_path
@@ -82,7 +82,7 @@ global.PageHandler = do ->
   
     me.before_open_page()
     
-    page_name = me.get_page()
+    page_name = me.path[0]
     
     if Pages?[page_name]?
       log "UH: '#{page_name}' controller found"

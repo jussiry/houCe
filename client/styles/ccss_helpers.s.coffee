@@ -20,16 +20,14 @@
   fontWeight: 'normal'
 
 
-
 # FUNCTIONS
 
-
-@borderRadius = (str)->
+@border_radius = (str)->
   MozBorderRadius:    str
   WebkitBorderRadius: str
   borderRadius:       str
 
-@boxShadow = (str, str2)->
+@box_shadow = (str, str2)->
   str = "#{str}, #{str2}" if str2?
   MozBoxShadow:    str
   WebkitBoxShadow: str

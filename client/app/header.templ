@@ -7,3 +7,29 @@
     a '.connect_status .google .offline', href:'#', 'Google'
     span '.connect_status', "API's"
     a '#docs_link', href:'/docs', 'Documentation'
+
+@init = ($el)->
+  $el.find('.connect_status').click ->
+    app = if $(@).hasClass 'fb' then 'fb' else 'google'
+    if $(@).hasClass 'offline'
+      Houce.oauth2.connect app
+    else
+      Houce.oauth2.disconnect app
+      location.reload()
+    return false
+
+@style =
+  i_header:
+    padding: '0 21.5% 0 20%'
+    position: 'relative'
+    zIndex: 1
+    c_connect_status:
+      float:  'right'
+      margin: '0 4px'
+    i_docs_link:
+      float:  'right'
+      marginRight: '20px'
+      color: 'blue'
+
+  c_offline: color: 'red'
+  c_online:  color: 'green'

@@ -1,0 +1,88 @@
+
+
+### @page is the Page controller. ###
+@page = ->
+  # Each page has open event, that is executed when first part of the URL hash
+  # (.../#!/page_name/...) equals to the name of the page.
+  me =
+  # Here you can define page tile (as string or function that returns string).
+  # Use Houce.page_title() to retrieve title of current or with arg some other page.
+  title: "Intro page"
+  open: ->
+    if Houce.apis.is_connected 'fb' #.access_token?
+      $('#page_content').html "<div style='margin: 3em 2em;'>Loading...</div>"
+      Models.person.get 'me', (me)->
+        me.get_friends ->
+          $('#page_content').render 'intro'
+    else
+      $('#page_content').render 'intro'
+    me.update_header_connections()
+
+  # Pages can also define 'close' event, that gets executed when user leaves the page.
+  # Close event needs to execute the callback, or othervise the new page is never opened.
+  close: (cb)->
+    cb() if confirm "Do you want to leave 'intro' page?", 'yes', 'no'
+
+  # Update header status (in real application you probably wouldn't want to do this in page controller)
+  update_header_connections: ->
+    $('#header .online') .removeClass 'online'
+    $('#header .offline').removeClass 'offline'
+    for app in ['fb', 'google']
+      status = if Houce.apis.is_connected app then 'online' else 'offline'
+      log 'status', status
+      $('#header .'+app).addClass status
+
+
+### @html defines the CoffeeKup function for parsing the HTML of the template. ###
+
+@html = ->
+  h1 dict 'welcome_title' # Look at /client/utils/dictionary.coffee
+  api_access = (Houce.apis.is_connected 'fb') or (Houce.apis.is_connected 'google')
+  p class: "#{ifs api_access, 'old'}", """
+      In houCe you can smell Coffee brewing everywhere, with
+      #{yield -> a target:'_blank', href:'http://nodejs.org/', 'Node.js'} + 
+      #{yield -> a target:'_blank', href:'http://coffeekup.org/', 'CoffeeKup'} +
+      #{yield -> a target:'_blank', href:'https://github.com/aeosynth/ccss', 'CCSS'}
+      combination giving us the ability to write everything in the beatiful language that is
+      #{yield -> a target:'_blank', href:'http://jashkenas.github.com/coffee-script/', 'CoffeeScript'}.
+    """
+  p class: "#{ifs api_access, 'old'}", """
+      houCe is highly client oriented framework. Using same language everywhere allows us
+      to make templates that have style definition, HTML templates, binding of events
+      and even page controllers in the same file. This gives us nicely modular view
+      of the application and quick access to any code related to the module currently being modified.
+    """
+  if not api_access
+    p ->
+      text "There are lots of small conventions in houCe that helps you develop new applications
+        very quickly; but enough of rambling, if you'd be so kind to connect to "
+      a '.connect_status.offline.fb', href:'#', 'Facebook'
+      text ' or '
+      a '.connect_status.offline.google', href:'#', 'Google'
+      text " we could populate some test data to dig in deeper."
+  else
+    text Houce.render 'intro_api_access'
+
+
+### @init function can be use to bind events to template after it has been rendered. ###
+# $el parameter is the jQuery object of the parsed template, so bind everything into it.
+@init = ($el)->
+  $el.find('.connect_status').click ->
+    app = if $(@).hasClass 'fb' then 'fb' else 'google'
+    if $(@).hasClass 'offline'
+      Houce.oauth2.connect app
+    else
+      Houce.oauth2.disconnect app
+      location.reload()
+    return false
+
+
+@style =
+  '#page_content.intro':
+    c_old:
+      color: light_gray
+    code:
+      fontSize: '1.2em'
+      color:    'black'
+    '> pre':
+      margin: 0

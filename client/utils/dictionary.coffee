@@ -1,38 +1,28 @@
 
-# TODO
+
+# Use `dict('keyword')` for translations. Uses Config.lang to choose the right translation.
+
+global.dict = (key, s1)->
+  return null unless key?
+  if s1 then Utils.dictionary[key][Config.lang].replace '%s', s1 \
+        else Utils.dictionary[key][Config.lang]
+
 
 Utils.dictionary =
-  coupon_info:
-    en: 'Show the coupon in the business to redeem the deal'
-    fi: 'Näytä kuponki toimipisteessä lunastaaksesi tarjouksen'
-  coupon_c2c_info:
-    en: 'Show the coupon or mention about the call to redeem the deal'
-    fi: 'Näytä kuponki tai mainitse soittotarjouksesta lunastaessasi etua'
-  coupons:
-    en: 'My deals'
-    fi: 'Poimitut'
-  dashboard:
-    en: 'Home'
-    fi: 'Etusivu'
-  deals:
-    en: 'Deals'
-    fi: 'Tarjoukset'
-  deal_c2c_info:
-    en: "Reclaim the deal by calling to the company.<br/>Call will be charged by normal telephone rate."
-    fi: "Lunasta tarjous soittamalla yritykseen.<br/>Puhelu maksaa normaalin matkapuhelun verran."
-  expires:
-    en: 'Expires %s'
-    fi: 'Tarjous on voimassa %s asti'
-  get_deal:
-    en: 'Get Deal'
-    fi: 'Poimi tarjous'
-  info:
-    en: 'Info'
-    fi: 'Info'
-  telephone_short:
-    en: 'Tel'
-    fi: 'Puh'
+  # translation_keyword:
+  #   lang1_keyword: transtaltion
+  #   ...
+  page:
+    en: 'page'
+    fi: 'sivu'
+  welcome_title:
+    en: "Welcome to houCe!"
+    fi: "Tervetuloa houCe:een!"
+
   # SPECIAL:
+  
+  # weekday_arr is currently not used anywhere, but just to show that you can
+  # also store more comples stuff in here.
   weekday_arr:
     en: ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su']
     fi: ['ma', 'ti', 'ke', 'to', 'pe', 'la', 'su']
