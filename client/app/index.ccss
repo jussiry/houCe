@@ -1,8 +1,20 @@
 
+
+# CCSS is CSS written in CoffeeScript: https://github.com/aeosynth/ccss
+# You can type keys with string quotation marks or without them, but
+# when you don't use quotation marks notice that there are some special
+# syntactic sugar to confrom to CoffeeScript syntax:
+#
+# i_name -> '#name'
+# c_name -> '.name'
+# fontSize  -> 'font-size'
+# font_size -> 'font-size'
+# i_parent__c_child -> '#parent .child'
+
+
 body:
   fontSize:   '16px'
   lineHeight: '21px'
-
 
 html:
   height: '100%'
