@@ -1,9 +1,14 @@
 
+# Controller related requires:
+{exec}       = require 'child_process'
+fs           = require 'fs'
+restler      = require 'restler'
+houce        = require './houce'
+
+
 # SERVER SETUP:
 
 express = require 'express'
-
-
 app = express.createServer() # server_options
 
 
@@ -37,33 +42,22 @@ module.exports = app
 #
 
 
-{exec}       = require 'child_process'
-fs           = require 'fs'
-restler      = require 'restler'
+# build_client = (callback)->
+#   exec "cd #{config.app_dir} && cake 'build_client'", (err, stdout, stderr)->
+#     log stdout
+#     if err
+      
+#     else
+#       index_str = (fs.readFileSync config.app_dir+"/public/index.html").toString()
+#       callback?()
 
+index_str  = null
+read_index = -> index_str = (fs.readFileSync config.app_dir+"/public/index.html").toString()
 
-index_str = null
-
-build_client = (callback)->
-  exec "cd #{config.app_dir} && cake 'build_client'", (err, stdout, stderr)->
-    log stdout
-    if err
-      err_msg = (stdout + stderr).replace /\n/g, "<br/>"
-      style = "<style>body{
-        padding: 1em 2em;
-        font-family: Verdana;
-        font-size: 0.8em;
-        line-height: 1.4em;
-        color: #333;
-      }</style>"
-      callback? style+err_msg
-    else
-      index_str = (fs.readFileSync config.app_dir+"/public/index.html").toString()
-      callback?()
-
-
-
-build_client() if config.env is 'production'
+if config.env is 'production'
+  houce.build_client()
+  read_index()
+  
 
 
 # Routes:
@@ -84,8 +78,10 @@ if config.env is 'production'
 send_index = (res)->
   if config.env is 'development'
     # in development mode, always rebuild client on load:
-    build_client (err)->
-      res.send if err then err else index_str
+    houce.build_client res
+    res.send read_index()
+    #build_client (err)->
+    #  res.send if err then err else index_str
   else
     res.send index_str
 

@@ -1,6 +1,7 @@
 
 
 ### @page is the Page controller. ###
+
 @page = ->
   # Each page has open event, that is executed when first part of the URL hash
   # (.../#!/page_name/...) equals to the name of the page.

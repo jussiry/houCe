@@ -1,15 +1,23 @@
 
 
-# Init PAGES from templates:
-# (Tempaltes[...].page -> Pages[...])
-Houce.init_pages = ->
-  for name, obj of Templates
-    if obj.page?
-      switch typeof obj.page
-        when 'object'   then Pages[name] = obj.page 
-        when 'function' then Pages[name] = obj.page()
-      Pages[name].name = name
-      delete Templates[name].page # no need to keep this anymore in templates
+
+Houce.init_templates = ->
+  for templ_name, container of Templates
+    # Bind template container to @ of every function inside the container -
+    # except @html's CoffeeKup function, where @ stores the data for rendering.
+    for key, child in container
+      if typeof child is 'function' and key isnt 'html'
+        child.bind container
+    # Move @page under Pages: Tempaltes[name].page --> Pages[name]
+    # and execute it if it is a function; as if:
+    # @page = ->  -->  @page = do ->
+    if container.page?
+      Pages[templ_name] = switch typeof container.page
+        when 'object'   then container.page 
+        when 'function' then container.page()
+      Pages[templ_name].name = templ_name
+      # link @page under template to same object:
+      Templates[templ_name].page = Pages[templ_name]
 
 
 # Retuns title of the current, or given page

@@ -80,8 +80,8 @@ Houce.init_houce = (args)->
     sessionStorage.storage_test = 'works'
   catch err then Config.storage_on = false
 
-  ### Init pages ###
-  Houce.init_pages()  
+  ### Init templates (and pages) ###
+  Houce.init_templates()  
 
   ### Namespacing to store all modules under single application object ###
   global[Config.app_name] =
