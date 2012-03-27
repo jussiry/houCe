@@ -46,6 +46,9 @@ Houce.oauth2 = do ->
     location.href = "#{Config.apis[app].auth_url}?response_type=token&client_id=#{Config.apis[app].app_id}&scope=#{Config.apis[app].permissions}&redirect_uri=#{encodeURIComponent redirect_uri}"
   
   check_for_access_token: ->
+    
+    # TODO: !/intro: undefined found in Data.apis.google ...
+
     params = {}
     for pa in (location.hash[1..-1].split('&').map (p)-> p.split '=')
       params[pa[0]] = pa[1]

@@ -48,8 +48,8 @@ error_to_client = (err, res)->
   }</style>"
   res.send style+err_html
 
-read_folder = (path, file_func)->
-  iterator = (path)->
+for_files_in = (path, file_func)->
+  (iterator = (path)->
     folder_contents = fs.readdirSync path
     for file_or_folder in folder_contents
       fof_path = "#{path}/#{file_or_folder}"
@@ -59,6 +59,7 @@ read_folder = (path, file_func)->
       else
         file_func fof_path.remove "#{config.app_dir}public/"
     return
+  )( path )
 
 # public methods:
 
@@ -102,10 +103,10 @@ read_folder = (path, file_func)->
     https://themes.googleusercontent.com/static/fonts/ptsans/v3/0XxGQsSc1g4rdRdjJKZrNL3hpw3pgy2gAi-Ip7WPMi0.woff
   """
   file_func = (file_path)->
-    if ['jpg', 'png', 'gif', 'js'].has fof_path.split('.').last()
-      manifest_str += "\n#{fof_path}"
-  read_folder "#{config.app_dir}public/img", file_func
-  read_folder "#{config.app_dir}public/lib", file_func
+    if ['jpg', 'png', 'gif', 'js'].has file_path.split('.').last()
+      manifest_str += "\n#{file_path}"
+  for_files_in "#{config.app_dir}public/img", file_func
+  for_files_in "#{config.app_dir}public/lib", file_func
   manifest_str += "\n\nNETWORK:\n*"
   
   fs.writeFileSync manifest_path, manifest_str, 'utf8', (err)-> if err then throw err
@@ -113,46 +114,36 @@ read_folder = (path, file_func)->
 
 @build_client = (res)->
   
-  log "houce: building client"
-  
+  log_str = ''
+  log = (msg)->
+    log_str += msg + '\n'
+    console.log.apply console, arguments
   error = (err)->
-    if res? then error_to_client err, res \
-            else throw Error err
+    log 'Error in build_client: '+err
+    err_msg = "#{log_str}\nERROR: #{err}"
+    error_to_client err_msg, res if res?
+    throw Error err
+  
+  log "houce: building client"
   
   files = []
   files_first = []
   files_last  = []
   
-  # Collect all files from /client folder:
-  ind = 0
-  read_folder = (path)->
-    ind += 1
-    #log "path #{path}"
-    folder_contents = fs.readdirSync path
-    for file_or_folder in folder_contents
-      fof_path = path+'/'+file_or_folder
-      fof_stat = fs.statSync fof_path
-      if fof_stat.isDirectory()
-        read_folder fof_path
-      else
-        file_parts = file_or_folder.split '.'
-        switch file_parts.length
-          when 2
-            files.push fof_path # normal file
-          when 3
-            # special files: first, last or skip
-            order_or_skip = file_parts[1] #.toUpperCase()
-            if order_or_skip.parsesToNumber()
-              order = order_or_skip.toNumber()
-              if order < 0 then files_last[order.abs()] = fof_path \
-                           else files_first[order]      = fof_path 
-            else if order_or_skip.toLowerCase() is 's'
-              null # skip this file by doing nothing
-            else
-              error "Unknown special type for: #{file_or_folder}"
-          else
-            error "Unknown file format: #{file_or_folder}"
-  read_folder config.app_dir+'/client'
+  for_files_in config.app_dir+'client', (file_path)->
+    file_parts = file_path.split '.'
+    switch file_parts.length
+      when 2 then files.push file_path # normal file
+      when 3 # special files: first, last or skip
+        order_or_skip = file_parts[1] #.toUpperCase()
+        if order_or_skip.parsesToNumber()
+          order = order_or_skip.toNumber()
+          if order < 0 then files_last[order.abs()] = file_path \
+                       else files_first[order]      = file_path 
+        else if order_or_skip.toLowerCase() is 's'
+          null # skip this file by doing nothing
+        else error "Unknown special type for: #{file_or_folder}"
+      else error "Unknown file format: #{file_or_folder}"
   
   # put files marked with name.FX.coffee in front of client_app.js
   for fof_path in files_first.compact().reverse()

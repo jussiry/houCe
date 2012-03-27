@@ -17,21 +17,11 @@
           $('#page_content').render 'intro'
     else
       $('#page_content').render 'intro'
-    me.update_header_connections()
 
   # Pages can also define 'close' event, that gets executed when user leaves the page.
   # Close event needs to execute the callback, or othervise the new page is never opened.
   close: (cb)->
     cb() if confirm "Do you want to leave 'intro' page?", 'yes', 'no'
-
-  # Update header status (in real application you probably wouldn't want to do this in page controller)
-  update_header_connections: ->
-    $('#header .online') .removeClass 'online'
-    $('#header .offline').removeClass 'offline'
-    for app in ['fb', 'google']
-      status = if Houce.apis.is_connected app then 'online' else 'offline'
-      log 'status', status
-      $('#header .'+app).addClass status
 
 
 ### @html defines the CoffeeKup function for parsing the HTML of the template. ###

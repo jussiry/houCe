@@ -9,14 +9,26 @@
     a '#docs_link', href:'/docs', 'Documentation'
 
 @init = ($el)->
+  update_api_ui = ->
+    log 'updating header_connections'
+    $el.find('.online') .removeClass 'online'
+    $el.find('.offline').removeClass 'offline'
+    for app in ['fb', 'google']
+      status = if Houce.apis.is_connected app then 'online' else 'offline'
+      log 'status', status
+      $el.find('.'+app).addClass status
+  update_api_ui()
+  
   $el.find('.connect_status').click ->
     app = if $(@).hasClass 'fb' then 'fb' else 'google'
     if $(@).hasClass 'offline'
       Houce.oauth2.connect app
+      update_api_ui()
     else
       Houce.oauth2.disconnect app
       location.reload()
     return false
+
 
 @style =
   i_header:
