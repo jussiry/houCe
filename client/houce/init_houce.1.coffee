@@ -15,7 +15,8 @@ global.Models = {}
 global.Pages  = {}
 # Namespace for utility libraries
 global.Utils  = {}
-
+# Namespace for configs
+global.Config = {}
 
 
 # Setup houCe. Called from setup.coffee
@@ -42,35 +43,21 @@ Houce.init_houce = (args)->
   PageHandler.main_page        = args.main_page
   PageHandler.before_open_page = args.before_open_page
   PageHandler.after_open_page  = args.after_open_page
-  Houce.init_data.defaults         = args.data_structure
-  Houce.init_data.defaults.version = args.data_version
+  Houce.init_data.app_defaults = args.data_structure
+  Houce.init_data.version      = args.data_version
 
 
   ### Error logging to server ###
   # requires (Redis) data storage; currently not implemented on server
-
-  if args.error_logging
-    window.onerror = (a,b)->
-      log "Error arguments", arguments
-      console.info "----- Error in #{a} #{b} -----"
-      
-      Houce.render 'flash_notice', error:true, msg: dict 'error_notice'
-        
-      # Send to sever
-      $.post '/err_logs',
-        ua:        navigator.userAgent
-        err_msg:   err.message
-        err_stack: err.stack
-        non_err_err:  JSON.stringify err
-        err_title:    str
-        timestamp:    Date.now()
-        path_history: JSON.stringify PageHandler.path_history  
+  
+  Houce.error.logging_on = args.error_logging
+  window.onerror = Houce.error
 
 
   ### Config ###
 
   # Config from server:
-  global.Config = client_config_from_server
+  merge Config, client_config_from_server
   # Client config from setup.coffee
   merge Config, args.config
   # Test local storage:
@@ -91,21 +78,11 @@ Houce.init_houce = (args)->
     Pages:  Pages
     Utils:  Utils
     Templates: Templates
-
-
+  
   ### Data setup ###
-
   Houce.init_data false
   
   if Config.storage_on
-    # Dismiss cache if Data structure changed since last cache
-    if Data.version is 'no_cache' or Data.version > localStorage.getItem 'DataVersion'
-      Houce.init_data true
-    else
-      # Load from cache:
-      data_str = localStorage.getItem 'Data'
-      merge Data, Houce.objectify data_str if data_str?
-    
     # Bind caching operations to store 
     $(window).bind 'unload', Houce.cache_data
     # as backup for dirty closing, store cache in intervals:

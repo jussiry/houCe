@@ -57,7 +57,7 @@ for_files_in = (path, file_func)->
       if fof_stat.isDirectory()
         iterator fof_path
       else
-        file_func fof_path.remove "#{config.app_dir}public/"
+        return if file_func(fof_path) is false
     return
   )( path )
 
@@ -70,15 +70,21 @@ for_files_in = (path, file_func)->
   client_config = config.clone()
   delete client_config.port
   delete client_config.app_dir
+  # find index.ck
+  index_path = null
+  for_files_in config.app_dir+'client', (fpath)->
+    if fpath.split('/').last() is 'index.ck'
+      index_path = fpath
+      return false
   # compile index.ck
-  index_ck = fs.readFileSync( config.app_dir+"/client/app/index.ck" ).toString()
+  index_ck = fs.readFileSync( index_path ).toString()
   try
     index_html = CoffeeKup.render index_ck,
       env:    config.env
       config: client_config
   catch err
     throw "Error in compiling index.ck: #{err.message}"
-  fs.writeFileSync config.app_dir+'/public/index.html', index_html, 'utf8', (err)-> if err then throw err
+  fs.writeFileSync config.app_dir+'public/index.html', index_html, 'utf8', (err)-> if err then throw err
 
 
 @create_manifest = ->
@@ -103,6 +109,7 @@ for_files_in = (path, file_func)->
     https://themes.googleusercontent.com/static/fonts/ptsans/v3/0XxGQsSc1g4rdRdjJKZrNL3hpw3pgy2gAi-Ip7WPMi0.woff
   """
   file_func = (file_path)->
+    file_path = file_path.remove "#{config.app_dir}public/"
     if ['jpg', 'png', 'gif', 'js'].has file_path.split('.').last()
       manifest_str += "\n#{file_path}"
   for_files_in "#{config.app_dir}public/img", file_func
@@ -213,7 +220,7 @@ for_files_in = (path, file_func)->
             templates[file_name] = eval(templ_str);
           }`
         catch err
-          error "\nError in processing template: #{file_name.toUpperCase()}.#{file_extension.toUpperCase()} #{err.stack[0]}"
+          error "\nError in processing template: #{file_name.toUpperCase()}.#{file_extension.toUpperCase()} \n\n#{err.stack}"
           #throw err
         # check .page's have @page
         if file_extension is 'page' and not templates[file_name].page?
@@ -263,11 +270,11 @@ for_files_in = (path, file_func)->
           #log "processing: #{name}"
           obj_strings.push "'#{name}': #{stringify obj}"
         "{ #{obj_strings.join ',\n'} }"
-      when 'function'  then main_obj.toString()
       when 'string'    then "'#{main_obj}'"
-      when 'number'    then main_obj
+      when 'function'  then main_obj.toString()
       when 'undefined' then 'undefined'
-      else error "#{typeof main_obj}'s not valid objects!"
+      when 'number', 'boolean' then main_obj
+      else error "#{typeof main_obj}'s not valid object!"
     
   full_templ_str = "window.Templates = \n#{stringify templates};"
   fs.writeFileSync config.app_dir+'/public/templates.js', full_templ_str, 'utf8', (err)-> if err then error err

@@ -21,7 +21,7 @@ Houce.init_houce
   # When structure of the Data changes increment data_version to flush old cached
   # data from all clients. You can also type Houce.init_data() in console of
   # a specific browser to empty its data and cache.
-  data_version: 4
+  data_version: 5
 
   # Name of the main page template; redirects from '/' to this page.
   main_page: 'intro'

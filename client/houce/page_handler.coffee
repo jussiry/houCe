@@ -38,9 +38,9 @@ global.PageHandler = do ->
     log "WARNING: not enough url parameters." if me.path.length < 1+num
     me.path[1..num]
   
-  go_back: ->  
+  go_back: (default_prev)->
     me.open_page
-      new_path: (me.path_stack.pop() or [me.main_page])
+      new_path: (me.path_stack.pop() or default_prev or [me.main_page])
     return false
   
   # Gets executed evrytime window.locatio.hash changes.

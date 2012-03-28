@@ -8,38 +8,35 @@
 # ### Data initialization
 
 Houce.init_data = (remove_cache=true)->
-
-  # Namespace for all retrieved data
-  global.Data  = {}
-  #Data.version = 4 # increment this version each time Data structure changes; causes the cache to be flushed
   
-  if localStorage? and remove_cache
-    localStorage.removeItem 'Data'
-    localStorage.setItem 'DataVersion', Data.version
-    # Session storage:
-    sessionStorage.removeItem key for key of sessionStorage
-
+  # Data init and Data.apis setup
+  global.Data = apis: {}
+  Data.apis[key] = {} for key,api of Config.apis
+  # Model storage setup
   for name, model of Models
-    Data[Houce.pluralize(name).toLowerCase()] = {}
+    Data[Houce.pluralize(name).toLowerCase()] ?= {}
+  # Merge app defaults
+  merge Data, Houce.init_data.app_defaults
+  Data.version = Houce.init_data.version
   
+  # Handle cache
+  if Config.storage_on
 
-  # Data.cache_updated =
-  #   coordinates: null
-  #   last_stored: null
-  # Data.misc =
-  #   coord:
-  #     latitude:  null
-  #     longitude: null
-  #   me: null
-  # Data.apis =
-  #   fb:
-  #     access_token: null
-  #     #expires: null
-  #   google:
-  #     access_token: null
+    prev_version = localStorage.DataVersion.toNumber()
     
-  global[Config.app_name].Data = Data
+    if remove_cache or Data.version is 'no_cache' or Data.version > prev_version
+      # _Remove old cache_
+      localStorage.removeItem 'Data'
+      localStorage.setItem.DataVersion = Houce.init_data.version
+      # init also session storage
+      sessionStorage.removeItem key for key of sessionStorage
+    else
+      # _Load Data from cache_
+      data_str = localStorage.Data
+      merge Data, Houce.objectify data_str if data_str?
 
+  # Bind to App Namespace
+  global[Config.app_name].Data = Data
 
 
 # ## Data caching
@@ -135,10 +132,9 @@ Houce.objectify = (str)->
   main_obj
 
 Houce.cache_data = ->
-  return unless localStorage?
+  return unless Config.storage_on
   console.info "Caching data"
   Data.cache_updated.last_stored = Date.now()
-  #Utils.speed_test 'stringifyng', 1, ->
   localStorage.setItem 'Data', Houce.stringify Data
   localStorage.setItem 'DataVersion', Data.version
   if false and Config.env is 'development'

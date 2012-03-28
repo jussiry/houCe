@@ -22,13 +22,25 @@
 
 # FUNCTIONS
 
+# Calculate percentage based layout with given margins and paddings
+@per_layout = (args={})->
+  args.margins  ?= [0,0]
+  args.paddings ?= [0,0]
+  args.height   ?= 100
+  args.width    ?= 100
+
+  margin:  args.margins .join('% ') + '%'
+  padding: args.paddings.join('% ') + '%'
+  height: args.height - 2*args.margins[0] - 2*args.paddings[0] + '%'
+  width:  args.width  - 2*args.margins[1] - 2*args.paddings[1] + '%'
+
+
 @border_radius = (str)->
   MozBorderRadius:    str
   WebkitBorderRadius: str
   borderRadius:       str
 
-@box_shadow = (str, str2)->
-  str = "#{str}, #{str2}" if str2?
+@box_shadow = (str)->
   MozBoxShadow:    str
   WebkitBoxShadow: str
   boxShadow:       str

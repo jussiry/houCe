@@ -20,14 +20,6 @@ Houce.init_templates = ->
       Templates[templ_name].page = Pages[templ_name]
 
 
-# Retuns title of the current, or given page
-Houce.page_title = (page)->
-  page = Pages[page] if typeof page is 'string'
-  page ?= PageHandler.get_page()
-  title = page.title or ''
-  if typeof title is 'function' then title() \
-                                else title
-
 
 ### Render function for templates. ###
 # Use $(el).render(..), except for partials,
@@ -43,17 +35,23 @@ Houce.render = (template_name, data_obj={}, extra_data)->
     data_obj = merge Object.clone(data_obj), extra_data
     data_obj.__proto__ = proto
 
+  # bind data of last rendered object to template (@d to access)
+  templ.d = data_obj   
+  
   html_str = CoffeeKup.render templ.html, data_obj,
                               templ: templ
                               cache: true
                               autoescape: false
   
-  # If no init function (is "partial") return template as string
-  return html_str unless templ.init?
-  # Otherwise run init function and return template as jQuery object
-  $el = $ html_str
-  templ.init $el, data_obj, templ
-  $el
+  if templ.init?
+    # Run init function and return template as jQuery object
+    templ.el = $ html_str # jquery element is bound to template (@el to access)
+    templ.init templ.el, data_obj # TODO: no need to send templ.el? or send as second param?
+    templ.el
+  else
+    # If no init function (template is "partial") return template as string
+    templ.el = html_str
+  
 
 # JQuery shortcuts for Houce.render
 jQuery.fn.render = (args...)->
@@ -63,3 +61,33 @@ jQuery.fn.render_bottom = (args...)->
 jQuery.fn.render_top = (args...)->
   @.prepend Houce.render.apply null, args
 
+# jQuery helpers
+jQuery.fn.is_in_dom = -> @parents('body').length > 0
+# TODO: which is faster: .parents() or .contains() ? http://api.jquery.com/jQuery.contains/
+
+# Retuns title of the current, or given page
+Houce.page_title = (page)->
+  page = Pages[page] if typeof page is 'string'
+  page ?= PageHandler.get_page()
+  title = page.title or ''
+  if typeof title is 'function' then title() \
+                                else title
+
+
+# No logical place for Houce.error?
+Houce.error = (error_str, file_path, line_number)->
+  
+  if Templates.notice?
+    Templates.notice.error dict 'error_notice'
+  
+  return unless Houce.error.logging_on
+
+  # Send to sever
+  $.post '/err_logs',
+    ua:        navigator.userAgent
+    err_msg:   error_str
+    err_stack: "[#{line_number}, #{file_path}]"
+    non_err_err:  JSON.stringify arguments
+    err_title:    str
+    timestamp:    Date.now()
+    path_history: JSON.stringify PageHandler.path_history
