@@ -31,7 +31,8 @@ If you don't have Node.js installed, [get it here](http://nodejs.org/#download).
     npm install -g coffee-script node-dev
     nmp install
     node-dev start.coffee
-    Open [http://localhost:3001/](http://localhost:3001/) in your browser.
+
+Now open [http://localhost:3001/](http://localhost:3001/) in your browser.
 
 
 ## future plans

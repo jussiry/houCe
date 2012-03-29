@@ -22,12 +22,12 @@ Houce.init_data = (remove_cache=true)->
   # Handle cache
   if Config.storage_on
 
-    prev_version = localStorage.DataVersion.toNumber()
+    prev_version = localStorage.DataVersion?.toNumber()
     
     if remove_cache or Data.version is 'no_cache' or Data.version > prev_version
       # _Remove old cache_
       localStorage.removeItem 'Data'
-      localStorage.setItem.DataVersion = Houce.init_data.version
+      localStorage.DataVersion = Houce.init_data.version
       # init also session storage
       sessionStorage.removeItem key for key of sessionStorage
     else
