@@ -3,21 +3,29 @@
 
 Houce.init_templates = ->
   for templ_name, container of Templates
-    # Bind template container to @ of every function inside the container -
-    # except @html's CoffeeKup function, where @ stores the data for rendering.
-    for key, child in container
-      if typeof child is 'function' and key isnt 'html'
-        child.bind container
-    # Move @page under Pages: Tempaltes[name].page --> Pages[name]
-    # and execute it if it is a function; as if:
-    # @page = ->  -->  @page = do ->
     if container.page?
+      # Execute page if it is a function. @page = ->  -->  @page = do ->
       Pages[templ_name] = switch typeof container.page
         when 'object'   then container.page 
         when 'function' then container.page()
+      # Move @page under Pages: Tempaltes[name].page --> Pages[name]
       Pages[templ_name].name = templ_name
       # link @page under template to same object:
       Templates[templ_name].page = Pages[templ_name]
+
+    # TODO: do binding of container iteratively ?
+
+    # Bind template container to @ of every function inside the container -
+    # except @html's CoffeeKup function, where @ stores the data for rendering.
+    for key, child of container
+      if typeof child is 'function' and key isnt 'html'
+       container[key] = child.bind container
+      else if typeof child is 'object'
+        # when object, bind template container to all child functions
+        for sub_key, sub_child of child
+          if typeof sub_child is 'function'
+            child[sub_key] = sub_child.bind container
+  return
 
 
 

@@ -9,9 +9,8 @@ require "../common/common_utils.coffee"
 # CONFIG:
 global.config =
   app_name: __dirname.split('/').at -2 # assumes config.coffee is in first level folder (e.g. /server)
+  app_dir:  __dirname.split('/').to(-1).join('/') + '/'
   port:     process.env.PORT or 3001
-
-config.app_dir = __dirname.split('/'+config.app_name+'/')[0]+'/'+config.app_name+'/'
 
 
 # Use environment variable 'houce_mode' to determine deployment configuration:
