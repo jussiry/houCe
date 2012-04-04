@@ -38,11 +38,6 @@ Now open [http://localhost:3001/](http://localhost:3001/) in your browser.
 
 ## future plans
 
-### small
-* Better documentation
-* `/common` can currently contain only one file (which is common_utils.coffee) - make load all files.
-
-### big
 * Move parts of models in `/common` and implement similar (but better) data stroage to server with [Redis](http://redis.io/) as in client with localCahce?
 * Integration with [Backbone.js](http://documentcloud.github.com/backbone/)?
 
