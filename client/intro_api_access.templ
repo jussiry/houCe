@@ -19,12 +19,16 @@
                                         corresponding to the files name in Templates."
   p "Each module is also a global object, so instead of typing #{yield -> code 'houCe.Data'} you can just type #{yield -> code 'Data'}.
      Speaking of Data, from #{yield -> code 'Data.people'} you can now find all your friends we just retrieved from Facebook."
-  p "When create models, such as #{yield -> code 'Models.person'} houCe automatically creates corresponding
+  p "When you create models, such as #{yield -> code 'Models.person'} houCe automatically creates corresponding
      #{yield -> code 'Data.people'} to inhabit all the objects created by the model."
+  
   h2 "Some things to try"
+  
   h3 'Pages'
   p "Create copy of intro.page and rename it to #{yield -> code 'my_first.page'}. Do some modifications to
      its @html function and change the hash of your browsers URL to '#{yield -> code '#!/my_first'}'."
+  p "By changing #{yield -> code 'main_page'} from #{yield -> code 'app_init.coffee'} you can make this your main page."
+  
   h3 'Models'
   p "Create item.coffee under '/client/models' and copy the following content to it:"
   pre "class Models.item"

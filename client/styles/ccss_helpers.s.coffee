@@ -22,6 +22,10 @@
 
 # FUNCTIONS
 
+@per_padding = (vert_padding, hor_padding, width=100)->
+  padding: "#{vert_padding}% #{hor_padding}%"
+  width: width - 2*hor_padding + '%'
+
 # Calculate percentage based layout with given margins and paddings
 @per_layout = (args={})->
   args.margins  ?= [0,0]

@@ -1,11 +1,9 @@
 
 class Models.person
   C = @
-  Houce.model_new_data C
   
   constructor: (data)->
     merge @, data
-  
 
   # Instance methods:
 
@@ -36,7 +34,11 @@ class Models.person
 
 
   # Class methods:
+
+  Houce.model_new_data C
   
+  C.plural = 'people'
+
   C.get = (fb_id='me', callback=(->))->
     # 'me' is a special value in Facebook Open Graph,
     # store it normally to Data.people[id], but also link Data.misc.me to that object.

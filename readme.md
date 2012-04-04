@@ -11,8 +11,8 @@ houCe is client oriented web framework designed with conventions that help you g
 ## features
 
 * Automatic localStorage caching of the application state and data.
-* Clean Ajax deferring for retrieving data from external API's and storing that data locally.
 * Connect to OAuth2 enabled API's (Facebook, Google, etc.) instantly.
+* Clean Ajax deferring for retrieving data from external API's and storing that data locally.
 * Clean, but flexible folder structure:
  * **client**: Client side code, templates and stylesheets.
  * **common**: Common code that get executed both on client and server.
@@ -37,14 +37,18 @@ Now open [http://localhost:3001/](http://localhost:3001/) in your browser.
 
 ## future plans
 
-* Models in /common instead of /client and similar data stroage to server with [Redis](http://redis.io/) instead of localCahce?
-* Integration with [Backbone.js](http://documentcloud.github.com/backbone/)
+### small
+* Better documentation
+* /common can currently contain only one file (which is common_utils.coffee)
+### big
+* Models in /common and similar data stroage to server with [Redis](http://redis.io/) as in client with localCahce?
+* Integration with [Backbone.js](http://documentcloud.github.com/backbone/)?
 
 
 ## commands
 
 * `coffee start.coffee production` - Start in production mode.
-* `cake update_houce` - Update to new version of houCe. *Warning*: you'll need to merge all the changes you've done to the original houCe files.
+* `cake update_houce` - Update to new version of houCe. *Warning*: you'll need to merge all the changes you've done to original houCe files. Also removes `intro.page` and `intro_api_access.templ`.
 * `cake build_client` - Compile client files to public folder; normally done automatically.
 * `cake build_docs` - Build documentation to /public/docs
 

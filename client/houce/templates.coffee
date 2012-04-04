@@ -85,11 +85,13 @@ Houce.page_title = (page)->
 # No logical place for Houce.error?
 Houce.error = (error_str, file_path, line_number)->
   
-  if Templates.notice?
-    Templates.notice.error dict 'error_notice'
-  
-  return unless Houce.error.logging_on
+  # skip known bugs
+  return if ["Uncaught TypeError: Cannot call method 'replace' of undefined"].has error_str
 
+  return unless Houce.error.logging_on
+  
+  Templates.notice.error dict 'error_notice' if Templates.notice?
+  
   # Send to sever
   $.post '/err_logs',
     ua:        navigator.userAgent

@@ -31,14 +31,19 @@ fs     = require 'fs'
 
 task 'build_client', ->
   houce.build_client()
+  houce.compile_index()
 
 
 ### Pull new version of houCe from github ###
 
 task 'update_houce', ->
   exec "git pull git://github.com/jussiry/houCe.git", (err, stdout, stderr)->
-    if err then console.log err    \
-           else console.log stdout
+    console.log stdout
+    console.log "\n\n#{err}\n#{stderr}" if err
+    # remove intro.page and intro_api_access.templ
+    exec "rm ./client/intro.page ./client/intro_api_access.templ", , (rm_err, rm_stdout, rm_stderr)->
+      log "houCe updated! #{'Remember to merge files!' if err}"
+    
 
 
 ## Build documentation under /docs

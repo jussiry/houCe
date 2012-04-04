@@ -10,12 +10,10 @@
 
 @init = ($el)->
   update_api_ui = ->
-    log 'updating header_connections'
     $el.find('.online') .removeClass 'online'
     $el.find('.offline').removeClass 'offline'
     for app in ['fb', 'google']
       status = if Houce.apis.is_connected app then 'online' else 'offline'
-      log 'status', status
       $el.find('.'+app).addClass status
   update_api_ui()
   

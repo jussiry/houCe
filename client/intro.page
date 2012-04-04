@@ -2,13 +2,12 @@
 
 ### @page is the Page controller. ###
 
-@page = ->
-  # Each page has open event, that is executed when first part of the URL hash
-  # (.../#!/page_name/...) equals to the name of the page.
-  me =
+@page =
   # Here you can define page tile (as string or function that returns string).
   # Use Houce.page_title() to retrieve title of current or with arg some other page.
   title: "Intro page"
+  # Each page has open event, that is executed when first part of the URL hash
+  # (.../#!/page_name/...) equals to the name of the page.
   open: ->
     if Houce.apis.is_connected 'fb' #.access_token?
       $('#page_content').html "<div style='margin: 3em 2em;'>Loading...</div>"
@@ -28,7 +27,7 @@
 
 @html = ->
   h1 dict 'welcome_title' # Look at /client/utils/dictionary.coffee
-  api_access = (Houce.apis.is_connected 'fb') or (Houce.apis.is_connected 'google')
+  api_access = (Houce.apis.is_connected 'fb') #or (Houce.apis.is_connected 'google')
   p class: "#{ifs api_access, 'old'}", """
       In houCe you can smell Coffee brewing everywhere, with
       #{yield -> a target:'_blank', href:'http://nodejs.org/', 'Node.js'} + 
@@ -48,8 +47,8 @@
       text "There are lots of small conventions in houCe that helps you develop new applications
         very quickly; but enough of rambling, if you'd be so kind to connect to "
       a '.connect_status.offline.fb', href:'#', 'Facebook'
-      text ' or '
-      a '.connect_status.offline.google', href:'#', 'Google'
+      #text ' or '
+      #a '.connect_status.offline.google', href:'#', 'Google'
       text " we could populate some test data to dig in deeper."
   else
     text Houce.render 'intro_api_access'
@@ -77,3 +76,6 @@
       color:    'black'
     '> pre':
       margin: 0
+    h3:
+      margin: '10px 0 -10px'
+

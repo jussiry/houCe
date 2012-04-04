@@ -21,8 +21,7 @@ ccss_shortcuts = (obj)->
     keys = orig_key.split(/,|__/).map('trim')
     keys.each (k)->
       # change i_plaa to '#plaa' and c_plaa to '.plaa'
-      if      k[0..1] is 'i_' then k = '#'+k[2..-1]
-      else if k[0..1] is 'c_' then k = '.'+k[2..-1]
+      k = k.replace(/(^| |,)c_/g, '.').replace(/(^| |,)i_/g, '#')
       # font_size to font-size
       if typeof val isnt 'object'
         k = k.replace(/_/g,'-')
@@ -63,13 +62,15 @@ for_files_in = (path, file_func)->
 
 # public methods:
 
-@compile_index = ->
+@compile_index = (custom_config={})->
   log 'houce: compiling index'
   # create client_config from server config
   # (delete vars you don't want visible in client)
-  client_config = config.clone()
-  delete client_config.port
-  delete client_config.app_dir
+  client_config = merge config.clone(), custom_config
+  # delete configs you want visible only for server:
+  for key in ['port','app_dir','redis_url','redis_port']
+    delete client_config[key]
+
   # find index.ck
   index_path = null
   for_files_in config.app_dir+'client', (fpath)->
@@ -82,6 +83,7 @@ for_files_in = (path, file_func)->
     index_html = CoffeeKup.render index_ck,
       env:    config.env
       config: client_config
+    index_html = index_html.replace /></g, '>\n<'
   catch err
     throw "Error in compiling index.ck: #{err.message}"
   fs.writeFileSync config.app_dir+'public/index.html', index_html, 'utf8', (err)-> if err then throw err
@@ -199,7 +201,6 @@ for_files_in = (path, file_func)->
             less_css += css
             log "              #{fname}.less length: #{less_css.length}"
             fs.writeFileSync config.app_dir+'/public/stylesheets/less_styles.css', less_css, 'utf8', (err)-> if err then throw err
-
       when 'ccss'
         try
           file_js = CoffeeScript.compile file_str, bare:true
@@ -233,9 +234,15 @@ for_files_in = (path, file_func)->
           if templates[file_name].page?
             error "#{file_name}.templ has @page variable! You need to change it to .page -extension to keep things clear.\n"
         # Compile style
-        if templates[file_name].style?
-          ccss_shortcuts templates[file_name].style
-          try ccss_css += ccss.compile templates[file_name].style
+        {style} = templates[file_name]
+        if style?
+          #log "STYLE in #{file_name}",style, typeof style
+          if typeof style is 'function'
+            #log "style is function"
+            style = style()
+            #log "styles after exec: ",style
+          ccss_shortcuts style
+          try ccss_css += ccss.compile style
           catch err
             error "\nERROR in compiling @style in template: #{file_name}.#{file_extension}: #{err}"
           delete templates[file_name].style # no need to send style obj to client
@@ -254,9 +261,6 @@ for_files_in = (path, file_func)->
   # preload_js = CoffeeScript.compile fs.readFileSync(config.app_dir+"/client/app/preload.s.coffee").toString()
   # fs.writeFileSync config.app_dir+'/public/preload.js', preload_js, 'utf8', (err)-> if err then throw err
 
-  ### /client/app/index.ck -> /public/index.html ###
-  @compile_index()
-  
   ### Manifest file ###
   @create_manifest()
 

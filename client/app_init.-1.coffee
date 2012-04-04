@@ -1,13 +1,13 @@
 
-# -1 in setup.-1.coffee means that this file will be
-# the last one executed in client_app.js
+# -1 in app_init.-1.coffee means that this file will be
+# the last file executed in /public/client_app.js
 
 Houce.init_houce
 
   # Define client specific configs here. 'global.Config' is merged
   # from this and configs from '/server/config.coffee'.
   config: {}
-  # Initialize your data structure here to keep track on what exactly
+  # Initialize your data structure here to keep track of what exactly
   # are you storing into the 'global.Data' object.
   data_structure:
     cache_updated:

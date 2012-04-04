@@ -56,10 +56,10 @@ Houce.init_houce = (args)->
 
   ### Config ###
 
-  # Config from server:
-  merge Config, client_config_from_server
   # Client config from setup.coffee
   merge Config, args.config
+  # Config from server:
+  merge Config, client_config_from_server
   # Test local storage:
   try
     # In iphone/ipad private mode this will fail

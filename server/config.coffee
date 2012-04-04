@@ -26,13 +26,15 @@ config.merge switch process.env.houce_mode
     apis:
       fb:
         app_id: 278442548891895 # If you use Facebook API, change this to your fb_app_id; otherwise you can remove it.
-        permissions: 'user_likes'
         auth_url: 'https://www.facebook.com/dialog/oauth'
+        docs: 'http://developers.facebook.com/docs/reference/api/'
         get_url: 'https://graph.facebook.com' # TODO: change get_url to url (same as Kovalo config)
+        permissions: 'user_likes'
       google:
         app_id: '679211380191.apps.googleusercontent.com' # Change this to your own google app id.
-        permissions: encodeURIComponent 'https://www.googleapis.com/auth/plus.me'
         auth_url: "https://accounts.google.com/o/oauth2/auth"
+        docs: 'https://developers.google.com/+/api/'
         get_url: 'https://www.googleapis.com/plus/v1' # TODO: change get_url to url (same as Kovalo config)
+        permissions: encodeURIComponent 'https://www.googleapis.com/auth/plus.me'
     env:  'development'
     lang: 'en'

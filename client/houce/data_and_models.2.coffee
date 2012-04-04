@@ -152,26 +152,23 @@ Houce.cache_valid = (type)->
 # If you have model names with irregular pluralization,
 # add the correct pluralization here
 Houce.pluralize = (word)->
-  switch word.toLowerCase()
-    when 'person' then 'people'
-    else "#{word}s"
+  Models[word]?.plural or "#{word}s"
 
 
 # ## Model helpers
 
 Houce.model_new_data = (class_var)-> # , fetch_str
-  #do ->
-  c_name        = class_var.name
-  c_name_plural = Houce.pluralize c_name
+  c_name = class_var.name
   
   class_var.new_data = (data)->
     return data if typeof data isnt 'object'
     throw message: "#{c_name} data requires an ID", stack: data unless data?.id?
 
+    plural = Houce.pluralize c_name
     # merge or create (and link to data)
-    if Data[c_name_plural][data.id]?
-      Data[c_name_plural][data.id].merge data
-    else Data[c_name_plural][data.id] = new class_var data
+    if Data[plural][data.id]?
+      Data[plural][data.id].merge data
+    else Data[plural][data.id] = new class_var data
 
 
 # WARNING: this is not ready  

@@ -24,7 +24,7 @@ html html_attrs, ->
     div '#scripts', ->
       script "window.client_config_from_server = #{JSON.stringify @config};"
       srcs = [
-        '/preload.js'
+        #'/preload.js'
         '/lib/modernizr.custom.js'
         '/lib/jquery-1.7.1.min.js'
         '/lib/jquery.animate-enhanced.min.js'

@@ -1,11 +1,11 @@
 
+
 # Use 'components' folder for templates that can be used in many pages.
 
 
 # Usage: Templates.notice.error 'Error message' OR
-#        Templates.notice.show 'Notice message'
+#        Templates.notice.warning 'Notice message'
 # No need to define location, automatically rendered in #overflows.
-# With error:true, background will be red, otherwise yellow.
 
 @error = (msg)-> # red bg
   $('#overflows').render_top 'notice', msg:msg, error:true
