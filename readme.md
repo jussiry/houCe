@@ -15,7 +15,7 @@ houCe is client oriented web framework designed with conventions that help you g
  * **common**: Common code that get executed both on client and server.
  * **server**: Server code and configuration files.
  * **public**: Compiled client code, JS libraries and images.
-* Modular templating system that allows you to write html, CS and styles of that module in single file.
+* Modular templating system that allows you to write HTML, CS and styles of that module in single file.
 * Automatic localStorage caching of the application state and data.
 * Connect to OAuth2 enabled API's (Facebook, Google, etc.) instantly.
 * Clean Ajax deferring for retrieving data from external API's and storing that data locally.
@@ -40,9 +40,10 @@ Now open [http://localhost:3001/](http://localhost:3001/) in your browser.
 
 ### small
 * Better documentation
-* /common can currently contain only one file (which is common_utils.coffee)
+* `/common` can currently contain only one file (which is common_utils.coffee) - make load all files.
+
 ### big
-* Models in /common and similar data stroage to server with [Redis](http://redis.io/) as in client with localCahce?
+* Move parts of models in `/common` and implement similar (but better) data stroage to server with [Redis](http://redis.io/) as in client with localCahce?
 * Integration with [Backbone.js](http://documentcloud.github.com/backbone/)?
 
 
