@@ -15,6 +15,7 @@ houCe is client oriented web framework designed with conventions that help you g
  * **common**: Common code that get executed both on client and server.
  * **server**: Server code and configuration files.
  * **public**: Compiled client code, JS libraries and images.
+* Modular templating system that allows you to write html, CS and styles of that module in single file.
 * Automatic localStorage caching of the application state and data.
 * Connect to OAuth2 enabled API's (Facebook, Google, etc.) instantly.
 * Clean Ajax deferring for retrieving data from external API's and storing that data locally.
