@@ -1,5 +1,5 @@
 
-# -1 in app_init.-1.coffee means that this file will be
+# -1 in app\_init.-1.coffee means that this file will be
 # the last file executed in /public/client_app.js
 
 Houce.init_houce
