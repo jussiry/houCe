@@ -11,8 +11,6 @@ Object.extend() if Object.defineProperty?
 global.Houce  = {}
 # Namespace for models
 global.Models = {}
-# Namespace for page controllers
-global.Pages  = {}
 # Namespace for utility libraries
 global.Utils  = {}
 # Namespace for configs
@@ -31,7 +29,7 @@ Houce.init_houce = (args)->
     after_open_page:  ->
     data_structure: {}
     data_version: 1
-    config:
+    Config:
       # TOOD: use insted Zepto or some other library for mobile stuff?
       is_mobile: navigator.userAgent.has /iPhone|Android|Nokia/
       storage_on: true
@@ -57,7 +55,7 @@ Houce.init_houce = (args)->
   ### Config ###
 
   # Client config from setup.coffee
-  merge Config, args.config
+  merge Config, args.Config
   # Config from server:
   merge Config, client_config_from_server
   # Test local storage:
@@ -67,7 +65,7 @@ Houce.init_houce = (args)->
     sessionStorage.storage_test = 'works'
   catch err then Config.storage_on = false
 
-  ### Init templates (and pages) ###
+  ### Init templates ###
   Houce.init_templates()  
 
   ### Namespacing to store all modules under single application object ###
@@ -75,7 +73,6 @@ Houce.init_houce = (args)->
     Config: Config
     Houce:  Houce
     Models: Models
-    Pages:  Pages
     Utils:  Utils
     Templates: Templates
   

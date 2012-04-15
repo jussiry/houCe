@@ -1,7 +1,6 @@
 
 
-# index.ck will become the index.html file of your app, and it is not included
-# in window.Templates, like normal templates and pages.
+# index.ck will become the index.html file of your app, and it is not included in window.Templates.
 
 doctype 5
 

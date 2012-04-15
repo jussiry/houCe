@@ -1,29 +1,24 @@
 
-
 # Use 'components' folder for templates that can be used in many pages.
 
 
 # Usage: Templates.notice.error 'Error message' OR
-#        Templates.notice.warning 'Notice message'
+#        Templates.notice.show 'Notice message'
 # No need to define location, automatically rendered in #overflows.
+# With error:true, background will be red, otherwise yellow.
 
 @error = (msg)-> # red bg
   $('#overflows').render_top 'notice', msg:msg, error:true
 
 @warning = (msg)-> # yellow bg
+  log "Notice warning!"
   $('#overflows').render_top 'notice', msg:msg
-
-
 
 @init = ($el)->
   $el.animate opacity:1
-  delay 5000, ->
-    $el.animate opacity:0, 1000, ->
-      $el.remove()
-
-
-@html = ->
-  div '#flash_notice', class:(ifs @error, 'error'), @msg
+  end = -> $el.animate opacity:0, 1000, -> $el.remove()
+  delay 6000, end
+  $el.click end
 
 
 @style =
@@ -35,11 +30,15 @@
     padding: '2%'
     font_size: '30px'
     color: '#222'
-    background: '#E0CF5C'
     border: '1px solid #333'
+    background: '#E0CF5C' # backup if gradient don't work
     mixin: [
+      gradient '#e0ce5c', '#8a7a29'
       border_radius '15px'
       box_shadow '2px 2px 10px #000000, 0px 0px 15px #000000'
     ]
-  '#flash_notice.error':
-    background: 'rgb(200, 50, 50)'
+  '#flash_notice.error': do ->
+    background: 'rgb(200, 50, 50)'  # backup if gradient don't work
+    gradient   'rgb(200, 50, 50)', '#800d0d'
+@html = ->
+  div '#flash_notice', class:(ifs @error, 'error'), @msg

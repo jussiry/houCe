@@ -1,12 +1,12 @@
 
 # -1 in app\_init.-1.coffee means that this file will be
-# the last file executed in /public/client_app.js
+# the last file executed in /public/client\_app.js
 
 Houce.init_houce
 
   # Define client specific configs here. 'global.Config' is merged
   # from this and configs from '/server/config.coffee'.
-  config: {}
+  Config: {}
   # Initialize your data structure here to keep track of what exactly
   # are you storing into the 'global.Data' object.
   data_structure:
@@ -18,15 +18,15 @@ Houce.init_houce
         latitude:  null
         longitude: null
       me: null
-  # When structure of the Data changes increment data_version to flush old cached
-  # data from all clients. You can also type Houce.init_data() in console of
+  # When structure of the Data changes increment data\_version to flush old cached
+  # data from all clients. You can also type Houce.init\_data() in console of
   # a specific browser to empty its data and cache.
   data_version: 5
 
   # Name of the main page template; redirects from '/' to this page.
   main_page: 'intro'
 
-  # 'before_open_page' functions is executed for all pages after 'close' event
+  # 'before\_open\_page' functions is executed for all pages after 'close' event
   # of previous page and before 'open' event of new page.
   before_open_page: ->
     # init #page_content:
@@ -41,7 +41,7 @@ Houce.init_houce
   after_open_page: ->
     reqAnimFrame -> $('#page_content').animate opacity: 1
 
-  # 'init_app' is executed only once when the application starts;
+  # 'init\_app' is executed only once when the application starts;
   # if you have some app specific stuff to initialize, here's the place to call them.
   init_app: ->
     $('body').render_top 'header'

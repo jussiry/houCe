@@ -28,6 +28,7 @@ try
   global ?= window
 
   global.log = global.l = (args...) -> console.log.apply console, args
+  global.dir =            (args...) -> console.dir.apply console, args
   #global.log = global.l = console.log.bind console # bind messes up with remote console (which overwrites console.log)
 
   # alias for JQuery
@@ -84,6 +85,10 @@ try
     Object.defineProperty Object.prototype, 'forEach',  value:
       (func)-> Object.each @, (key,val)-> func(val,key)
 
+  # child() creates a new object that inherits from the given object
+  global.child = (o)-> __proto__:o
+  Object.defineProperty Object.prototype, 'child',  (value: -> __proto__:@) if Object.defineProperty?
+
   
   # Object prototype:
   if Object.defineProperty?
@@ -93,7 +98,23 @@ try
     Object.defineProperty Object.prototype, 'length', value: -> Object.keys(@).length
 
     # NOTE: using Object.prototype.remove would fuck things up properly; no idea why
+
+    # Chek if object is found in array or in object (as top level value)
+    # e.g.  if some_str.is_in ['aa', 'bb', 'cc'] then ...
+    # NOTE: works only for primitives, not objects!
+    Object.defineProperty Object.prototype, 'is_in', value: (arr_or_obj)->
+      for own k,v of arr_or_obj
+        return true if @+'' is v+'' and typeof v isnt 'object'
+      false
+
+    # result invokes the object if it is a function, other wise just returns it
+    Object.defineProperty Object.prototype, 'result', value: ->
+      if @.constructor is Function then @() else @
+      # NOTICE: 123.result() isnt 123 (dunno how this should be fixed)
   
+  global.result_of = (a)->
+    if typeof a is 'function' then a() else a
+
   #global.log = global.l = console.log # causes illegal invocation on client?
   #global.log = global.l = console.log.bind(console) # nah, don't help; log row just points inside sugar.js
 

@@ -3,9 +3,9 @@
 #
 # When page is changes:
 #
-# * old pages gets `close` event.
-# * new page is initialized.
-# * new page gets `open` event.
+# * old page template gets `close` event.
+# * new page template is initialized.
+# * new page template gets `open` event.
 
 global.PageHandler = do ->
   
@@ -18,8 +18,9 @@ global.PageHandler = do ->
 
   me =
   
-  path:       [] # current path
-  path_stack: []
+  path:         [] # current path
+  path_stack:   []
+  path_history: [] # for error logs
 
   start_url_checking: ->
     # init hash checker
@@ -28,15 +29,18 @@ global.PageHandler = do ->
       PageHandler.check_url_hash()
     else setInterval PageHandler.check_url_hash, 100
 
-  get_page: -> Pages[me.path[0] or me.main_page]
+  get_page: -> Templates[me.path[0] or me.main_page]
   
   get_param: (num)->
     return alert "Incorrect param index! (1 is first)" if num < 1
-    me.path[num]
+    if me.path[num].parsesToNumber() then me.path[num].toNumber() \
+                                     else me.path[num]
   get_params: (num)->
     num ?= -1
     log "WARNING: not enough url parameters." if me.path.length < 1+num
-    me.path[1..num]
+    me.path[1..num].map (param)->
+      if param.parsesToNumber() then param.toNumber() \
+                                else param
   
   go_back: (default_prev)->
     me.open_page
@@ -53,7 +57,7 @@ global.PageHandler = do ->
       new_path = hash[3..-1].split('/')
       # Check if hash path has changed
       unless Object.equal new_path, me.path
-        prev_page = if me.path.isEmpty() then null else Pages[ me.path[0] ]
+        prev_page = if me.path.isEmpty() then null else Templates[ me.path[0] ]
         # Change state
         me.path_stack.push me.path if me.path.first()?
         me.path = new_path
@@ -71,7 +75,7 @@ global.PageHandler = do ->
     # close old page if event exists:
     if args?.new_path
       # close event for old page not yet fired; do it here if exists
-      old_page = Pages[me.path[0]]
+      old_page = Templates[me.path[0]]
       me.path = args.new_path
       if old_page?.close? and not args.already_closed
         old_page.close me.open_page.bind me, new_path: args.new_path, already_closed: true
@@ -80,16 +84,25 @@ global.PageHandler = do ->
       # check\_url\_hash will be fired but won't do anythign since state already mathches hash
       window.location.hash = hashbang + args.new_path.join '/'
   
+    me.path_history.push me.path
+
     me.before_open_page()
     
-    page_name = me.path[0]
-    
-    if Pages?[page_name]?
-      log "UH: '#{page_name}' controller found"
-      Pages[page_name].open()
+    page_name = me.get_page().name
+    log 'me.get_page()', me.get_page()
+    log 'page_name', page_name
+    templ = Templates[page_name]
+    if templ?
+      log "PageHandler: '#{page_name}' controller found"
+      if templ.open?
+        templ.open.apply templ, me.get_params()
+      else
+        pc = $('#page_container')
+        if pc.is_in_dom() then pc.render page_name \
+                          else log "PageHandler ERROR: template '#{page_name}' has no @open defined!"
     else
-      log "UH: no page found!"
-      $('#page_content').html "Page <strong>#{page_name}</strong> not found!"
+      log "PageHandler: there is no such template: '#{page_name}'"
+      $('#page_content').html "Template <strong>#{page_name}</strong> not found!"
     
     me.after_open_page()
       

@@ -13,11 +13,10 @@
     li "#{yield -> strong 'Config'}: includes all static settings."
     li "#{yield -> strong 'Data'}: includes all dynamic data, which will be saved automatically to localStorage when app exits."
     li "#{yield -> strong 'Models'}: model part of the MVC patter, handles retrieving and manipulation of Data."
-    li "#{yield -> strong 'Pages'}: page controllers (C of MVC), first part of URL hash always matches name of the current page,
-        which also matches the name of the page file (e.g. #{yield -> code 'intro.page'})."
-    li "#{yield -> strong 'Templates'}: V of MVC, every .templ and .page file under /client folder has template
-                                        corresponding to the files name in Templates."
-  p "Each module is also a global object, so instead of typing #{yield -> code 'houCe.Data'} you can just type #{yield -> code 'Data'}.
+    li "#{yield -> strong 'Templates'}: Every .templ file under /client folder has template
+                corresponding to that files name in Templates. Besides HTML definition, each template
+                can also have controllers and style definitions for that UI module."
+  p "Each namespace module is also a global object, so instead of typing #{yield -> code 'name_of_your_project.Data'} you can just type #{yield -> code 'Data'}.
      Speaking of Data, from #{yield -> code 'Data.people'} you can now find all your friends we just retrieved from Facebook."
   p "When you create models, such as #{yield -> code 'Models.person'} houCe automatically creates corresponding
      #{yield -> code 'Data.people'} to inhabit all the objects created by the model."
@@ -27,7 +26,7 @@
   h3 'Pages'
   p "Create copy of intro.page and rename it to #{yield -> code 'my_first.page'}. Do some modifications to
      its @html function and change the hash of your browsers URL to '#{yield -> code '#!/my_first'}'."
-  p "By changing #{yield -> code 'main_page'} from #{yield -> code 'app_init.coffee'} you can make this your main page."
+  p "By changing #{yield -> code 'main_page'} from #{yield -> code 'app_init.coffee'} you can make this template your main page."
   
   h3 'Models'
   p "Create item.coffee under '/client/models' and copy the following content to it:"

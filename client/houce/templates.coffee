@@ -3,15 +3,8 @@
 
 Houce.init_templates = ->
   for templ_name, container of Templates
-    if container.page?
-      # Execute page if it is a function. @page = ->  -->  @page = do ->
-      Pages[templ_name] = switch typeof container.page
-        when 'object'   then container.page 
-        when 'function' then container.page()
-      # Move @page under Pages: Tempaltes[name].page --> Pages[name]
-      Pages[templ_name].name = templ_name
-      # link @page under template to same object:
-      Templates[templ_name].page = Pages[templ_name]
+    # bind name of template under each template
+    container.name = templ_name
 
     # TODO: do binding of container iteratively ?
 
@@ -37,11 +30,10 @@ Houce.render = (template_name, data_obj={}, extra_data)->
   templ = Templates[template_name]
   throw Error("Template '"+template_name+"' not found.") unless templ?
   
-  # Extra data is bound to rendered object without modifying the original object
-  if extra_data
-    proto = data_obj.__proto__
-    data_obj = merge Object.clone(data_obj), extra_data
-    data_obj.__proto__ = proto
+  # create child of data_obj, so it won't get modified by coffeekup (e.g. if data_obj is a deal)
+  data_obj = child data_obj
+  # merge extra data; again the principle here is to not modify the original object
+  merge data_obj, extra_data if extra_data?
 
   # bind data of last rendered object to template (@d to access)
   templ.d = data_obj   
@@ -69,35 +61,3 @@ jQuery.fn.render_bottom = (args...)->
 jQuery.fn.render_top = (args...)->
   @.prepend Houce.render.apply null, args
 
-# jQuery helpers
-jQuery.fn.is_in_dom = -> @parents('body').length > 0
-# TODO: which is faster: .parents() or .contains() ? http://api.jquery.com/jQuery.contains/
-
-# Retuns title of the current, or given page
-Houce.page_title = (page)->
-  page = Pages[page] if typeof page is 'string'
-  page ?= PageHandler.get_page()
-  title = page.title or ''
-  if typeof title is 'function' then title() \
-                                else title
-
-
-# No logical place for Houce.error?
-Houce.error = (error_str, file_path, line_number)->
-  
-  # skip known bugs
-  return if ["Uncaught TypeError: Cannot call method 'replace' of undefined"].has error_str
-
-  return unless Houce.error.logging_on
-  
-  Templates.notice.error dict 'error_notice' if Templates.notice?
-  
-  # Send to sever
-  $.post '/err_logs',
-    ua:        navigator.userAgent
-    err_msg:   error_str
-    err_stack: "[#{line_number}, #{file_path}]"
-    non_err_err:  JSON.stringify arguments
-    err_title:    str
-    timestamp:    Date.now()
-    path_history: JSON.stringify PageHandler.path_history

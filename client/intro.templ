@@ -1,30 +1,41 @@
 
 
-### @page is the Page controller. ###
 
-@page =
-  # Here you can define page tile (as string or function that returns string).
-  # Use Houce.page_title() to retrieve title of current or with arg some other page.
-  title: "Intro page"
-  # Each page has open event, that is executed when first part of the URL hash
-  # (.../#!/page_name/...) equals to the name of the page.
-  open: ->
-    if Houce.apis.is_connected 'fb' #.access_token?
-      $('#page_content').html "<div style='margin: 3em 2em;'>Loading...</div>"
-      Models.person.get 'me', (me)->
-        me.get_friends ->
-          $('#page_content').render 'intro'
-    else
-      $('#page_content').render 'intro'
-
-  # Pages can also define 'close' event, that gets executed when user leaves the page.
-  # Close event needs to execute the callback, or othervise the new page is never opened.
-  close: (cb)->
-    cb() if confirm "Do you want to leave 'intro' page?", 'yes', 'no'
+# Sepcial objects in templates:
+# * html
+# * init
+# * open
+# * close
+# * style
+# * title
 
 
-### @html defines the CoffeeKup function for parsing the HTML of the template. ###
+# Templates can have an 'open' event, which gets executed when first part
+# of the URL hash (.../#!/page_name/param1/param2/...) equals to the name of the template.
+# Open event are normally used for loading the necessary data before rendering
+# the template, and defining where the template gets rendered.
+@open = (param1, param2)->
+  
+  # If you add parameter to url (e.g.  /#!/intro/dog/34) they be passed as arguments for @open function.
+  log "Parameters for intro: ", param1, param2
 
+  if Houce.apis.is_connected 'fb' #.access_token?
+    $('#page_content').html "<div style='margin: 3em 2em;'>Loading...</div>"
+
+    Models.person.get 'me', (me)->
+      me.get_friends ->
+        $('#page_content').render 'intro'
+  else
+    $('#page_content').render 'intro'
+
+
+# Page templates can also define 'close' event, that gets executed when user leaves the page.
+# Close event needs to execute the callback, or othervise the new page is never opened.
+@close = (cb)->
+  cb() if confirm "Do you want to leave 'intro' page?", 'yes', 'no'
+
+
+# @html defines the CoffeeKup function for parsing the HTML of the template.
 @html = ->
   h1 dict 'welcome_title' # Look at /client/utils/dictionary.coffee
   api_access = (Houce.apis.is_connected 'fb') #or (Houce.apis.is_connected 'google')
@@ -65,6 +76,11 @@
       Houce.oauth2.disconnect app
       location.reload()
     return false
+
+
+# Here you can define page tile (as string or function that returns string).
+# Use Houce.page_title() to retrieve title of current or with arg some other page.
+@title = "Intro page"
 
 
 @style =

@@ -185,9 +185,11 @@ for_files_in = (path, file_func)->
     file_str = fs.readFileSync(file_path).toString()
 
     switch file_extension
+      
       when 'coffee'
         JS += "\n\n\n/* --- #{app_file_path.toUpperCase()} --- */\n\n"
         JS += CoffeeScript.compile file_str, {'filename': app_file_path} #, (err) -> throw err if err
+      
       when 'less'
         do ->
           fname = file_name
@@ -201,6 +203,7 @@ for_files_in = (path, file_func)->
             less_css += css
             log "              #{fname}.less length: #{less_css.length}"
             fs.writeFileSync config.app_dir+'/public/stylesheets/less_styles.css', less_css, 'utf8', (err)-> if err then throw err
+      
       when 'ccss'
         try
           file_js = CoffeeScript.compile file_str, bare:true
@@ -211,41 +214,35 @@ for_files_in = (path, file_func)->
           ccss_css += ccss.compile ccss_obj
         catch err
           error "\nERROR in compiling CCSS file: #{file_name}.#{file_extension}: #{err}"
-      when 'templ', 'page'
-        # _page properties: templ, style, page, init_
-        # Call template file with empty object and bind all functions to that:
-        try
-          templ_str = (CoffeeScript.compile file_str, {}).replace /\}\).call\(this\);\n$/,
-                                                                "return this;}).call({});"  # 
-          `with( ccss_helpers ){
-            templates[file_name] = eval(templ_str);
-          }`
-        catch err
-          error "\nError in processing template: #{file_name.toUpperCase()}.#{file_extension.toUpperCase()} \n\n#{err.stack}"
-          #throw err
-        # check .page's have @page
-        if file_extension is 'page' and not templates[file_name].page?
-          error "#{file_name}.page does not have @page variable! Use .templ extension if it's not a page.\n"
-        if file_extension is 'templ'
-          # check @html exists in .templ
-          unless templates[file_name].html?
-            error "#{file_name}.#{file_extension} is missing @html variable!\n"
-          # check .templ's don't have @page
-          if templates[file_name].page?
-            error "#{file_name}.templ has @page variable! You need to change it to .page -extension to keep things clear.\n"
-        # Compile style
-        {style} = templates[file_name]
-        if style?
-          #log "STYLE in #{file_name}",style, typeof style
-          if typeof style is 'function'
-            #log "style is function"
-            style = style()
-            #log "styles after exec: ",style
+      
+      when 'templ'
+        # process @style:
+        file_str = file_str.trim() # trim file_str to make style_regexp bit simpler
+        style_regexp = /// @style       # begins with @style
+                          (.|\n)*?      # anything, but:
+                          ($|           # end of file, or
+                          \n(?!\s)) /// # new line followed by anything else than intendation.
+        file_str.each style_regexp, (style_str)->
+          try
+            style_js = result_of CoffeeScript.compile style_str, bare:true
+            `with( ccss_helpers ){
+              style = eval(style_js);
+            }`
+          catch err
+            error "in parsing @style of #{file_name}.templ\n#{err}"
           ccss_shortcuts style
           try ccss_css += ccss.compile style
           catch err
             error "\nERROR in compiling @style in template: #{file_name}.#{file_extension}: #{err}"
-          delete templates[file_name].style # no need to send style obj to client
+          #delete templates[file_name].style # no need to send style obj to client
+        file_str = file_str.remove style_regexp.addFlag 'g'
+        
+        # process rest of the template:
+        try templ_str = CoffeeScript.compile file_str, bare:true
+        catch err
+          error "in compiling #{file_name}.templ\n#{err}"
+        templ_str = "new function(){\n#{templ_str} }" #\nreturn this;\n
+        templates[file_name] = templ_str
       else
         log "No action for #{app_file_path}"
 
@@ -265,22 +262,27 @@ for_files_in = (path, file_func)->
   @create_manifest()
 
   ### Save templates to templates.js ###
-  stringify = (main_obj)->
-    switch typeof main_obj
-      when 'object'
-        return 'null' if main_obj is null
-        obj_strings = []
-        main_obj.each (name, obj)->
-          #log "processing: #{name}"
-          obj_strings.push "'#{name}': #{stringify obj}"
-        "{ #{obj_strings.join ',\n'} }"
-      when 'string'    then "'#{main_obj}'"
-      when 'function'  then main_obj.toString()
-      when 'undefined' then 'undefined'
-      when 'number', 'boolean' then main_obj
-      else error "#{typeof main_obj}'s not valid object!"
-    
-  full_templ_str = "window.Templates = \n#{stringify templates};"
+  # stringify = (main_obj)->
+  #   switch typeof main_obj
+  #     when 'object'
+  #       return 'null' if main_obj is null
+  #       obj_strings = []
+  #       main_obj.each (name, obj)->
+  #         #log "processing: #{name}"
+  #         obj_strings.push "'#{name}': #{stringify obj}"
+  #       "{ #{obj_strings.join ',\n'} }"
+  #     when 'string'    then "'#{main_obj}'"
+  #     when 'function'  then main_obj.toString()
+  #     when 'undefined' then 'undefined'
+  #     when 'number', 'boolean' then main_obj
+  #     else error "#{typeof main_obj}'s not valid object!"
+  #full_templ_str = "window.Templates = \n#{stringify templates};"
+  full_templ_str = "window.Templates = {"
+  for name,func_str of templates
+    full_templ_str += "'#{name}': #{func_str},\n"
+  full_templ_str = full_templ_str[0..-2] + '};'
+
+  # \n#{stringify templates};"
   fs.writeFileSync config.app_dir+'/public/templates.js', full_templ_str, 'utf8', (err)-> if err then error err
   
 

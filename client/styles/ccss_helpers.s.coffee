@@ -50,9 +50,12 @@
   boxShadow:       str
 
 
-# @vgradient (from, to)->
-#   background: -webkit-gradient(linear, 0 0, 0 100%, from(@from), to(@to));
-#   background: -moz-linear-gradient(90deg, @to, @from);
+@gradient = (from, to)->
+  # TODO: ERROR: CCSS fails to make multiple declarations with same name
+  # (temporary hack: use background_image for the other)
+  background: "-ms-linear-gradient(90deg, #{to}, #{from})"
+  background: "-moz-linear-gradient(90deg, #{to}, #{from})"
+  background_image: "-webkit-gradient(linear, 0 0, 0 100%, from(#{from}), to(#{to}))"
 
 
 @transition = (str)->
