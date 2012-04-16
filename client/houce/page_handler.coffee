@@ -89,17 +89,15 @@ global.PageHandler = do ->
     me.before_open_page()
     
     page_name = me.get_page().name
-    log 'me.get_page()', me.get_page()
-    log 'page_name', page_name
     templ = Templates[page_name]
     if templ?
-      log "PageHandler: '#{page_name}' controller found"
+      log "PageHandler: '#{page_name}' template found"
       if templ.open?
         templ.open.apply templ, me.get_params()
       else
-        pc = $('#page_container')
+        pc = $('#page_content')
         if pc.is_in_dom() then pc.render page_name \
-                          else log "PageHandler ERROR: template '#{page_name}' has no @open defined!"
+                          else log "ERROR: template '#{page_name}' has no @open defined!"
     else
       log "PageHandler: there is no such template: '#{page_name}'"
       $('#page_content').html "Template <strong>#{page_name}</strong> not found!"
