@@ -53,11 +53,11 @@ Houce.render = (template_name, data_obj={}, extra_data)->
     templ.el = html_str
   
 
-# JQuery shortcuts for Houce.render
-jQuery.fn.render = (args...)->
+# $ shortcuts for Houce.render
+$.fn.render = (args...)->
   @.html Houce.render.apply null, args
-jQuery.fn.render_bottom = (args...)->
+$.fn.render_bottom = (args...)->
   @.append Houce.render.apply null, args
-jQuery.fn.render_top = (args...)->
+$.fn.render_top = (args...)->
   @.prepend Houce.render.apply null, args
 

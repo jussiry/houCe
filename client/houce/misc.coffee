@@ -1,6 +1,6 @@
 
-# jQuery helpers
-jQuery.fn.is_in_dom = -> @parents('body').length > 0
+# $ helpers
+$.fn.is_in_dom = -> @parents('body').length > 0
 # TODO: which is faster: .parents() or .contains() ? http://api.jquery.com/jQuery.contains/
 
 # Retuns title of the current, or given page
@@ -14,14 +14,15 @@ Houce.page_title = (templ)->
 # No logical place for Houce.error?
 Houce.error = (error_str, file_path, line_number)->
   # skip known bugs
-  return if [
+  return if error_str.is_in [
     "Uncaught TypeError: Cannot call method 'replace' of undefined" # jquery.animate-enhanced bug
-  ].has error_str
-  return unless Houce.error.logging_on
+  ] or not Houce.error.logging_on
+
   # Show error message to user
   Templates.notice.error dict 'error_notice' if Templates.notice?
   # Send to sever
-  [title, msg] = error_str.split ':'
+  [title, msg...] = error_str.split ':'
+  msg = msg.join ':'
   $.post '/err_logs',
     ua:        navigator.userAgent
     err_title: title
@@ -30,3 +31,4 @@ Houce.error = (error_str, file_path, line_number)->
     non_err_err:  JSON.stringify arguments
     timestamp:    Date.now()
     path_history: JSON.stringify PageHandler.path_history
+

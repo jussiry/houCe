@@ -43,8 +43,11 @@ global.PageHandler = do ->
                                 else param
   
   go_back: (default_prev)->
-    me.open_page
-      new_path: (me.path_stack.pop() or default_prev or [me.main_page])
+    if me.path_stack.length > 0
+      me.path_stack.pop()
+      history.back()
+    else
+      me.open_page new_path: default_prev or [me.main_page]
     return false
   
   # Gets executed evrytime window.locatio.hash changes.

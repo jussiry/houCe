@@ -67,8 +67,8 @@ Houce.stringify = (main_obj)->
           else
             obj_strings = for own name, child_obj of obj
               stack.splice -1, 1, name
-              if name is 'deferred'
-                continue
+              #if name is 'deferred'
+              #  continue
               if is_in_models child_obj # Deal, Coupon, etc...
                 #log 'model found', stack.clone()
                 value = if stack.length is 2 and plur_model_names.has stack.at -2  #depth is 2 and plur_model_names.has name

@@ -69,10 +69,11 @@ try
 
 
   #### Call same function many times with different params
-  Function.prototype.repeat = (args...)->
-    # TODO: add possibility for many params (given as array)
-    # hmm, no so useful since can't retain functions 'this'..?
-    @ param for param in args
+  if Object.defineProperty?
+    Object.defineProperty Function.prototype, 'repeat', value: (args...)->
+      # TODO: add possibility for many params (given as array)
+      # hmm, no so useful since can't retain functions 'this'..?
+      @ param for param in args
     
 
   # Define .forEach also for objects; equal to .each,

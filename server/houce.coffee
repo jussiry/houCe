@@ -228,6 +228,7 @@ for_files_in = (path, file_func)->
             `with( ccss_helpers ){
               style = eval(style_js);
             }`
+            style = result_of style
           catch err
             error "in parsing @style of #{file_name}.templ\n#{err}"
           ccss_shortcuts style
