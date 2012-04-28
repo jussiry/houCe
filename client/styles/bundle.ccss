@@ -18,8 +18,7 @@
 
 body:
   color: font_black
-  font_family: "'PT Sans', sans-serif"
-  font_weight: 700
+  font_family: "Arial, Helvetica, sans-serif"
   font_size:   16
   line_height: 21
 

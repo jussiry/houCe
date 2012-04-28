@@ -1,7 +1,6 @@
 
 try
 
-
   # Sugar.js extensions:
   #Array::equals = (another_arr)-> Object.equals this, another_arr
   #Object.defineProperties Object.prototype, a: value: 3 #, b: 4
@@ -49,6 +48,7 @@ try
   # Sugar.js Object shorthands:
   global.each  = Object.each #(a,b)-> Object.each a, b #.bind Object
   global.merge = Object.merge
+  global.equal = Object.equal
 
 
   # Missing functions in Sugar.js:
@@ -87,48 +87,56 @@ try
       (func)-> Object.each @, (key,val)-> func(val,key)
 
   # child() creates a new object that inherits from the given object
-  global.child = (o)-> __proto__:o
-  Object.defineProperty Object.prototype, 'child',  (value: -> __proto__:@) if Object.defineProperty?
+  global.child = (o, child={})->
+    child.__proto__ = o
+    child
+  #Object.defineProperty Object.prototype, 'child',  (value: -> __proto__:@) if Object.defineProperty?
 
   
   # Object prototype:
   if Object.defineProperty?
-    # Does not work on nokia, USE ONLY FOR DEBUGGING
     Object.defineProperty Object.prototype, 'first',  value: -> Object.values(@)[0]
     Object.defineProperty Object.prototype, 'remove_els', value: (test_func)-> Object.remove_els(@, test_func)
-    Object.defineProperty Object.prototype, 'length', value: -> Object.keys(@).length
-
-    # NOTE: using Object.prototype.remove would fuck things up properly; no idea why
-
-    # Chek if object is found in array or in object (as top level value)
+    
+    # Chek if primitive is found in array or in object (as top level value)
     # e.g.  if some_str.is_in ['aa', 'bb', 'cc'] then ...
     # NOTE: works only for primitives, not objects!
     Object.defineProperty Object.prototype, 'is_in', value: (arr_or_obj)->
       for own k,v of arr_or_obj
         return true if @+'' is v+'' and typeof v isnt 'object'
       false
+    # Same as .is_in, except check also for partial strings
+    # e.g. "baad".matches['aa'] # true
+    Object.defineProperty String.prototype, 'matches', value: (strings)->
+      return null unless typeof strings is 'array' or typeof strings is 'object'
+      for own k,str of strings
+        return true if @.match str
+      false
 
-    # result invokes the object if it is a function, other wise just returns it
-    Object.defineProperty Object.prototype, 'result', value: ->
-      if @.constructor is Function then @() else @
-      # NOTICE: 123.result() isnt 123 (dunno how this should be fixed)
+
+    # CONFLICTS WITH GOOGLE MAPS:
+    # Object.defineProperty Object.prototype, 'length', value: -> Object.keys(@).length
+    # # result invokes the object if it is a function, other wise just returns it
+    # Object.defineProperty Object.prototype, 'result', value: ->
+    #   if @.constructor is Function then @() else @
+    #   # NOTICE: 123.result() isnt 123 (dunno how this should be fixed)
+
   
   global.result_of = (a)->
     if typeof a is 'function' then a() else a
 
-  #global.log = global.l = console.log # causes illegal invocation on client?
-  #global.log = global.l = console.log.bind(console) # nah, don't help; log row just points inside sugar.js
-
+  
   #global.desc = (msg)-> console.info(msg) # describes code
 
   
   # ifs: short version for returning the value (normally string) if argument
   # exists, otherwise returns empty string:
   global.ifs = (arg, true_str, false_str)->
+    true_str = arg unless true_str?
     if arg then true_str else (if false_str? then false_str else '')
 
   global.is_blank = (obj)-> not obj? or (Object.isString(obj) and /^\s*$/.test obj) \
-                                     or (Object.isObject(obj) and Object.keys(obj).length == 0)
+                                     or (typeof object is 'object' and Object.keys(obj).length == 0)
 
   global.callbacks = (args...)->
     if args.length is 2

@@ -24,8 +24,8 @@
   h2 "Some things to try"
   
   h3 'Pages'
-  p "Create copy of intro.page and rename it to #{yield -> code 'my_first.page'}. Do some modifications to
-     its @html function and change the hash of your browsers URL to '#{yield -> code '#!/my_first'}'."
+  p "Create copy of intro.templ and rename it to #{yield -> code 'my_first_page.templ'}. Do some modifications to
+     its @html function and change the hash of your browsers URL to '#{yield -> code '#!/my_first_page'}'."
   p "By changing #{yield -> code 'main_page'} from #{yield -> code 'app_init.coffee'} you can make this template your main page."
   
   h3 'Models'

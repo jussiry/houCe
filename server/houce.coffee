@@ -11,27 +11,32 @@ ccss          = require 'ccss'
 ccss_helpers  = require config.app_dir+'/client/styles/ccss_helpers.s.coffee'
 
 less_options  = paths: [config.app_dir+'/client', config.app_dir+'/client/styles']
-  
+
 # Helpers:
 
 ccss_shortcuts = (obj)->
   for orig_key, val of obj
     ccss_shortcuts val if typeof val is 'object'
     # split multi definitions:
-    keys = orig_key.split(/,|__/).map('trim')
+    keys = orig_key.split(/,|___/).map('trim')
     keys.each (k)->
       # change i_plaa to '#plaa' and c_plaa to '.plaa'
-      k = k.replace(/(^| |,)c_/g, '.').replace(/(^| |,)i_/g, '#')
+      k = k.replace(/^c_/g, '.').replace(/^i_/g, '#') #(^| |,)
+      k = k.replace(/_c_/g, '_.').replace(/_i_/g, '_#')
+      # change #plaa_.daa (orig: i_plaa_c_daa) to '#plaa.daa'
+      k = k.replace(/_\./g, '.').replace(/_#/, '#')
       # font_size to font-size
       if typeof val isnt 'object'
         k = k.replace(/_/g,'-')
+      # change number values to pixels
+      val = "#{val}px" if typeof val is 'number' and not k.is_in ['font-weight', 'opacity', 'z-index']
       # set new key and delete old:
+      if typeof val is 'object'
+        obj[k] ?= {}
+        obj[k].merge val
+      else
+        obj[k] = val
       if k isnt orig_key
-        if typeof val is 'object'
-          obj[k] ?= {}
-          obj[k].merge val
-        else
-          obj[k] = val
         delete obj[orig_key]
   obj
 
@@ -226,7 +231,7 @@ for_files_in = (path, file_func)->
           try
             style_js = result_of CoffeeScript.compile style_str, bare:true
             `with( ccss_helpers ){
-              style = eval(style_js);
+              var style = eval(style_js);
             }`
             style = result_of style
           catch err
