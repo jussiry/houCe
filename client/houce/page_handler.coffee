@@ -13,9 +13,8 @@ global.PageHandler = do ->
 
   # The paradigm favourided in houCe for making singleton objects is to execute function (do ->)
   # with private variables defined above and public vars defined below by
-  # returnin a literal object.
+  # returning a literal object.
   # Use 'me' inside public methods to refer to self and try to avoid using 'this' (or @).
-
   me =
   
   path:         [] # current path
@@ -44,25 +43,30 @@ global.PageHandler = do ->
   
   go_back: (default_prev)->
     if me.path_stack.length > 0
-      me.path_stack.pop()
+      me.back_path = me.path_stack.pop() or []
       history.back()
     else
       me.open_page new_path: default_prev or [me.main_page]
     return false
   
   # Gets executed evrytime window.locatio.hash changes.
-  # TODO change to History API
-  check_url_hash: ->
-    # TODO: find out why @ becomes DOMWindow when called from setInterval
-    # Works with 'new ->', but not with object literal?
+  check_url_hash: ()->
     hash = window.location.hash # shorthands
     if hash[0..2] == hashbang
       new_path = hash[3..-1].split('/')
+      return me.go_back() if equal me.path_stack.last(), new_path
       # Check if hash path has changed
       unless Object.equal new_path, me.path
         prev_page = if me.path.isEmpty() then null else Templates[ me.path[0] ]
-        # Change state
-        me.path_stack.push me.path if me.path.first()?
+        if me.back_path?
+          # back button pressed: dont push to stack and make sure url hash matches wanted page
+          if me.back_path.length
+            new_path = me.back_path
+            window.location.hash = hashbang + new_path.join('/')
+          me.back_path = null  # then me.going_back = false
+        else if me.path.first()? and me.path.first() isnt new_path.first()
+          # push to stack only when page (first part of path) changes - not just params
+          me.path_stack.push me.path 
         me.path = new_path
         # Close page event or directly open new page:
         if prev_page?.close?
@@ -83,7 +87,6 @@ global.PageHandler = do ->
       if old_page?.close? and not args.already_closed
         old_page.close me.open_page.bind me, new_path: args.new_path, already_closed: true
         return
-
       # check\_url\_hash will be fired but won't do anythign since state already mathches hash
       window.location.hash = hashbang + args.new_path.join '/'
   
@@ -94,13 +97,13 @@ global.PageHandler = do ->
     page_name = me.get_page().name
     templ = Templates[page_name]
     if templ?
-      log "PageHandler: '#{page_name}' template found"
+      log "PageHandler: '#{page_name}' controller found"
       if templ.open?
         templ.open.apply templ, me.get_params()
       else
         pc = $('#page_content')
         if pc.is_in_dom() then pc.render page_name \
-                          else log "ERROR: template '#{page_name}' has no @open defined!"
+                          else log "PageHandler ERROR: template '#{page_name}' has no @open defined!"
     else
       log "PageHandler: there is no such template: '#{page_name}'"
       $('#page_content').html "Template <strong>#{page_name}</strong> not found!"

@@ -1,0 +1,60 @@
+
+
+# CCSS is CSS written in CoffeeScript: https://github.com/aeosynth/ccss
+# You can type keys with string quotation marks or without them, but
+# when you don't use quotation marks notice that there are some special
+# syntactic sugar to confrom to CoffeeScript syntax:
+#
+# i_name -> '#name'
+# c_name -> '.name'
+# font_size -> 'font-size'
+# fontSize  -> 'font-size'
+# i_parent___c_child -> '#parent, .child'
+# c_sister_c_brother -> '.sister.brother'
+
+
+
+# TYPOGRAPHY
+
+body:
+  color: font_black
+  font_family: "'PT Sans', sans-serif"
+  font_weight: 700
+  font_size:   16
+  line_height: 21
+
+
+# DEFAUL ELEMENT STYLES
+
+h1:
+  padding_top:    30
+  padding_bottom: 15
+h2:
+  font_size:     18
+  margin_bottom: 0
+h3:
+  font_size:     14
+  margin_bottom: -14
+
+'div, span, img, a, h1, h2, h3, h4, button':
+  position: 'relative' # TODO: does this affect rendering speed?
+
+a: text_decoration: 'none'
+
+button:
+  border: 'none'
+  background: 'none'
+
+
+# HELPER CLASSES
+
+'* html .clearfix': height: '1%'
+'*+html .clearfix': display: 'inline-block'
+'.clearfix:after':
+  content: "."
+  display: 'block'
+  height: 0
+  clear: 'both'
+  visibility: 'hidden'
+
+c_absolute: position: 'absolute'

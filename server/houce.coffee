@@ -278,7 +278,7 @@ for_files_in = (path, file_func)->
   #     when 'number', 'boolean' then main_obj
   #     else error "#{typeof main_obj}'s not valid object!"
   #full_templ_str = "window.Templates = \n#{stringify templates};"
-  full_templ_str = "window.Templates = {"
+  full_templ_str = "window.Templates = window.T = {"
   for name,func_str of templates
     full_templ_str += "'#{name}': #{func_str},\n"
   full_templ_str = full_templ_str[0..-2] + '};'

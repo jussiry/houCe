@@ -1,19 +1,5 @@
 
 
-
-$.ajaxSetup
-  async: true
-  crossDomain: true
-  dataType: 'json'
-  #dataType: 'jsonp'
-  contentType: "application/x-www-form-urlencoded; charset=utf-8"
-  beforeSend: null #($jqxhr, params)-> $.ajaxStack.push $jqxhr
-  error: (request, statustext, errormsg)->
-    unless errormsg == 'abort' or statustext == 'abort'
-      alert "ajax error: #{statustext} :: #{errormsg}"
-
-
-
 Houce.set_up_new_api = (args)->
   # TODO:
   # instead of adding stuff to Config, Data and api utils
@@ -46,9 +32,6 @@ Houce.oauth2 = do ->
     location.href = "#{Config.apis[app].auth_url}?response_type=token&client_id=#{Config.apis[app].app_id}&scope=#{Config.apis[app].permissions}&redirect_uri=#{encodeURIComponent redirect_uri}"
   
   check_for_access_token: ->
-    
-    # TODO: !/intro: undefined found in Data.apis.google ...
-
     params = {}
     for pa in (location.hash[1..-1].split('&').map (p)-> p.split '=')
       params[pa[0]] = pa[1]
@@ -63,17 +46,23 @@ Houce.oauth2 = do ->
       delete params.path
       delete params.app
     
-    console.info 'access_token_received'
-    
     api_data = Data.apis[app]
     merge api_data, params
-    
+
     if api_data.expires_in? and api_data.expires_in isnt '0' # 0 is offline_access
       api_data.expires_in = Date.now() + api_data.expires_in.toNumber().seconds()
     
-    location.hash = "#!/#{path}"
     # init redirect from session:
     me.clean_ss()
+    
+    unless api_data.access_token?
+      log "Failed to retrieve access_token!"
+      location.hash = "#!/#{PageHandler.main_page}"
+    else
+      log 'access_token received!'
+      location.hash = "#!/#{path}"
+    
+    
 
   disconnect: (app)->
     delete Data.apis[app].access_token
