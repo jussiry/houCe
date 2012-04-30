@@ -14,10 +14,10 @@
 # of the URL hash (.../#!/page_name/param1/param2/...) equals to the name of the template.
 # Open event are normally used for loading the necessary data before rendering
 # the template, and defining where the template gets rendered.
-@open = (param1, param2)->
+@open = (args...)->
   
   # If you add parameter to url (e.g.  /#!/intro/dog/34) they be passed as arguments for @open function.
-  log "Parameters for intro: ", param1, param2
+  log "Parameters for @open in intro.templ: ", args
 
   if Houce.apis.is_connected 'fb' #.access_token?
     $('#page_content').html "<div style='margin: 3em 2em;'>Loading...</div>"
@@ -62,7 +62,7 @@
       #a '.connect_status.offline.google', href:'#', 'Google'
       text " we could populate some test data to dig in deeper."
   else
-    text Houce.render 'intro_api_access'
+    templ 'intro_api_access'
 
 
 ### @init function can be use to bind events to template after it has been rendered. ###

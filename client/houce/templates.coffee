@@ -26,6 +26,9 @@ Houce.init_templates = ->
 # Use $(el).render(..), except for partials,
 # for which you'll need to use `$(el).html( Houce.render(template\_name) )`.
 Houce.render = (template_name, data_obj={}, extra_data)->
+  
+  Houce.render.counter += 1
+
   template_name = template_name.name if typeof template_name is 'object'
   templ = Templates[template_name]
   throw Error("Template '"+template_name+"' not found.") unless templ?
@@ -38,20 +41,28 @@ Houce.render = (template_name, data_obj={}, extra_data)->
   # bind data of last rendered object to template (@d to access)
   templ.d = data_obj   
   
-  html_str = CoffeeKup.render templ.html, data_obj,
-                              templ: templ
-                              cache: true
-                              autoescape: false
+  html = CoffeeKup.render templ.html, data_obj,
+                          templ: templ
+                          cache: true
+                          autoescape: false
   
+  # if jquery els (subtemplates) in rendered template
+  if html instanceof Array
+    q_html = $()
+    (q_html = q_html.add el) for el in html
+    html = q_html
+
   if templ.init?
     # Run init function and return template as jQuery object
-    templ.el = $ html_str # jquery element is bound to template (@el to access)
+    templ.el = $ html # jquery element is bound to template (@el to access)
     templ.init templ.el, data_obj # TODO: no need to send templ.el? or send as second param?
     templ.el
   else
     # If no init function (template is "partial") return template as string
-    templ.el = html_str
-  
+    templ.el = html
+
+Houce.render.counter = 0
+
 
 # JQuery shortcuts for Houce.render
 jQuery.fn.render = (args...)->

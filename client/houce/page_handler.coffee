@@ -96,17 +96,19 @@ global.PageHandler = do ->
     
     page_name = me.get_page().name
     templ = Templates[page_name]
+    open_start    = Date.now()
+    open_rendered = Houce.render.counter
     if templ?
-      log "PageHandler: '#{page_name}' controller found"
+      log "PageHandler: #{page_name}.templ found"
       if templ.open?
         templ.open.apply templ, me.get_params()
       else
         pc = $('#page_content')
         if pc.is_in_dom() then pc.render page_name \
-                          else log "PageHandler ERROR: template '#{page_name}' has no @open defined!"
+                          else log "PageHandler ERROR: #{page_name}.templ has no @open defined!"
     else
-      log "PageHandler: there is no such template: '#{page_name}'"
-      $('#page_content').html "Template <strong>#{page_name}</strong> not found!"
-    
+      log "PageHandler: there is no such template: #{page_name}.templ"
+      $('#page_content').html "Template <strong>#{page_name}.templ</strong> not found!"
+    log "PageHandler: #{page_name}: #{Date.now()-open_start}ms for rendering #{Houce.render.counter-open_rendered} template(s)."
     me.after_open_page()
       
