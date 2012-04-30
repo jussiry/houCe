@@ -44,5 +44,5 @@ Houce.init_houce
   # 'init\_app' is executed only once when the application starts;
   # if you have some app specific stuff to initialize, here's the place to call them.
   init_app: ->
-    $('body').render_top 'header'
+    $('body').templ_top 'header'
 

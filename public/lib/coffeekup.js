@@ -68,7 +68,6 @@
   skeleton = function(data) {
     var coffeescript, comment, doctype, h, ie, raw, tag, templ, text, yield, __ck;
     if (data == null) data = {};
-    log('SKELETON CALLED WITH', data);
     if (data.format == null) data.format = false;
     if (data.autoescape == null) data.autoescape = false;
     __ck = {
@@ -269,7 +268,6 @@
   coffeekup.compile = function(template, options) {
     var code, hardcoded_locals, k, t, tag_functions, tags_used, v, _i, _j, _len, _len2, _ref, _ref2;
     if (options == null) options = {};
-    log('templaTE in coffeekup.compile', typeof template);
     if (typeof template === 'function') {
       template = String(template);
     } else if (typeof template === 'string' && (coffee != null)) {

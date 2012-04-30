@@ -65,13 +65,17 @@ Houce.render.counter = 0
 
 
 # JQuery shortcuts for Houce.render
-jQuery.fn.render = (args...)->
+jQuery.fn.templ = (args...)->
+  #log 'args', args
+  #return
+  args[0] = args[0].name if typeof args[0] is 'object'
+  #log 'args in .templ', args
   @.html (el = Houce.render.apply null, args)
   el
-jQuery.fn.render_bottom = (args...)->
+jQuery.fn.templ_bottom = (args...)->
   @.append (el = Houce.render.apply null, args)
   el
-jQuery.fn.render_top = (args...)->
+jQuery.fn.templ_top = (args...)->
   @.prepend (el = Houce.render.apply null, args)
   el
 

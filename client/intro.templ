@@ -22,11 +22,11 @@
   if Houce.apis.is_connected 'fb' #.access_token?
     $('#page_content').html "<div style='margin: 3em 2em;'>Loading...</div>"
 
-    Models.person.get 'me', (me)->
-      me.get_friends ->
-        $('#page_content').render 'intro'
+    Models.person.get 'me', (me)=>
+      me.get_friends =>
+        $('#page_content').templ @ # .templ takes either the name of template or the template object itself
   else
-    $('#page_content').render 'intro'
+    $('#page_content').templ @
 
 
 # Page templates can also define 'close' event, that gets executed when user leaves the page.
