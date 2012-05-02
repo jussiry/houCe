@@ -8,11 +8,11 @@
 # With error:true, background will be red, otherwise yellow.
 
 @error = (msg)-> # red bg
-  $('#overflows').templ_top 'notice', msg:msg, error:true
+  $('#overflows').render_top 'notice', msg:msg, error:true
 
 @warning = (msg)-> # yellow bg
   log "Notice warning!"
-  $('#overflows').templ_top 'notice', msg:msg
+  $('#overflows').render_top 'notice', msg:msg
 
 @init = ($el)->
   $el.animate opacity:1

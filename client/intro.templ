@@ -24,9 +24,9 @@
 
     Models.person.get 'me', (me)=>
       me.get_friends =>
-        $('#page_content').templ @ # .templ takes either the name of template or the template object itself
+        $('#page_content').render @ # .templ takes either the name of template or the template object itself
   else
-    $('#page_content').templ @
+    $('#page_content').render @
 
 
 # Page templates can also define 'close' event, that gets executed when user leaves the page.

@@ -42,7 +42,7 @@ Houce.render = (template_name, data_obj={}, extra_data)->
   templ.d = data_obj   
   
   html = CoffeeKup.render templ.html, data_obj,
-                          templ: templ
+                          me:    templ
                           cache: true
                           autoescape: false
   
@@ -65,17 +65,14 @@ Houce.render.counter = 0
 
 
 # JQuery shortcuts for Houce.render
-jQuery.fn.templ = (args...)->
-  #log 'args', args
-  #return
+jQuery.fn.render = (args...)->
   args[0] = args[0].name if typeof args[0] is 'object'
-  #log 'args in .templ', args
   @.html (el = Houce.render.apply null, args)
   el
-jQuery.fn.templ_bottom = (args...)->
+jQuery.fn.render_bottom = (args...)->
   @.append (el = Houce.render.apply null, args)
   el
-jQuery.fn.templ_top = (args...)->
+jQuery.fn.render_top = (args...)->
   @.prepend (el = Houce.render.apply null, args)
   el
 

@@ -66,7 +66,7 @@
   coffeekup.self_closing = merge_elements('void', 'obsolete_void');
 
   skeleton = function(data) {
-    var coffeescript, comment, doctype, h, ie, raw, tag, templ, text, yield, __ck;
+    var coffeescript, comment, doctype, h, ie, raw, render, tag, templ, text, yield, __ck;
     if (data == null) data = {};
     if (data.format == null) data.format = false;
     if (data.autoescape == null) data.autoescape = false;
@@ -224,7 +224,7 @@
       __ck.buffer.push(String(txt));
       return null;
     };
-    templ = function(t_name, data, extra_data) {
+    render = templ = function(t_name, data, extra_data) {
       if (data == null) data = {};
       if (extra_data == null) extra_data = {};
       return raw(Houce.render(t_name, data, extra_data));
