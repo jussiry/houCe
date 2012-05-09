@@ -4,7 +4,7 @@
   '#page_content.intro':
     strong:  fontSize: '0.9em'
 
-@init = ->  # to test $ templating
+@init = (qel)-> qel.click -> alert 'api access' # to test $ templating
 
 @html = ->
   p "Now, open your browsers console and type: #{yield -> code 'name_of_your_project'}

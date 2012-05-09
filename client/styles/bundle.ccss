@@ -44,6 +44,8 @@ button:
   border: 'none'
   background: 'none'
 
+pre:
+  margin: 0
 
 # HELPER CLASSES
 

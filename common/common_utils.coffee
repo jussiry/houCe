@@ -23,6 +23,7 @@ try
     #Object.defineProperty Object.prototype, 'each',
     #  value: (func)-> Object.each @, func
 
+  console.log 'global:',global
   # GLOBALS:
   global ?= window
 

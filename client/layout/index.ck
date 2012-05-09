@@ -21,7 +21,10 @@ html html_attrs, ->
     div '#overflows', ''
     
     div '#scripts', ->
-      script "window.client_config_from_server = #{JSON.stringify @config};"
+      script """
+        window.client_config_from_server = #{JSON.stringify @config};
+        window.global = window;
+      """
       srcs = [
         #'/preload.js'
         '/lib/modernizr.custom.js'

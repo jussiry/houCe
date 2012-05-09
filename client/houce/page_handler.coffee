@@ -99,7 +99,7 @@ global.PageHandler = do ->
     open_start    = Date.now()
     open_rendered = Houce.render.counter
     if templ?
-      log "PageHandler: #{page_name}.templ found"
+      #log "PageHandler: #{page_name}.templ found"
       if templ.open?
         templ.open.apply templ, me.get_params()
       else
@@ -109,6 +109,6 @@ global.PageHandler = do ->
     else
       log "PageHandler: there is no such template: #{page_name}.templ"
       $('#page_content').html "Template <strong>#{page_name}.templ</strong> not found!"
-    log "PageHandler: #{page_name}: #{Date.now()-open_start}ms for rendering #{Houce.render.counter-open_rendered} template(s)."
+    log "PageHandler: '#{page_name}' page found and rendered in #{Date.now()-open_start}ms (#{Houce.render.counter-open_rendered} templates)."
     me.after_open_page()
-      
+

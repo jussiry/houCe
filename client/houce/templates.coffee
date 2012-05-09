@@ -46,10 +46,21 @@ Houce.render = (template_name, data_obj={}, extra_data)->
                           cache: true
                           autoescape: false
   
-  # if jquery els (subtemplates) in rendered template
+  # TODO: make a better way to add raw/jquery content in templates
+  # (performance wise also without raw-el left in DOM).
+  # Probably should be done alredy in CoffeeKup.
   if html instanceof Array
-    q_html = $()
-    (q_html = q_html.add el) for el in html
+    new_html = ''
+    raws = []
+    for el in html
+      if typeof el is 'string'
+        new_html += el
+      else
+        new_html += "<raw>#{raws.length}</raw>"
+        raws.push el
+    q_html = $(new_html)
+    q_html.el('raw').each (ind, el)->
+      $(el).html raws[parseInt el.innerHTML]
     html = q_html
 
   if templ.init?

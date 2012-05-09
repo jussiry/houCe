@@ -14,11 +14,19 @@ $.ajaxSetup
 # TODO: which is faster: .parents() or .contains() ? http://api.jquery.com/jQuery.contains/
 $.fn.is_in_dom = -> @parents('body').length > 0
 
+$.fn.outerHTML = (s)->
+  if s
+    @before(s).remove()
+  else
+    $("&lt;p&gt;").append(@eq(0).clone()).html()
+    
+
 # Return element(s) from selection - eiher with filter or with find
 $.fn.el = (selector)->
-  filtered = @filter selector
-  if filtered.length then filtered \
-                     else @find selector
+  # filtered = @filter selector
+  # if filtered.length then filtered \
+  #                    else @find selector
+  @filter(selector).add @find(selector)
 
 #$.fn.animate_orig = $.fn.animate
 $.fn.anim = (args...)->
@@ -55,7 +63,7 @@ Houce.error = (error_str, file_path, line_number)->
   log 'file_path', file_path
 
   # Show error message to user
-  Templates.notice.error dict 'error_notice' if Templates.notice?
+  Templates.notice.error (dict 'error_notice') or "Error!"  if Templates.notice?
   # Send to sever
   [title, msg...] = error_str.split ':'
   msg = msg.join ':'

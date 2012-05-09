@@ -14,6 +14,11 @@
   log "Notice warning!"
   $('#overflows').render_top 'notice', msg:msg
 
+
+@html = ->
+  div '#flash_notice', class:(ifs @error, 'error'), @msg
+
+
 @init = ($el)->
   $el.animate opacity:1
   end = -> $el.animate opacity:0, 1000, -> $el.remove()
@@ -40,5 +45,4 @@
   '#flash_notice.error': do ->
     background: 'rgb(200, 50, 50)'  # backup if gradient don't work
     gradient   'rgb(200, 50, 50)', '#800d0d'
-@html = ->
-  div '#flash_notice', class:(ifs @error, 'error'), @msg
+

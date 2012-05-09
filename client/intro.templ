@@ -53,6 +53,7 @@
       and even page controllers in the same file. This gives us nicely modular view
       of the application and quick access to any code related to the module currently being modified.
     """
+  
   if not api_access
     p ->
       text "There are lots of small conventions in houCe that helps you develop new applications
@@ -62,7 +63,7 @@
       #a '.connect_status.offline.google', href:'#', 'Google'
       text " we could populate some test data to dig in deeper."
   else
-    templ 'intro_api_access'
+    render 'intro_api_access'
 
 
 ### @init function can be use to bind events to template after it has been rendered. ###
