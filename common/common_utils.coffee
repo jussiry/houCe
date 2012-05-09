@@ -23,10 +23,8 @@ try
     #Object.defineProperty Object.prototype, 'each',
     #  value: (func)-> Object.each @, func
 
-  console.log 'global:',global
   # GLOBALS:
-  global ?= window
-
+  
   global.log = global.l = (args...) -> console.log.apply console, args
   global.dir =            (args...) -> console.dir.apply console, args
   #global.log = global.l = console.log.bind console # bind messes up with remote console (which overwrites console.log)
