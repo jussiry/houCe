@@ -86,9 +86,14 @@ try
       (func)-> Object.each @, (key,val)-> func(val,key)
 
   # child() creates a new object that inherits from the given object
-  global.child = (o, child={})->
-    child.__proto__ = o
-    child
+  global.child = (parent)-> # , child
+    if (child = {}).__proto__?
+      child.__proto__ = parent
+      child
+    else # IE, Opera
+      child_func = ->
+      child_func.prototype = parent
+      new child_func
   #Object.defineProperty Object.prototype, 'child',  (value: -> __proto__:@) if Object.defineProperty?
 
   
@@ -97,6 +102,13 @@ try
     Object.defineProperty Object.prototype, 'first',  value: -> Object.values(@)[0]
     Object.defineProperty Object.prototype, 'remove_els', value: (test_func)-> Object.remove_els(@, test_func)
     
+    if Object.getOwnPropertyNames?
+      Object.defineProperty Object.prototype, 'own', value: ->
+        o = {}
+        for name in Object.getOwnPropertyNames(@)
+          o[name] = @[name]
+        o
+
     # Chek if primitive is found in array or in object (as top level value)
     # e.g.  if some_str.is_in ['aa', 'bb', 'cc'] then ...
     # NOTE: works only for primitives, not objects!
@@ -145,14 +157,13 @@ try
     else
       # args: async_func_1, af2, ..., final_cb
       final_cb    = args.pop()
-      async_funcs = args[0]
+      async_funcs = args
     
     af_responses = []
 
     # executed after all async_funcs are ready:
     af_ready = (->
-      #final_cb.apply null, af_responses
-      final_cb af_responses
+      final_cb.apply null, af_responses
     ).after async_funcs.length
 
     for af, ind in async_funcs
@@ -172,6 +183,17 @@ try
         else
           throw "Illegal asyn_func param for callbacks"
     return
+
+  # returns an array with push and shift methods that destory equal elements
+  global.uniq = (arr)->
+    arr.__proto__ = Array.prototype
+    arr.unshift = (new_el)->
+      arr.remove new_el # removes all elements, not very fast
+      Array.prototype.unshift.call @, new_el
+    arr.push = (new_el)->
+      arr.remove new_el # removes all elements, not very fast
+      Array.prototype.push.call @, new_el
+    arr
 
 catch err
   if alert? then alert "Error in common_utils: #{err.message}" \

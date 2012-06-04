@@ -51,8 +51,8 @@ pre:
 
 '* html .clearfix': height: '1%'
 '*+html .clearfix': display: 'inline-block'
-'.clearfix:after':
-  content: "."
+'.clearfix:before, .clearfix:after':
+  content: "'.'"
   display: 'block'
   height: 0
   clear: 'both'

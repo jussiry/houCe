@@ -91,7 +91,11 @@ Houce.stringify = (main_obj)->
     res
   )( main_obj )
 
+
 Houce.objectify = (str)->
+  
+  start_time = Date.now()
+  
   # to object:
   main_obj = eval "( #{str} )"
   
@@ -114,22 +118,32 @@ Houce.objectify = (str)->
     else false
   
   # Iterate through main_obj to apply check_string for strings:
+  #parent_check_timer = 0
   stack = []
   (iterate = (parent_obj)->
     return if typeof parent_obj isnt 'object' or parent_obj is null
     # avoid infinite loops:
-    if stack.has parent_obj then return \
-                            else stack.push parent_obj
-    if parent_obj.constructor is Array
+    # Why was this needed? Looping references alredy fail when stringifyin Data.
+    # before_parent_check = Date.now()
+    # if stack.has parent_obj
+    #   log parent_obj, 'found from stack', stack
+    #   return
+    # else stack.push parent_obj
+    # parent_check_timer += Date.now() - before_parent_check
+    #log 'stack', stack.clone()
+    if parent_obj instanceof Array
       for obj, ind in parent_obj
         iterate obj unless check_string parent_obj, ind
     else
       for own key, obj of parent_obj
-        iterate obj unless check_string parent_obj, key
+        if typeof obj is 'object' then iterate obj \
+                                  else check_string parent_obj, key
     stack.pop() # keep stack slim for perfomance
     return
   )( main_obj )
+  #log "Objectifying #{parseInt str.length/1000} thousand chars took #{Date.now()-start_time}ms, of which parent check #{parent_check_timer}" 
   main_obj
+
 
 Houce.cache_data = ->
   return unless Config.storage_on

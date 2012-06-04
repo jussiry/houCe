@@ -28,14 +28,16 @@ fs     = require 'fs'
 
 
 ## Build client
-
 task 'build_client', ->
   houce.build_client()
   houce.compile_index()
 
+# run any houce task (mainly for testing purposes)
+task 'houce_task', (p)->
+  houce[p.arguments[1]]()
+
 
 ### Pull new version of houCe from github ###
-
 task 'update_houce', ->
   exec "git pull git://github.com/jussiry/houCe.git", (err, stdout, stderr)->
     console.log stdout
@@ -47,7 +49,6 @@ task 'update_houce', ->
 
 
 ## Build documentation under /docs
-
 task 'build_docs', ->
   exec "./node_modules/.bin/docco-husky start.coffee client common server", (err, stdout, stderr)->
     if err then console.log err    \

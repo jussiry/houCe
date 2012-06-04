@@ -12,7 +12,10 @@ Houce.init_templates = ->
     # except @html's CoffeeKup function, where @ stores the data for rendering.
     for key, child of container
       if typeof child is 'function' and key isnt 'html'
-       container[key] = child.bind container
+        container[key] = child.bind container
+        # don't loose child vars (bind normally does):
+        for child_key in Object.getOwnPropertyNames child
+          container[key][child_key] = child[child_key]
       else if typeof child is 'object'
         # when object, bind template container to all child functions
         for sub_key, sub_child of child
@@ -38,8 +41,8 @@ Houce.render = (template_name, data_obj={}, extra_data)->
   # merge extra data; again the principle here is to not modify the original object
   merge data_obj, extra_data if extra_data?
 
-  # bind data of last rendered object to template (@d to access)
-  templ.d = data_obj   
+  # bind data of last rendered object to template (@data to access)
+  templ.data = data_obj   
   
   html = CoffeeKup.render templ.html, data_obj,
                           me:    templ
@@ -85,5 +88,9 @@ jQuery.fn.render_bottom = (args...)->
   el
 jQuery.fn.render_top = (args...)->
   @.prepend (el = Houce.render.apply null, args)
+  el
+jQuery.fn.render_outer = (args...)->
+  @.first().before (el = Houce.render.apply null, args)
+  @.remove()
   el
 

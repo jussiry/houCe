@@ -23,10 +23,16 @@ $.fn.outerHTML = (s)->
 
 # Return element(s) from selection - eiher with filter or with find
 $.fn.el = (selector)->
+  @filter(selector).add @find(selector)
+
+$.fn.cull = (selector)->
+  @filter(selector).add @find(selector)
+  # faster but don't get all cases:
   # filtered = @filter selector
   # if filtered.length then filtered \
   #                    else @find selector
-  @filter(selector).add @find(selector)
+
+
 
 #$.fn.animate_orig = $.fn.animate
 $.fn.anim = (args...)->

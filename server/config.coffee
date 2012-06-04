@@ -38,3 +38,5 @@ config.merge switch process.env.houce_mode
         permissions: encodeURIComponent 'https://www.googleapis.com/auth/plus.me'
     env:  'development'
     lang: 'en'
+
+config.env = 'production' if process.argv[2] is 'production'

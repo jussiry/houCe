@@ -26,7 +26,7 @@ html html_attrs, ->
         window.global = window;
       """
       srcs = [
-        #'/preload.js'
+        '/preload.js'
         '/lib/modernizr.custom.js'
         '/lib/jquery-1.7.1.min.js'
         '/lib/jquery.animate-enhanced.min.js'

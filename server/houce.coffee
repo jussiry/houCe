@@ -29,7 +29,7 @@ ccss_shortcuts = (obj)->
       if typeof val isnt 'object'
         k = k.replace(/_/g,'-')
       # change number values to pixels
-      val = "#{val}px" if typeof val is 'number' and not k.is_in ['font-weight', 'opacity', 'z-index']
+      val = "#{val}px" if typeof val is 'number' and not k.is_in ['font-weight', 'opacity', 'z-index', 'zoom']
       # set new key and delete old:
       if typeof val is 'object'
         obj[k] ?= {}
@@ -126,6 +126,20 @@ for_files_in = (path, file_func)->
   fs.writeFileSync manifest_path, manifest_str, 'utf8', (err)-> if err then throw err
 
 
+@create_preload_script = ->
+  paths = []
+  for_files_in 'public/img', (fpath)->
+    if fpath.split('.').last().matches ['png', 'jpg', 'jpeg', 'gif']
+      paths.push fpath.from 6  # remove 'public' from beginning of path
+  #log "paths", paths
+  js_str = CoffeeScript.compile """
+    img_srcs = #{JSON.stringify paths}
+    temp_image = new Image()
+    temp_image.src = src for src in img_srcs
+  """, {}
+  fs.writeFileSync config.app_dir+'public/preload.js', js_str, 'utf8', (err)-> if err then throw err
+
+
 @build_client = (res)->
   
   log_str = ''
@@ -193,8 +207,9 @@ for_files_in = (path, file_func)->
       
       when 'coffee'
         JS += "\n\n\n/* --- #{app_file_path.toUpperCase()} --- */\n\n"
-        JS += CoffeeScript.compile file_str, {'filename': app_file_path} #, (err) -> throw err if err
-      
+        try JS += CoffeeScript.compile file_str, {'filename': app_file_path} #, (err) -> throw err if err  
+        catch err
+          error "\nERROR in compiling: #{file_name}.#{file_extension}: #{err}"
       when 'less'
         do ->
           fname = file_name
@@ -259,40 +274,24 @@ for_files_in = (path, file_func)->
   ### Save ccss/css from templates ###
   fs.writeFileSync config.app_dir+'/public/stylesheets/ccss_styles.css', ccss_css, 'utf8'
 
-
-  ### compile preload.s.coffee  ###
-  # preload_js = CoffeeScript.compile fs.readFileSync(config.app_dir+"/client/app/preload.s.coffee").toString()
-  # fs.writeFileSync config.app_dir+'/public/preload.js', preload_js, 'utf8', (err)-> if err then throw err
-
-  ### Manifest file ###
-  @create_manifest()
-
-  ### Save templates to templates.js ###
-  # stringify = (main_obj)->
-  #   switch typeof main_obj
-  #     when 'object'
-  #       return 'null' if main_obj is null
-  #       obj_strings = []
-  #       main_obj.each (name, obj)->
-  #         #log "processing: #{name}"
-  #         obj_strings.push "'#{name}': #{stringify obj}"
-  #       "{ #{obj_strings.join ',\n'} }"
-  #     when 'string'    then "'#{main_obj}'"
-  #     when 'function'  then main_obj.toString()
-  #     when 'undefined' then 'undefined'
-  #     when 'number', 'boolean' then main_obj
-  #     else error "#{typeof main_obj}'s not valid object!"
-  #full_templ_str = "window.Templates = \n#{stringify templates};"
+  ### Save template related code to templates.js ###
   full_templ_str = "window.Templates = window.T = {"
   for name,func_str of templates
     full_templ_str += "'#{name}': #{func_str},\n"
   full_templ_str = full_templ_str[0..-2] + '};'
 
-  # \n#{stringify templates};"
   fs.writeFileSync config.app_dir+'/public/templates.js', full_templ_str, 'utf8', (err)-> if err then error err
-  
+
+
+  ### Compile other stuff ###
+  # TODO: move parsing of templates, styles and coffee files to anthor method
+  # and use 'build_client' simply to call all these actions
+  @create_preload_script()
+  @create_manifest()
+
 
   console.info "Client files built!"
+
 
 
 exports = @
