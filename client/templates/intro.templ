@@ -1,0 +1,149 @@
+
+
+# Sepcial functions/objects in a template:
+# * open            - called when page is opened (e.g. url changes to /#!/intro)
+# * params_changed  - called every time url param changes (e.g. /#!/intro/foo=bar)
+# * html            - defines HTML as CoffeeKup template
+# * init            - binds events to the template
+# * close           - called when page exits
+# * style           - defines style definitions for the template
+# * title           - title of the page
+
+# The minimum requirement for every template is to define @html template. All the
+# rest is optional. More detailed documentation can be found below.
+
+
+# You can also store any other object or function into the template (with @),
+# and they are accessible to every other function within this template.
+# Say you want to store some test data for the page, just type:
+@test_data =
+  foo:   'bar'
+  moose: 'not a cow'
+# Now you can access this data within every other function in the template with
+# @test_data. The only exception is @html function, where you can access it with
+# @me.test_data.
+
+
+# Templates can have an 'open' event, which gets executed when first part
+# of the URL hash (.../#!/page_name/param1/param2=23/...) equals to the name of
+# the template. Open event are normally used for loading the necessary data before
+# rendering the template, and defining where the template gets rendered.
+@open = (args)->
+
+  # If you add parameter to url (e.g.  /#!/intro/dog/34) they be passed as arguments for @open function.
+  log "Parameters for @open in intro.templ: ", args
+
+  if Houce.apis.is_connected 'fb'
+    # Load some data from Facebook (or cache) before rendering
+    $('#page_content').html "<div style='margin: 3em 2em;'>Loading...</div>"
+    Models.person.get 'me', (me)=>
+      me.get_friends =>
+        # Render @html from this template into the #page_container:
+        $('#page_content').render 'intro'
+        # You could also type: $('#page_content').render @
+        # for shorter syntax.
+  else
+    $('#page_content').render 'intro'
+
+
+# Called every time url parameter changes. Play around by changing the URL
+# (e.g. /#!/intro/test/foo=bar) and see what gets logged. Notice that the
+# function gets only changed arguments, not all of them.
+@params_changed = (args)->
+  log 'Intro page parameter changed: ', args
+# Use Pager.params.get(param_name) or Pager.params.all to access parameter outside this
+# function and Pager.params.set(param_name, new_value) to change them. When user
+# clicks some action in the page, the idea is to change page or parameters through
+# the Pager, and then execute those action in the @open or @params_changed function.
+
+
+# Here you can define page tile (as string or function that returns string).
+# Use Houce.page_title() to retrieve title of current or with arg some other page.
+@title = "Intro page"
+
+
+# @html defines the CoffeeKup (http://coffeekup.org/) function
+# for parsing the HTML of the template.
+@html = ->
+  h1 dict 'welcome_title' # Look at /client/utils/dictionary.coffee
+  api_access = (Houce.apis.is_connected 'fb') #or (Houce.apis.is_connected 'google')
+  p class: "#{ifs api_access, 'old'}", """
+      In houCe you can smell Coffee brewing everywhere, with
+      #{yield -> a target:'_blank', href:'http://nodejs.org/', 'Node.js'} +
+      #{yield -> a target:'_blank', href:'http://coffeekup.org/', 'CoffeeKup'} +
+      #{yield -> a target:'_blank', href:'https://github.com/aeosynth/ccss', 'CCSS'}
+      combination giving us the ability to write everything in the beatiful language that is
+      #{yield -> a target:'_blank', href:'http://jashkenas.github.com/coffee-script/', 'CoffeeScript'}.
+    """
+  p class: "#{ifs api_access, 'old'}", """
+      houCe is highly client oriented framework. Using same language everywhere allows us
+      to make templates that have style definition, HTML templates, binding of events
+      and even page controllers in the same file. This gives us nicely modular view
+      of the application and quick access to any code related to the module currently being modified.
+    """
+
+  if not api_access
+    p ->
+      text "There are lots of small conventions in houCe that helps you develop new applications
+        very quickly; but enough of rambling, if you'd be so kind to connect to "
+      a '.connect_status.offline.fb', href:'#', 'Facebook'
+      #text ' or '
+      #a '.connect_status.offline.google', href:'#', 'Google'
+      text " we could populate some test data to dig in deeper."
+  else
+    # Use 'render' to render subtemplates. As in $(..).render(..), the first argument
+    # is the name of the template and the second is the parameter object, that
+    # can be accessed with @ in the subtemplate.
+    render 'intro_api_access'
+
+
+# @init function is called after the @html template has been rendered, but before it
+# is inserted into the DOM. It gets the template as JQuery object ($el); use it
+# to bind events into the template.
+@init = ($el)->
+  $el.find('.connect_status').click ->
+    app = if $(@).hasClass 'fb' then 'fb' else 'google'
+    if $(@).hasClass 'offline'
+      Houce.oauth2.connect app
+    else
+      Houce.oauth2.disconnect app
+      location.reload()
+    false # return false to cancel link from changing url
+
+
+# Page templates can also define @close event, that gets executed when user leaves the page.
+# Close event needs to execute the callback, or othervise the new page is never opened.
+@close = (cb)->
+  cb() if confirm "Do you want to leave 'intro' page?", 'yes', 'no'
+
+
+
+# Stylesheets are also defined in CoffeeScript. Using LESS is also possible, but
+# it would need to be inserted in different file, so using CS allows building more
+# modular components by keeping everything related to this component within the
+# the same file.
+
+# style is somewhat different from other functions, in that it has access to
+# (and only) functions in /client/styles/ccss_helpers.s.coffee.
+# CSS selectors can be defined as normal CSS selectors in strings or with
+# 'shorthand' syntax, as follows:
+#       '#foo' === i_foo
+#       '.foo' === c_foo
+#   '#foo.bar' === i_foo_c_bar
+# '#foo, .bar' === i_foo___c_bar
+# The reason for the syntax is that '.' and '#' are special characters in CS,
+# so you can't be used as variable names. Since also '-' is special character,
+# you need to use underscore instead of it (e.g. font_weight, margin_left, ..).
+
+@style =
+  '#page_content.intro':
+    c_old:
+      color: light_gray
+    code:
+      font_size: '1.2em'
+      color:    'black'
+    '> pre':
+      margin: 0
+    h3:
+      margin: '10px 0 -10px'
+

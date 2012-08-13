@@ -19,7 +19,7 @@ Houce.oauth2 = do ->
   
   connect: (app)->
     l    = window.location
-    path = location.hash.from 3
+    path = Pager.path() #get_path_form_page_and_params() #path.join '/'
     if Config.storage_on
       me.clean_ss() # remove bofore setting: iPhone / iPad bug?
       ss.auth_redirect = true
@@ -36,15 +36,16 @@ Houce.oauth2 = do ->
     for pa in (location.hash[1..-1].split('&').map (p)-> p.split '=')
       params[pa[0]] = pa[1]
     if Config.storage_on
-      return unless ss.auth_redirect
+      return false unless ss.auth_redirect
       path = ss.auth_path
       app  = ss.auth_app
     else # auth params strored in URL
-      return unless location.hash[0...5] is '#app='
+      return false unless location.hash[0...5] is '#app='
       path = params.path
       app  = params.app
       delete params.path
       delete params.app
+    
     
     api_data = Data.apis[app]
     merge api_data, params
@@ -56,11 +57,14 @@ Houce.oauth2 = do ->
     me.clean_ss()
     
     unless api_data.access_token?
-      log "Failed to retrieve access_token!"
-      location.hash = "#!/#{PageHandler.main_page}"
+      alert "Failed to retrieve access_token!"
+      Pager.main_page
     else
-      log 'access_token received!'
-      location.hash = "#!/#{path}"
+      #alert 'access_token received! '+path
+      #location.hash = "!/#{path}"
+      path
+      
+    
     
     
 
@@ -75,14 +79,38 @@ Houce.apis = do ->
     unless me.is_connected app
       Houce.oauth2.connect app
       return 
-    console.info "apis GET started", app, what
-    url = "#{Config.apis[app].get_url}/#{what}?access_token=#{Data.apis[app].access_token}"
-    if jsonp then $.ajax url, dataType: 'jsonp', success: callback \
-             else $.get url, callback  
-  fb_get:     (what, callback)-> Houce.apis.get 'fb',     what, callback
+    log "apis GET started", app, what
+    #$.support.cors = true
+    url = "#{Config.apis[app].get_url}/#{what}?access_token=#{encodeURIComponent Data.apis[app].access_token}"
+    # if XDomainRequest?
+    #   alert 'XDomReg '+url
+    #   xdr = new XDomainRequest
+    #   xdr.open 'GET', url
+    #   xdr.onload = ->
+    #     alert 'req succesful!'
+    #     alert ': '+xhr.responseText
+    #     callback xhr.responseText
+    #   xdr.onerror = ->
+    #     alert 'req failed! '+xhr.responseText
+    #   xdr.send()
+      
+    if jsonp
+      $.ajax url, (dataType: 'jsonp', success: callback)
+    else
+      #alert 'get starts to '+url
+      $.get url, callback
+  fb_get:     (what, callback)->
+    if Utils.device.browser isnt 'IE'
+      Houce.apis.get 'fb',     what, callback
+    else
+      return Houce.oauth2.connect 'fb' unless me.is_connected 'fb'
+      url = "/fb_proxy/#{what}?access_token=#{encodeURIComponent Data.apis.fb.access_token}"
+      $.get url, callback
   google_get: (what, callback)-> Houce.apis.get 'google', what, callback, true
+  
   is_connected: (app)->
     state = Data.apis[app]
-    return true if state.connected
+    if app is 'kovalo'
+      return state.connected and Houce.apis.is_connected 'fb'
     return state.access_token? and state.expires_in? and
            (state.expires_in > Date.now() or state.expires_in is '0')

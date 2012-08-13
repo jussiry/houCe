@@ -8,15 +8,6 @@ task_name = process.argv[2]
 unless task_name in ['build_docs', 'docs_to_github']
   require 'sugar'
   Object.extend()
-  # require './common/common_utils' # not so sure if it's such a good idea to load these in the first place. only used for log-shorthand
-  
-  # less_options  = paths: ['./client', './client/styles']
-  
-  # LESS          = require 'less'
-  # CoffeeScript  = require 'coffee-script'
-  # CoffeeKup     = require 'coffeekup'
-  # ccss          = require 'ccss'
-  # ccss_helpers  = require './client/styles/ccss_helpers.s.coffee'
   houce = require "./server/houce.coffee"
 
 fs     = require 'fs'
@@ -43,9 +34,9 @@ task 'update_houce', ->
     console.log stdout
     console.log "\n\n#{err}\n#{stderr}" if err
     # remove intro.page and intro_api_access.templ
-    exec "rm ./client/intro.templ ./client/intro_api_access.templ", (rm_err, rm_stdout, rm_stderr)->
-      log "houCe updated! #{'Remember to merge files!' if err}"
-    
+    exec "rm ./client/templates/intro.templ ./client/templates/intro_api_access.templ", (rm_err, rm_stdout, rm_stderr)->
+      log "houCe updated. #{'Remember to merge files!' if err}"
+
 
 
 ## Build documentation under /docs
@@ -58,8 +49,8 @@ task 'build_docs', ->
 
 ## Create docs to gh-branch and push them to Github pages
 
-task 'docs_to_github', ->  
-  log = (m)-> console.log m         
+task 'docs_to_github', ->
+  log = (m)-> console.log m
   exec "git branch -D gh-pages", (err, stdout, stderr)->
     # causes error if branch don't exist; no need to log it.
     exec "git symbolic-ref HEAD refs/heads/gh-pages", (err, stdout, stderr)->

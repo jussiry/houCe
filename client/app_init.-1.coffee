@@ -6,10 +6,13 @@ Houce.init_houce
 
   # Define client specific configs here. 'global.Config' is merged
   # from this and configs from '/server/config.coffee'.
-  Config: {}
+  Config:
+    data_config: {}
+    storage_on: on
   # Initialize your data structure here to keep track of what exactly
   # are you storing into the 'global.Data' object.
   data_structure:
+    config: {}
     cache_updated:
       coordinates: null
       last_stored: null
@@ -21,7 +24,7 @@ Houce.init_houce
   # When structure of the Data changes increment data\_version to flush old cached
   # data from all clients. You can also type Houce.init\_data() in console of
   # a specific browser to empty its data and cache.
-  data_version: 5
+  data_version: 15
 
   # Name of the main page template; redirects from '/' to this page.
   main_page: 'intro'
@@ -33,7 +36,7 @@ Houce.init_houce
     pc = $('#page_content')
     pc.css
       opacity: 0
-    pc.attr class: PageHandler.get_page().name
+    pc.attr class: Pager.page_name
     $('body').scrollTop 0
     # Set app title
     $('head title').text "#{Houce.page_title()} - #{Config.app_name}"

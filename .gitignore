@@ -1,15 +1,15 @@
 
 .DS_Store
 
+
 node_modules/*
 
 public/stylesheets/*
 
+public/index/*.html
 public/appcache.mf
-public/index.html
 public/client_app.js
 public/templates.js
-public/preload.js
 
 *.tmproj
 *.gz

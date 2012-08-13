@@ -25,9 +25,13 @@ try
 
   # GLOBALS:
   
-  global.log = global.l = (args...) -> console.log.apply console, args
-  global.dir =            (args...) -> console.dir.apply console, args
-  #global.log = global.l = console.log.bind console # bind messes up with remote console (which overwrites console.log)
+  if console?
+    global.log = global.l = (args...) -> console.log.apply console, args
+    global.dir =            (args...) -> console.dir.apply console, args
+    #global.log = global.l = console.log.bind console # bind messes up with remote console (which overwrites console.log)
+  else
+    global.log = global.l = global.dir = -> # IE, etc
+
 
   # alias for JQuery
   global.q = $ if $?
@@ -55,6 +59,13 @@ try
   Number.prototype.toDate = -> Date.create(@)
     
   String.prototype.parsesToNumber = -> not Object.isNaN this.toNumber()
+
+  String.prototype.toPrimitive = ->
+    str = ''+@
+    return throw "'#{str}'.toPrimitive() has illegal character(s)." if str.matches ['=', '(', '{']
+    try eval str
+    catch e then return str
+
 
   Object.remove_els = (obj, test_func)-> # using Object.prototype.remove would fuck things up properly; no idea why
     (delete obj[key] if test_func key, val) for key, val of obj
@@ -121,7 +132,7 @@ try
     Object.defineProperty String.prototype, 'matches', value: (strings)->
       return null unless typeof strings is 'array' or typeof strings is 'object'
       for own k,str of strings
-        return true if @.match str
+        return true if @.match str.escapeRegExp()
       false
 
 
@@ -147,7 +158,7 @@ try
     if arg then true_str else (if false_str? then false_str else '')
 
   global.is_blank = (obj)-> not obj? or (Object.isString(obj) and /^\s*$/.test obj) \
-                                     or (typeof object is 'object' and Object.keys(obj).length == 0)
+                                     or (typeof obj is 'object' and Object.keys(obj).length is 0)
 
   global.callbacks = (args...)->
     if args.length is 2

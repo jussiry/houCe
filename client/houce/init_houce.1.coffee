@@ -1,8 +1,10 @@
 
+
 # If application is directed only for newer browsers that implement
 # Object.defineProperty you can use Object prototype functions for nicer syntaxt.
 # http://sugarjs.com/objects#object_extend
-Object.extend() if Object.defineProperty?
+
+#Object.extend() if Object.defineProperty?
 
 
 ### Main modules: ###
@@ -20,9 +22,8 @@ global.Config = {}
 # Setup houCe. Called from setup.coffee
 
 Houce.init_houce = (args)->
-
   global.Data ?= {}
-  
+
   defaults =
     main_page: null
     before_open_page: ->
@@ -38,18 +39,20 @@ Houce.init_houce = (args)->
 
   args = merge defaults, args
 
-  PageHandler.main_page        = args.main_page
-  PageHandler.before_open_page = args.before_open_page
-  PageHandler.after_open_page  = args.after_open_page
+  Pager.main_page        = args.main_page
+  Pager.before_open_page = args.before_open_page
+  Pager.after_open_page  = args.after_open_page
   Houce.init_data.app_defaults = args.data_structure
   Houce.init_data.version      = args.data_version
 
 
   ### Error logging to server ###
-  # requires (Redis) data storage; currently not implemented on server
-  
+
   Houce.error.logging_on = args.error_logging
-  window.onerror = Houce.error
+  if Utils.device.is_mobile() or Config.env is 'production'
+    window.onerror = Houce.error
+
+  #if Utils.devise.is_mobile() or Config.env is 'production'
 
 
   ### Config ###
@@ -58,6 +61,18 @@ Houce.init_houce = (args)->
   merge Config, args.Config
   # Config from server:
   merge Config, client_config_from_server
+  # ---Kapsa specific---
+  # Merge host specific config to main config
+
+  # if (host_conf = Config.by_host[location.host])?
+  #   Object.merge Config, host_conf, true
+  # else if (linked_host = Config.by_host.links[location.host])?
+  #   Object.merge Config, Config.by_host[linked_host], true
+  # else
+  #   alert 'No config found for: '+location.host
+  # delete Config.by_host
+  # ---/Kapsa specific---
+
   # Test local storage:
   try
     # In iphone/ipad private mode this will fail
@@ -65,8 +80,9 @@ Houce.init_houce = (args)->
     sessionStorage.storage_test = 'works'
   catch err then Config.storage_on = false
 
+
   ### Init templates ###
-  Houce.init_templates()  
+  Houce.init_templates()
 
   ### Namespacing to store all modules under single application object ###
   global[Config.app_name] =
@@ -75,12 +91,12 @@ Houce.init_houce = (args)->
     Models: Models
     Utils:  Utils
     Templates: Templates
-  
+
   ### Data setup ###
-  Houce.init_data false
-  
+  Houce.init_data false #Config.flush_cache or false
+
   if Config.storage_on
-    # Bind caching operations to store 
+    # Bind caching operations to store
     $(window).bind 'unload', Houce.cache_data
     # as backup for dirty closing, store cache in intervals:
     setInterval Houce.cache_data, 5.minutes()
@@ -89,9 +105,8 @@ Houce.init_houce = (args)->
   ### Init application ###
 
   # check if is auth redirect
-  Houce.oauth2.check_for_access_token()
+  path = Houce.oauth2.check_for_access_token()
   # execute app specific init
   args.init_app()
-  # start PageHandler
-  PageHandler.start_url_checking()
-    
+  # start Pager
+  Pager.start_url_checking path

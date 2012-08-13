@@ -5,27 +5,6 @@
 # TODO: make these availabe for @html and @init? Would it slow down rendering?
 
 
-# COLORS
-delay => # delay to allow use of functions defined below
-  @font_black  = @hsl 20 # '#333'
-  @font_gray   = @hsl 33 # '#555'
-  #@font_gray   = @hsl 40 # '#666'
-  @light_gray  = @hsl 67 #'#aaa'
-
-
-
-
-
-# EXTRA CLASSES
-
-@secondary_font =
-  fontFamily: 'Helvetica Neue, Helvetica'
-  fontWeight: 'normal'
-
-
-# FUNCTIONS
-
-
 @rgb = @rgba = (r,g,b,a)->
   switch arguments.length
     when 3 then "rgb(#{r},#{g},#{b})"
@@ -43,7 +22,7 @@ delay => # delay to allow use of functions defined below
   l = l / 100 if l >= 1
   if s is 0
     r = g = b = l * 255 # achromatic
-  else 
+  else
     hue2rgb = (p, q, t)->
       t += 1 if t < 0
       t -= 1 if t > 1
@@ -62,6 +41,29 @@ delay => # delay to allow use of functions defined below
   if opacity? then "rgba(#{ rgb_s },#{ opacity })" \
               else "rgb(#{ rgb_s })"
 
+
+
+
+# COLORS
+@primary_hue = 223
+
+@font_black = @hsl @primary_hue, 23, 23
+@font_gray  = @hsl @primary_hue, 10, 33
+
+@light_gray  = @hsl @primary_hue, 10, 50
+
+
+
+
+# EXTRA CLASSES
+
+@secondary_font =
+  font_family: 'Arial,Helvetica,sans-serif'
+  font_weight: 'normal'
+
+
+# FUNCTIONS
+
 # for one liners
 @row_height = (height, font_multiplier=0.8)->
   font_size:   height * font_multiplier
@@ -75,7 +77,6 @@ delay => # delay to allow use of functions defined below
   line_height: height
   #height:      height
   #overflow: 'hidden'
-
 
 @per_padding = (vert_padding, hor_padding, width=100)->
   padding: "#{vert_padding}% #{hor_padding}%"
@@ -95,6 +96,7 @@ delay => # delay to allow use of functions defined below
 
 
 @border_radius = (str)->
+  str = str + 'px' if typeof str is 'number'
   MozBorderRadius:    str
   WebkitBorderRadius: str
   borderRadius:       str
@@ -109,7 +111,7 @@ delay => # delay to allow use of functions defined below
   # TODO: ERROR: CCSS fails to make multiple declarations with same name
   # (temporary hack: use background_image for the other)
   background: "-ms-linear-gradient(90deg, #{to}, #{from})"
-  background: "-moz-linear-gradient(90deg, #{to}, #{from})"
+  #background: "-moz-linear-gradient(90deg, #{to}, #{from})"
   background_image: "-webkit-gradient(linear, 0 0, 0 100%, from(#{from}), to(#{to}))"
 
 # transition time
