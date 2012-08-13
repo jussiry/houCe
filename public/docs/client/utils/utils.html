@@ -1,12 +1,98 @@
-<!DOCTYPE html><html><head><title>utils.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../../index.html" class="source"><span class="file_name">README</span></a><a href="../../client/app_init.-1.html" class="source "><span class="base_path">client / </span><span class="file_name">app_init.-1.coffee</span></a><a href="../../client/houce/apis.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">apis.coffee</span></a><a href="../../client/houce/data_and_models.2.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">data_and_models.2.coffee</span></a><a href="../../client/houce/init_houce.1.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">init_houce.1.coffee</span></a><a href="../../client/houce/page_handler.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">page_handler.coffee</span></a><a href="../../client/houce/templates.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">templates.coffee</span></a><a href="../../client/models/person.html" class="source "><span class="base_path">client / models / </span><span class="file_name">person.coffee</span></a><a href="../../client/styles/ccss_helpers.s.html" class="source "><span class="base_path">client / styles / </span><span class="file_name">ccss_helpers.s.coffee</span></a><a href="../../client/utils/dictionary.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">dictionary.coffee</span></a><a href="../../client/utils/utils.html" class="source selected"><span class="base_path">client / utils / </span><span class="file_name">utils.coffee</span></a><a href="../../common/common_utils.html" class="source "><span class="base_path">common / </span><span class="file_name">common_utils.coffee</span></a><a href="../../server/config.html" class="source "><span class="base_path">server / </span><span class="file_name">config.coffee</span></a><a href="../../server/houce.html" class="source "><span class="base_path">server / </span><span class="file_name">houce.coffee</span></a><a href="../../server/server.html" class="source "><span class="base_path">server / </span><span class="file_name">server.coffee</span></a><a href="../.././start.html" class="source "><span class="base_path">. / </span><span class="file_name">start.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>utils.coffee</h1><div class="filepath">client/utils/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
-</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>General utils:</p>
-</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>TODO</p>
+<!DOCTYPE html><html><head><title>utils.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../../index.html" class="source"><span class="file_name">README</span></a><a href="../../client/app_init.-1.html" class="source "><span class="base_path">client / </span><span class="file_name">app_init.-1.coffee</span></a><a href="../../client/houce/apis.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">apis.coffee</span></a><a href="../../client/houce/data_and_models.2.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">data_and_models.2.coffee</span></a><a href="../../client/houce/init_houce.1.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">init_houce.1.coffee</span></a><a href="../../client/houce/misc.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">misc.coffee</span></a><a href="../../client/houce/pager.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">pager.coffee</span></a><a href="../../client/houce/templates.html" class="source "><span class="base_path">client / houce / </span><span class="file_name">templates.coffee</span></a><a href="../../client/models/person.html" class="source "><span class="base_path">client / models / </span><span class="file_name">person.coffee</span></a><a href="../../client/styles/ccss_helpers.s.html" class="source "><span class="base_path">client / styles / </span><span class="file_name">ccss_helpers.s.coffee</span></a><a href="../../client/utils/dictionary.html" class="source "><span class="base_path">client / utils / </span><span class="file_name">dictionary.coffee</span></a><a href="../../client/utils/utils.html" class="source selected"><span class="base_path">client / utils / </span><span class="file_name">utils.coffee</span></a><a href="../../common/common_utils.html" class="source "><span class="base_path">common / </span><span class="file_name">common_utils.coffee</span></a><a href="../../server/config.html" class="source "><span class="base_path">server / </span><span class="file_name">config.coffee</span></a><a href="../../server/houce.html" class="source "><span class="base_path">server / </span><span class="file_name">houce.coffee</span></a><a href="../../server/server.html" class="source "><span class="base_path">server / </span><span class="file_name">server.coffee</span></a><a href="../.././start.html" class="source "><span class="base_path">. / </span><span class="file_name">start.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>utils.coffee</h1><div class="filepath">client/utils/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>Keep minimum of 100% height for page
++ hide scroll bar</p>
+</td><td class="code"><div class="highlight"><pre><span class="nx">do</span> <span class="o">-&gt;</span>
+  <span class="nv">timeout = </span><span class="kc">null</span>
+  <span class="nv">last_checked = </span><span class="mi">0</span>
+  <span class="nv">delay_ms = </span><span class="mi">500</span>
+  <span class="nv">q_wrap = </span><span class="kc">null</span>
+
+  <span class="nv">Utils.init_page_height_autoadjust = </span><span class="o">-&gt;</span>
+    <span class="nv">q_wrap = </span><span class="nx">$</span> <span class="s">&#39;#wrapper&#39;</span>
+    <span class="nx">q_wrap</span><span class="p">.</span><span class="nx">bind</span> <span class="s">&#39;DOMSubtreeModified&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+      <span class="k">return</span> <span class="k">if</span> <span class="nx">timeout</span><span class="o">?</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nv">free = </span><span class="nx">last_checked</span> <span class="o">+</span> <span class="nx">delay_ms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span>
+        <span class="nv">timeout = </span><span class="nx">setTimeout</span> <span class="nx">adjust</span><span class="p">,</span> <span class="nx">free</span> <span class="o">-</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span>
+      <span class="k">else</span> <span class="nx">reqAnimFrame</span> <span class="nx">adjust</span>
+
+  <span class="nv">Utils.adjust_page_height = adjust = </span><span class="o">-&gt;</span>
+    <span class="nv">double_act = </span><span class="o">-&gt;</span>
+      <span class="nv">min_page_height = </span><span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span> <span class="o">+</span> <span class="nx">Utils</span><span class="p">.</span><span class="nx">device</span><span class="p">.</span><span class="nx">banner_height</span><span class="p">()</span>
+      <span class="nx">q_wrap</span><span class="p">.</span><span class="nx">css</span> <span class="s">&#39;height&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>log 'min<em>page</em>height', min<em>page</em>height
+log 'q<em>wrap.height()', q</em>wrap.height()</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="k">if</span> <span class="nx">q_wrap</span><span class="p">.</span><span class="nx">height</span><span class="p">()</span> <span class="o">&lt;</span> <span class="nx">min_page_height</span>
+        <span class="nx">q_wrap</span><span class="p">.</span><span class="nx">css</span> <span class="s">&#39;height&#39;</span><span class="p">,</span> <span class="nx">min_page_height</span><span class="o">+</span><span class="s">&#39;px&#39;</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>hide scrollBar:</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="nb">window</span><span class="p">.</span><span class="nx">scrollTo</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span> <span class="nx">unless</span> <span class="nb">window</span><span class="p">.</span><span class="nx">pageYOffset</span> <span class="o">&gt;</span> <span class="mi">1</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>For best result the check is done twice.
+sometime on the first run the DOM element height's have not yet been changed,
+the second run with 'reqAnimFrame' on the other hand can case small flicker
+double_act()</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">double_act</span><span class="p">()</span></pre></div></td></tr><tr id="section-6"><td class="docs"><div class="pilwrap"><a href="#section-6" class="pilcrow">&#182;</a></div><p>remove timeout to allow new checks, but store current time,
+to allow next check only after delay_ms has passed.</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nv">timeout = </span><span class="kc">null</span>
+    <span class="nv">last_checked = </span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span>
+
+
+
+<span class="nv">Utils.days_remaining = </span><span class="nf">(end_time, short)-&gt;</span>
+  <span class="nv">end_time  = </span><span class="nb">Date</span><span class="p">.</span><span class="nx">create</span> <span class="nx">end_time</span> <span class="k">if</span> <span class="nx">end_time</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">==</span> <span class="nb">String</span>
+  <span class="nv">time_left = </span><span class="nx">end_time</span> <span class="o">-</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span>
+  <span class="nv">days_left = </span><span class="nx">time_left</span> <span class="o">/</span> <span class="mi">1000</span> <span class="o">/</span> <span class="mi">60</span> <span class="o">/</span> <span class="mi">60</span> <span class="o">/</span> <span class="mi">24</span>
+  <span class="nx">days_left</span><span class="p">.</span><span class="nx">round</span><span class="p">()</span></pre></div></td></tr><tr id="section-7"><td class="docs"><div class="pilwrap"><a href="#section-7" class="pilcrow">&#182;</a></div><p>min / h / d</p>
+</td><td class="code"><div class="highlight"><pre><span class="nv">Utils.time_left = </span><span class="nf">(end_time)-&gt;</span>
+  <span class="nv">end_time  = </span><span class="nb">Date</span><span class="p">.</span><span class="nx">create</span> <span class="nx">end_time</span> <span class="k">if</span> <span class="nx">end_time</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">==</span> <span class="nb">String</span>
+  <span class="k">if</span>    <span class="nx">end_time</span><span class="p">.</span><span class="nx">minutesFromNow</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">60</span> <span class="k">then</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">end_time</span><span class="p">.</span><span class="nx">minutesFromNow</span><span class="p">()</span><span class="si">}</span><span class="s"> min&quot;</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="nx">end_time</span><span class="p">.</span><span class="nx">hoursFromNow</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">24</span> <span class="k">then</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">end_time</span><span class="p">.</span><span class="nx">hoursFromNow</span><span class="p">()</span><span class="si">}</span><span class="s"> h&quot;</span>
+  <span class="k">else</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">end_time</span><span class="p">.</span><span class="nx">daysFromNow</span><span class="p">()</span><span class="si">}</span><span class="s"> </span><span class="si">#{</span><span class="k">if</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">lang</span> <span class="o">is</span> <span class="s">&#39;fi&#39;</span> <span class="k">then</span> <span class="s">&#39;pv&#39;</span> <span class="k">else</span> <span class="s">&#39;d&#39;</span><span class="si">}</span><span class="s">&quot;</span></pre></div></td></tr><tr id="section-8"><td class="docs"><div class="pilwrap"><a href="#section-8" class="pilcrow">&#182;</a></div><p>minutes / hours / days</p>
+</td><td class="code"><div class="highlight"><pre><span class="nv">Utils.time_since = </span><span class="nf">(end_time)-&gt;</span>
+  <span class="nv">end_time  = </span><span class="nb">Date</span><span class="p">.</span><span class="nx">create</span> <span class="nx">end_time</span> <span class="c1">#if end_time.constructor == String</span>
+  <span class="nv">str = </span><span class="k">if</span> <span class="nx">end_time</span><span class="p">.</span><span class="nx">minutesAgo</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">60</span> <span class="k">then</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">end_time</span><span class="p">.</span><span class="nx">minutesAgo</span><span class="p">()</span><span class="si">}</span><span class="s"> </span><span class="si">#{</span><span class="nx">dict</span> <span class="s">&#39;minutes&#39;</span><span class="si">}</span><span class="s">&quot;</span>
+  <span class="k">else</span> <span class="k">if</span>  <span class="nx">end_time</span><span class="p">.</span><span class="nx">hoursAgo</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">24</span> <span class="k">then</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">end_time</span><span class="p">.</span><span class="nx">hoursAgo</span><span class="p">()</span><span class="si">}</span><span class="s"> </span><span class="si">#{</span><span class="nx">dict</span> <span class="s">&#39;hours&#39;</span><span class="si">}</span><span class="s">&quot;</span>
+  <span class="k">else</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">end_time</span><span class="p">.</span><span class="nx">daysAgo</span><span class="p">()</span><span class="si">}</span><span class="s"> </span><span class="si">#{</span><span class="nx">dict</span> <span class="s">&#39;days&#39;</span><span class="si">}</span><span class="s">&quot;</span> <span class="c1"># #{if Config.lang is &#39;fi&#39; then &#39;pv&#39; else &#39;d&#39;}&quot;</span>
+  <span class="nx">str</span> <span class="o">+=</span> <span class="s">&#39; &#39;</span> <span class="o">+</span> <span class="nx">dict</span> <span class="s">&#39;ago&#39;</span></pre></div></td></tr><tr id="section-9"><td class="docs"><div class="pilwrap"><a href="#section-9" class="pilcrow">&#182;</a></div><p>API's</p>
+</td><td class="code"><div class="highlight"><pre><span class="nv">Utils.get_geolocation = </span><span class="nf">(recalculate=false, cb)-&gt;</span>
+  <span class="nv">cb = </span><span class="nx">recalculate</span> <span class="k">if</span> <span class="nx">recalculate</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">is</span> <span class="nb">Function</span>
+
+  <span class="nv">coord = </span><span class="nx">Data</span><span class="p">.</span><span class="nx">misc</span><span class="p">.</span><span class="nx">coord</span>
+  <span class="k">if</span> <span class="nx">Houce</span><span class="p">.</span><span class="nx">cache_valid</span> <span class="s">&#39;coordinates&#39;</span> <span class="c1"># coord.updated? and Date.now() - coord.updated &lt; 20.minutes() and not recalculate</span>
+    <span class="nx">cb</span> <span class="nx">coord</span>
+  <span class="k">else</span>
+    <span class="k">if</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">demo_hack</span><span class="o">?</span><span class="p">.</span><span class="nx">coord</span><span class="o">?</span>
+      <span class="nx">log</span> <span class="s">&quot;Using demo_hack coordinates:&quot;</span><span class="p">,</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">demo_hack</span><span class="p">.</span><span class="nx">coord</span>
+      <span class="nx">merge</span> <span class="nx">coord</span><span class="p">,</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">demo_hack</span><span class="p">.</span><span class="nx">coord</span>
+      <span class="nx">cb</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">demo_hack</span><span class="p">.</span><span class="nx">coord</span>
+      <span class="k">return</span>
+    <span class="nv">geo_success = </span><span class="nf">(gp)-&gt;</span>
+      <span class="k">return</span> <span class="nx">geo_failed</span> <span class="nv">code: </span><span class="o">-</span><span class="mi">2</span> <span class="k">if</span> <span class="nx">gp</span><span class="p">.</span><span class="nx">coords</span><span class="p">.</span><span class="nx">longitude</span> <span class="o">&lt;</span> <span class="mi">0</span>
+      <span class="nv">coord.latitude  = </span><span class="nx">gp</span><span class="p">.</span><span class="nx">coords</span><span class="p">.</span><span class="nx">latitude</span>
+      <span class="nv">coord.longitude = </span><span class="nx">gp</span><span class="p">.</span><span class="nx">coords</span><span class="p">.</span><span class="nx">longitude</span>
+      <span class="nv">Data.cache_updated.coordinates = </span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span></pre></div></td></tr><tr id="section-10"><td class="docs"><div class="pilwrap"><a href="#section-10" class="pilcrow">&#182;</a></div><p>log 'geo success', gp</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="nx">cb</span> <span class="nx">coord</span>
+    <span class="nv">geo_failed = </span><span class="nf">(err)-&gt;</span>
+      <span class="nv">default_msg = </span><span class="s">&#39;Näytämme paikannuksen suhteessa Helsingin keskustaan.&#39;</span>
+      <span class="nv">msg = </span><span class="k">switch</span> <span class="nx">err</span><span class="p">.</span><span class="nx">code</span>
+        <span class="k">when</span>  <span class="mi">1</span> <span class="k">then</span> <span class="s">&#39;Et sallinut sijainnin jakamista.&#39;</span>
+        <span class="k">when</span>  <span class="mi">2</span> <span class="k">then</span> <span class="s">&#39;Selaimesi ei salli paikannusta; sallimalla sen saat tarkempia suosituksia.&#39;</span>
+        <span class="k">when</span>  <span class="mi">3</span> <span class="k">then</span> <span class="s">&#39;Paikannus epäonnistui, yritä myöhemmin uudelleen.&#39;</span>
+        <span class="k">when</span> <span class="o">-</span><span class="mi">1</span> <span class="k">then</span> <span class="s">&#39;Laitteesi ei tue paikantamista.&#39;</span>
+        <span class="k">when</span> <span class="o">-</span><span class="mi">2</span>
+          <span class="nv">skip_warning = </span><span class="kc">true</span>
+          <span class="s">&#39;Paikassasi ei ole tarjouksia saatavilla.&#39;</span>
+        <span class="k">else</span> <span class="s">&#39;&#39;</span>
+      <span class="nx">merge</span> <span class="nx">coord</span><span class="p">,</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">geo</span><span class="p">.</span><span class="nx">default_coordinates</span>
+      <span class="nx">Templates</span><span class="p">.</span><span class="nx">notice</span><span class="p">.</span><span class="nx">warning</span> <span class="nx">msg</span><span class="o">+</span><span class="s">&#39; &#39;</span><span class="o">+</span><span class="nx">default_msg</span> <span class="nx">unless</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">geo</span><span class="p">.</span><span class="nx">skip_warning</span> <span class="o">or</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">lang</span> <span class="o">isnt</span> <span class="s">&#39;fi&#39;</span>
+      <span class="nx">cb</span> <span class="nx">coord</span>
+    <span class="nv">geo_args = timeout: </span><span class="nx">Config</span><span class="p">.</span><span class="nx">geo</span><span class="p">.</span><span class="nx">timeout</span>
+    <span class="k">if</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">geolocation</span><span class="o">?</span><span class="p">.</span><span class="nx">getCurrentPosition</span><span class="o">?</span>
+      <span class="nx">navigator</span><span class="p">.</span><span class="nx">geolocation</span><span class="p">.</span><span class="nx">getCurrentPosition</span> <span class="nx">geo_success</span><span class="p">,</span> <span class="nx">geo_failed</span><span class="p">,</span> <span class="nx">geo_args</span>
+    <span class="k">else</span>
+      <span class="nx">geo_failed</span> <span class="nv">code: </span><span class="o">-</span><span class="mi">1</span></pre></div></td></tr><tr id="section-11"><td class="docs"><div class="pilwrap"><a href="#section-11" class="pilcrow">&#182;</a></div><p>General utils:</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-12"><td class="docs"><div class="pilwrap"><a href="#section-12" class="pilcrow">&#182;</a></div><p>TODO</p>
 </td><td class="code"><div class="highlight"><pre><span class="nb">window</span><span class="p">.</span><span class="nv">reqAnimFrame = </span><span class="nb">window</span><span class="p">.</span><span class="nx">requestAnimationFrame</span> <span class="o">or</span>
                       <span class="nb">window</span><span class="p">.</span><span class="nx">webkitRequestAnimationFrame</span> <span class="o">or</span>
                       <span class="nb">window</span><span class="p">.</span><span class="nx">mozRequestAnimationFrame</span> <span class="o">or</span>
                       <span class="nb">window</span><span class="p">.</span><span class="nx">oRequestAnimationFrame</span> <span class="o">or</span>
                       <span class="nb">window</span><span class="p">.</span><span class="nx">msRequestAnimationFrame</span> <span class="o">or</span>
-                      <span class="nf">(callback)-&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">(</span><span class="nx">callback</span><span class="p">,</span> <span class="mi">1000</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>Test performance of different functions.
+                      <span class="nf">(callback)-&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">(</span><span class="nx">callback</span><span class="p">,</span> <span class="mi">1000</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span></pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><p>Test performance of different functions.
 You can give arguments in any order, with following types:
   function  is the function being tested
   number    indicates how many times the function is executed
@@ -20,27 +106,108 @@ You can give arguments in any order, with following types:
   <span class="k">return</span>
 
 
-
-<span class="nv">Utils.get_geolocation = </span><span class="nf">(recalculate=false, cb)-&gt;</span>
-
-  <span class="nv">cb = </span><span class="nx">recalculate</span> <span class="k">if</span> <span class="nx">recalculate</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">is</span> <span class="nb">Function</span>
-
-  <span class="nv">coord = </span><span class="nx">Data</span><span class="p">.</span><span class="nx">misc</span><span class="p">.</span><span class="nx">coord</span>
-  <span class="k">if</span> <span class="nx">Houce</span><span class="p">.</span><span class="nx">cache_valid</span> <span class="s">&#39;coordinates&#39;</span> <span class="c1"># coord.updated? and Date.now() - coord.updated &lt; 20.minutes() and not recalculate</span>
-    <span class="nx">cb</span> <span class="nx">coord</span>
-  <span class="k">else</span>
-    <span class="nv">geo_success = </span><span class="nf">(gp)-&gt;</span>
-      <span class="nv">coord.latitude  = </span><span class="nx">gp</span><span class="p">.</span><span class="nx">coords</span><span class="p">.</span><span class="nx">latitude</span>
-      <span class="nv">coord.longitude = </span><span class="nx">gp</span><span class="p">.</span><span class="nx">coords</span><span class="p">.</span><span class="nx">longitude</span>
-      <span class="nv">Data.cache_updated.coordinates = </span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span>
-      <span class="nx">cb</span> <span class="nx">coord</span>
-    <span class="nv">geo_failed = </span><span class="nf">(err)-&gt;</span>
-      <span class="nx">alert</span> <span class="s">&#39;Failed to retrieve geolocation&#39;</span>
-      <span class="nx">cb</span> <span class="kc">null</span>
-    <span class="nv">geo_args = timeout: </span><span class="nx">Config</span><span class="p">.</span><span class="nx">get_geo_timeout</span>
-    <span class="k">if</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">geolocation</span><span class="o">?</span><span class="p">.</span><span class="nx">getCurrentPosition</span><span class="o">?</span>
-      <span class="nx">navigator</span><span class="p">.</span><span class="nx">geolocation</span><span class="p">.</span><span class="nx">getCurrentPosition</span> <span class="nx">geo_success</span><span class="p">,</span> <span class="nx">geo_failed</span><span class="p">,</span> <span class="nx">geo_args</span>
+<span class="nv">Utils.try = </span><span class="nf">(str, cb)-&gt;</span>
+  <span class="k">return</span> <span class="nx">cb</span><span class="p">()</span> <span class="nx">unless</span> <span class="nx">Utils</span><span class="p">.</span><span class="nx">device</span><span class="p">.</span><span class="nx">is_mobile</span><span class="p">()</span> <span class="o">or</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">env</span> <span class="o">is</span> <span class="s">&#39;production&#39;</span>
+  <span class="k">try</span> <span class="nx">cb</span><span class="p">()</span>
+  <span class="k">catch</span> <span class="nx">err</span>
+    <span class="nv">err_str = </span><span class="s">&quot;Error in </span><span class="si">#{</span><span class="nx">str</span><span class="si">}</span><span class="s">: </span><span class="si">#{</span><span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="si">}</span><span class="s">&quot;</span>
+    <span class="k">if</span> <span class="nx">Utils</span><span class="p">.</span><span class="nx">device</span><span class="p">.</span><span class="nx">is_mobile</span><span class="p">()</span>
+      <span class="nx">alert</span> <span class="nx">err_str</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">Config</span><span class="p">.</span><span class="nx">env</span> <span class="o">is</span> <span class="s">&#39;production&#39;</span>
+      <span class="nx">Houce</span><span class="p">.</span><span class="nx">error</span> <span class="nx">err_str</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nx">stack</span><span class="o">?</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s">&#39;at &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">else</span>
-      <span class="nx">geo_failed</span> <span class="nv">code: </span><span class="o">-</span><span class="mi">1</span>
+      <span class="nx">log</span> <span class="s">&#39;ERROR: &#39;</span><span class="o">+</span> <span class="nx">err_str</span><span class="p">,</span> <span class="nx">err</span><span class="p">.</span><span class="nx">stack</span>
+  <span class="k">return</span></pre></div></td></tr><tr id="section-14"><td class="docs"><div class="pilwrap"><a href="#section-14" class="pilcrow">&#182;</a></div><p>Browser detection</p>
+</td><td class="code"><div class="highlight"><pre><span class="nv">Utils.device =</span>
+  <span class="nv">init: </span><span class="o">-&gt;</span>
+    <span class="vi">@browser = </span><span class="nx">@searchString</span><span class="p">(</span><span class="nx">@dataBrowser</span><span class="p">)</span> <span class="o">or</span> <span class="s">&quot;An unknown browser&quot;</span>
+    <span class="vi">@version = </span><span class="nx">@searchVersion</span><span class="p">(</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">)</span> <span class="o">or</span> <span class="nx">@searchVersion</span><span class="p">(</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">appVersion</span><span class="p">)</span> <span class="o">or</span> <span class="s">&quot;an unknown version&quot;</span>
+    <span class="vi">@OS = </span><span class="nx">@searchString</span><span class="p">(</span><span class="nx">@dataOS</span><span class="p">)</span> <span class="o">or</span> <span class="s">&quot;an unknown OS&quot;</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Wed Apr 04 2012 15:51:52 GMT+0300 (EEST)  </div></div></body></html>
+  <span class="nv">searchString: </span><span class="nf">(data)-&gt;</span>
+    <span class="k">for</span> <span class="nx">el</span> <span class="k">in</span> <span class="nx">data</span>
+      <span class="nv">dataString = </span><span class="nx">el</span><span class="p">.</span><span class="nx">string</span>
+      <span class="nv">dataProp   = </span><span class="nx">el</span><span class="p">.</span><span class="nx">prop</span>
+      <span class="vi">@versionSearchString = </span><span class="nx">el</span><span class="p">.</span><span class="nx">versionSearch</span> <span class="o">or</span> <span class="nx">el</span><span class="p">.</span><span class="nx">identity</span>
+      <span class="k">if</span> <span class="nx">dataString</span>
+        <span class="k">return</span> <span class="nx">el</span><span class="p">.</span><span class="nx">identity</span> <span class="k">if</span> <span class="p">(</span><span class="nx">dataString</span><span class="p">.</span><span class="nx">indexOf</span> <span class="nx">el</span><span class="p">.</span><span class="nx">subString</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="nx">dataProp</span>
+        <span class="k">return</span> <span class="nx">el</span><span class="p">.</span><span class="nx">identity</span>
+
+  <span class="nv">searchVersion: </span><span class="nf">(dataString)-&gt;</span>
+    <span class="nv">index = </span><span class="nx">dataString</span><span class="p">.</span><span class="nx">indexOf</span> <span class="nx">@versionSearchString</span>
+    <span class="k">return</span> <span class="k">if</span> <span class="nx">index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="nb">parseFloat</span> <span class="nx">dataString</span><span class="p">.</span><span class="nx">substring</span> <span class="nx">index</span><span class="o">+</span><span class="nx">@versionSearchString</span><span class="p">.</span><span class="nx">length</span><span class="o">+</span><span class="mi">1</span>
+
+  <span class="nv">is_mobile: </span><span class="o">-&gt;</span>
+    <span class="nx">@OS</span><span class="p">.</span><span class="nx">matches</span> <span class="p">[</span><span class="s">&#39;iPhone&#39;</span><span class="p">,</span> <span class="s">&#39;Android&#39;</span><span class="p">,</span> <span class="s">&#39;Windows Phone&#39;</span><span class="p">]</span>
+
+  <span class="nv">banner_height: </span><span class="o">-&gt;</span>
+    <span class="k">switch</span> <span class="nx">@OS</span>
+      <span class="k">when</span> <span class="s">&#39;iPhone&#39;</span> <span class="k">then</span> <span class="mi">100</span>
+      <span class="k">else</span> <span class="mi">0</span>
+
+  <span class="nv">dataBrowser: </span><span class="p">[</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span>
+    <span class="nv">subString: </span><span class="s">&quot;Chrome&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;Chrome&quot;</span>
+  <span class="p">,</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span>
+    <span class="nv">subString: </span><span class="s">&quot;Android&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;Android&quot;</span>
+  <span class="p">,</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span>
+    <span class="nv">subString: </span><span class="s">&quot;iPhone&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;iPhone&quot;</span>
+  <span class="p">,</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span>
+    <span class="nv">subString: </span><span class="s">&quot;Series60&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;Series60&quot;</span>
+  <span class="p">,</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">vendor</span>
+    <span class="nv">subString: </span><span class="s">&quot;Apple&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;Safari&quot;</span>
+    <span class="nv">versionSearch: </span><span class="s">&quot;Version&quot;</span>
+  <span class="p">,</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span>
+    <span class="nv">subString: </span><span class="s">&quot;Firefox&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;Firefox&quot;</span>
+  <span class="p">,</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span>
+    <span class="nv">subString: </span><span class="s">&quot;MSIE&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;IE&quot;</span>
+    <span class="nv">versionSearch: </span><span class="s">&quot;MSIE&quot;</span>
+  <span class="p">,</span>
+    <span class="nv">prop: </span><span class="nb">window</span><span class="p">.</span><span class="nx">opera</span>
+    <span class="nv">identity: </span><span class="s">&quot;Opera&quot;</span>
+    <span class="nv">versionSearch: </span><span class="s">&quot;Version&quot;</span>
+  <span class="p">]</span>
+
+  <span class="nv">dataOS: </span><span class="p">[</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">platform</span>
+    <span class="nv">subString: </span><span class="s">&quot;Mac&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;Mac&quot;</span>
+  <span class="p">,</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span>
+    <span class="nv">subString: </span><span class="s">&quot;iPhone&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;iPhone&quot;</span>
+  <span class="p">,</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span>
+    <span class="nv">subString: </span><span class="s">&quot;Android&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;Android&quot;</span>
+  <span class="p">,</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span>
+    <span class="nv">subString: </span><span class="s">&quot;Windows Phone&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;Windows Phone&quot;</span>
+  <span class="p">,</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">platform</span>
+    <span class="nv">subString: </span><span class="s">&quot;Win&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;Windows&quot;</span>
+  <span class="p">,</span>
+    <span class="nv">string: </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">platform</span>
+    <span class="nv">subString: </span><span class="s">&quot;Linux&quot;</span>
+    <span class="nv">identity: </span><span class="s">&quot;Linux&quot;</span>
+  <span class="p">]</span>
+<span class="nx">Utils</span><span class="p">.</span><span class="nx">device</span><span class="p">.</span><span class="nx">init</span><span class="p">()</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Mon Aug 13 2012 14:10:28 GMT+0300 (EEST)  </div></div></body></html>
