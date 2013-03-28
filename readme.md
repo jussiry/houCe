@@ -1,6 +1,6 @@
 houCe is a client oriented node.js framework that uses [CoffeeScript](http://coffeescript.org/) to build **templates** that have styles definitions and controllers in the same file next to the template definition. This is done by using [CoffeeKup](http://coffeekup.org/) to compile template HTML and [CCSS](https://github.com/aeosynth/ccss) to build CSS definitions.
 
-In addition houCe has automatic route handler (aka `Pager`) that fires top templates `@open` controller with params specified in URL. E.g. `/#/list/limit=10/green` would execute `list.tmpl` files `@open` function with `{limit:10, green:true}`.
+In addition houCe has **automatic route handler** (aka `Pager`) that fires top templates `@open` controller with params specified in URL. E.g. `/#/list/limit=10/green` would execute `list.tmpl` files `@open` function with `{limit:10, green:true}`.
 
 ## get started
 
