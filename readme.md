@@ -2,7 +2,7 @@ houCe is a client oriented node.js framework that uses [CoffeeScript](http://cof
 
 In addition houCe has **automatic route handler** (aka `Pager`) that fires top templates `@open` controller with params specified in URL. E.g. `/#/list/limit=10/green` would execute `list.tmpl` files `@open` function with `{limit:10, green:true}`.
 
-## get started
+### get started
 
 If you don't have Node.js installed, [get it here](http://nodejs.org/#download). You'll also need [git](http://git-scm.com/).
 
@@ -17,7 +17,7 @@ If you don't have Node.js installed, [get it here](http://nodejs.org/#download).
 Now open [http://localhost:3001/](http://localhost:3001/) in your browser.
 
 
-## commands
+### commands
 
 * `coffee start.coffee production` - Start in production mode.
 * `cake update_houce` - Update to new version of houCe. *Warning*: you'll need to merge all the changes you've done to original houCe files. Also removes `intro.page` and `intro_api_access.templ`.
@@ -25,6 +25,6 @@ Now open [http://localhost:3001/](http://localhost:3001/) in your browser.
 * `cake build_docs` - Build documentation to /public/docs
 
 
-## documentation
+### documentation
 
 File by file documentation can be [found here](http://jussiry.github.com/houCe/index.html).
