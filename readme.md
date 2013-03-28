@@ -1,25 +1,6 @@
+houCe is a client oriented node.js framework that uses [CoffeeScript](http://coffeescript.org/) to build **templates** that have styles definitions and controllers in the same file next to the template definition. This is done by using [CoffeeKup](http://coffeekup.org/) to compile template HTML and [CCSS](https://github.com/aeosynth/ccss) to build CSS definitions.
 
-# houCe - the 100% CoffeeScript web framework
-
-houCe is client oriented web framework designed with conventions that help you get ready and going in seconds, while providing structure that supports complex desktop like applications. houCe uses one language for everything it does, and that language is [CoffeeScript](http://coffeescript.org/). Here's the list of technologies that make it possible:
-
-* Server: [Node.js](http://nodejs.org/), with [Express.js](http://expressjs.com/).
-* Templates: [CoffeeKup](http://coffeekup.org/).
-* Stylesheets: [CCSS](https://github.com/aeosynth/ccss), for unenchanted [LESS](http://lesscss.org/) as backup.
-
-
-## features
-
-* Clean, but flexible folder structure:
- * **client**: Client side code, templates and stylesheets.
- * **common**: Common code that get executed both on client and server.
- * **server**: Server code and configuration files.
- * **public**: Compiled client code, JS libraries and images.
-* Modular templating system that allows you to write HTML, CS and styles of that module in single file.
-* Automatic localStorage caching of the application state and data.
-* Connect to OAuth2 enabled API's (Facebook, Google, etc.) instantly.
-* Clean Ajax deferring for retrieving data from external API's and storing that data locally.
-
+In addition houCe has automatic route handler (aka `Pager`) that fires top templates `@open` controller with params specified in URL. E.g. `/#/list/limit=10/green` would execute `list.tmpl` files `@open` function with `{limit:10, green:true}`.
 
 ## get started
 
@@ -34,12 +15,6 @@ If you don't have Node.js installed, [get it here](http://nodejs.org/#download).
     node-dev start.coffee
 
 Now open [http://localhost:3001/](http://localhost:3001/) in your browser.
-
-
-## future plans
-
-* Move parts of models in `/common` and implement similar (but better) data stroage to server with [Redis](http://redis.io/) as in client with localCahce?
-* Integration with [Backbone.js](http://documentcloud.github.com/backbone/)?
 
 
 ## commands
